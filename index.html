@@ -1,0 +1,1586 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>РВД · прототип</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ---- Сайдбар и шапка как в макетах ---- */
+  .nav{gap:0;overflow:auto}
+  .nav button,.bottom button{font-size:17px}
+  .nav .badge{margin-left:auto;min-width:20px;line-height:20px}
+  .nav .chev{margin-left:auto;opacity:.7}
+  .bottom{padding-top:0}
+  .bottom .help .mascot-dot{position:absolute;right:8px;bottom:6px;width:30px;height:30px;border-radius:50%;background:var(--lime);border:2px solid #222}
+  .header-tools{gap:32px}
+  .avatar{display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#53565d}
+  .ico{width:24px;height:24px;flex-shrink:0}
+  /* ---- Тулбар ---- */
+  .tabs button{display:inline-flex;align-items:center;gap:6px}
+  .tabs .badge{line-height:18px}
+  .create-menu{width:420px}
+  .create-menu .grp{padding:8px 16px 4px;font-size:14px;color:#8a8f99;font-weight:600}
+  /* ---- Список ---- */
+  .status-bubble{position:relative}
+  .status-bubble .dot{position:absolute;top:2px;right:2px;width:10px;height:10px;border-radius:50%;background:var(--purple);box-shadow:0 0 0 2px #fff}
+  .status-bubble.done{background:#e4ffab}
+  .status-bubble.partial{background:#fff2d6}
+  .status-bubble svg{width:26px;height:26px}
+  .empty-list{padding:32px 8px;color:var(--muted);text-align:center;font-size:16px}
+  .workspace{min-height:calc(100vh - 230px)}
+  .request-list{min-height:calc(100vh - 230px)}
+  .empty-detail{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:320px;color:var(--muted);gap:12px}
+  /* ---- Карточка заявки ---- */
+  .panel{position:relative}
+  .panel-head{margin-bottom:32px}
+  .panel-head h1{margin-top:4px}
+  .panel-head .meta{margin-top:8px;font-size:16px;color:#222}
+  .expand{font-size:16px}
+  .deadline{font-size:14px;line-height:22px;color:#53565d}
+  .status-message p{margin-top:4px;font-size:16px;line-height:20px;color:#222}
+  .status-message b{font-size:16px}
+  .status-icon svg{width:22px;height:22px}
+  .status-icon.cancel{background:#fde3dc}
+  .status-icon.return{background:#efe2fa}
+  .status-icon.partial{background:#fff2d6}
+  .status-icon.paper{background:#ffe9d6}
+  .status-icon.idea{background:#e3edfc;width:32px;height:32px;border-radius:10px}
+  .ready{display:flex;gap:20px;align-items:center}
+  .ready svg{width:76px;height:64px;flex-shrink:0}
+  .ready b{display:block;font-size:16px}
+  .ready p{font-size:16px;line-height:20px;margin-top:4px}
+  .pdf-row{width:100%;display:flex;gap:12px;align-items:center;background:var(--selected);border-radius:12px;padding:14px 16px;text-align:left;margin-top:24px}
+  .pdf-row+.pdf-row{margin-top:8px}
+  .pdf-row b{display:block;font-weight:400;font-size:16px;line-height:20px}
+  .pdf-row small{display:block;font-size:13px;color:#53565d}
+  .pdf-row>span:nth-child(2){flex:1;min-width:0}
+  .pdf-ico{width:26px;height:30px;border:1.5px solid #8a8f99;border-radius:3px;font-size:8px;font-weight:700;color:#53565d;display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;flex-shrink:0}
+  .rate-box{position:absolute;top:-1px;right:-1px;background:var(--lime);border-radius:0 24px 0 16px;padding:10px 18px 8px;text-align:center;font-size:13px;font-weight:600;line-height:16px;box-shadow:0 6px 16px #263b6420}
+  .rate-box .faces{display:flex;gap:6px;justify-content:center;margin-bottom:4px}
+  .rate-box button{padding:0;border-radius:50%}
+  .rate-box button.on{background:#fff}
+  .rate-box svg{width:26px;height:26px;display:block}
+  .bubble-label{font-weight:600;font-size:16px;margin:24px 0 8px}
+  .bubble-wrap{display:flex;gap:10px;align-items:flex-end}
+  .bub-ava{width:28px;height:28px;border-radius:50%;background:#1f7a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:13px;font-weight:700}
+  .bubble{background:#e8edf9;border-radius:12px 12px 12px 4px;padding:8px 14px;font-size:15px;line-height:20px;max-width:520px}
+  .bubble b{display:block;font-size:13px;line-height:18px}
+  .pairs-read{display:grid;gap:16px;margin-bottom:8px}
+  .pairs-read dt{font-weight:700;font-size:16px}
+  .pairs-read dd{margin:6px 0 0;font-size:16px}
+  .details summary h2{font-size:22px;line-height:28px}
+  .details[open] summary img{transform:rotate(180deg)}
+  .details .general-fields{gap:20px;font-size:16px}
+  .details .pair dt{font-size:16px}
+  .history{list-style:none;padding:0;margin:0;font-size:15px;line-height:20px}
+  .history li{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--soft)}
+  .history time{color:var(--muted);font-size:14px}
+  .comp-table{width:100%;border-collapse:collapse;font-size:16px}
+  .comp-table td{padding:8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  .comp-table td:first-child{width:40%;padding-right:12px}
+  /* ---- Шаги ---- */
+  .steps{padding:28px 8px 32px}
+  .step b{display:block;font-size:14px;line-height:18px;font-weight:600;padding:0 4px}
+  .step.future b{font-weight:400;color:#53565d}
+  .step small{display:block;font-size:13px;line-height:18px;color:#53565d;margin-top:2px}
+  .step-circle{font-size:18px}
+  .step-circle.ok{color:var(--purple)}
+  .step-circle.stop{color:#222;font-size:18px}
+  /* ---- Подпись документа ---- */
+  .sign-layout{grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
+  .thumb-image{height:170px;background:#fff;padding:56px 26px 0}
+  .thumb-image i{display:block;height:5px;border-radius:3px;background:#dfe3ea;margin:0 0 9px;filter:blur(.6px)}
+  .viewed-tag{top:14px;right:12px;font-size:14px;line-height:20px;padding:2px 10px}
+  .viewed-tag.unread{background:#fde3dc;border-color:#f6b8a8;color:#a2331d}
+  .zoom{top:12px;left:12px;width:36px;height:36px}
+  .thumb-caption{font-size:14px;line-height:18px;padding:12px}
+  .thumb-caption span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sign-info{justify-content:flex-start;gap:12px}
+  .sign-info .ttl{display:flex;gap:10px;align-items:center;font-weight:600;font-size:16px}
+  .sign-info b{font-size:16px;line-height:20px;margin-top:16px}
+  .sign-info .instruction{margin-top:4px;font-size:14px;color:#53565d}
+  .btn.outline-dark{background:#fff;border:1px solid #222;color:#222}
+  .btn.grey:disabled{background:#e6e8ec;color:#8a8f99;opacity:1}
+  .form-actions{margin-top:32px}
+  /* ---- Формы ---- */
+  .field{max-width:600px}
+  .field label.label,.field legend,.field .label{font-size:16px;display:flex;gap:4px;align-items:center;font-weight:700;margin-bottom:8px}
+  .field textarea{font-size:16px}
+  .under{display:flex;justify-content:space-between;gap:12px;font-size:14px;line-height:18px;margin-top:4px;color:#8a8f99}
+  .under .ok{color:#6cb300}
+  .under .bad{color:#ec6a2c}
+  .err{color:#ec6a2c;font-size:13px;line-height:18px;margin-top:4px}
+  .search-input{position:relative}
+  .search-input input{width:100%;height:46px;border:1px solid #a6adba;border-radius:12px;padding:8px 44px 8px 16px;background:#fff;font-size:16px}
+  .search-input input[readonly]{cursor:default}
+  .search-input .asset{position:absolute;right:14px;top:11px;pointer-events:none}
+  .emp-line{display:flex;gap:12px;align-items:center}
+  .emp-line .picker{flex:1;max-width:none}
+  .x-btn{width:28px;height:28px;font-size:22px;line-height:22px;color:#222;border-radius:8px;flex-shrink:0}
+  .x-btn:hover{background:var(--soft)}
+  /* Карточки сотрудников — по макету «РВД / руководитель» */
+  .emp-card{background:#f4f6fa;border-radius:12px;margin-bottom:8px}
+  .emp-head{display:flex;align-items:center}
+  .emp-toggle{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:12px 16px;border-radius:12px}
+  .emp-toggle:hover{background:#00000005}
+  .emp-title{flex:1;min-width:0}
+  .emp-title b{display:block;font-size:16px;line-height:20px;font-weight:400;color:#222;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .emp-title small{display:block;font-size:13px;line-height:18px;color:#8a8f99;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+  .emp-title small.bad{color:#ec6a2c}
+  .emp-chev{transition:transform .15s;flex-shrink:0;opacity:.8}
+  .emp-card:not(.col) .emp-chev{transform:rotate(180deg)}
+  .emp-body{padding:4px 16px 16px}
+  .emp-head.open{padding:16px 0 4px 16px}
+  .emp-open-lbl{flex:1;margin:0!important;font-size:16px;font-weight:700;display:flex;gap:4px;align-items:center}
+  .emp-body .field{margin-bottom:20px}
+  .emp-body .field:last-child{margin-bottom:0}
+  .emp-bar{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:16px}
+  .emp-bar b{font-weight:700}
+  .emp-bar .cnt{color:#222}
+  .tog-all{margin-left:auto;font-size:15px;color:#222;padding:2px 0}
+  .tog-all:hover{color:var(--purple)}
+  .emp-note{font-size:14px;color:#53565d;margin-top:6px}
+  .date-line{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+  .date-line input{height:46px;border:1px solid #a6adba;border-radius:12px;padding:8px 14px;background:#fff;width:240px;max-width:100%;font-size:16px}
+  .add-link{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600;padding:4px 0;color:#222}
+  .add-link:disabled{opacity:.4}
+  .fill-hintX{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid #e3d3f2;border-radius:10px;padding:8px 8px 8px 12px;margin:0 0 18px;font-size:14px;line-height:18px;color:#53565d}
+  .fill-hint select{height:30px;border:1px solid var(--line);border-radius:8px;padding:0 6px;font-size:14px;font-weight:600;color:#222;background:#fff;max-width:200px}
+  .fill-hint .chip-btn{padding:5px 10px;font-size:13px}
+  .fill-hint .chip-btn:disabled{opacity:.4}
+  .fill-hint{position:relative;padding-right:40px}
+  .fill-hint .x-btn{position:absolute;right:6px;top:6px;font-size:18px}
+  .emp-acts{display:flex;align-items:center;gap:4px;padding-right:8px;flex-shrink:0}
+  .emp-acts .ic{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px}
+  .emp-acts .ic:hover{background:#00000008}
+  .emp-acts .ic.del:hover svg{stroke:#cb374c}
+  .copy-all{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:18px;font-weight:600;color:#33363c;background:#e3e8f0;border-radius:8px;padding:6px 10px;margin-right:4px;white-space:nowrap}
+  .copy-all:hover{background:#d6dde8}
+  .like-wrap{position:relative;display:inline-block}
+  .like-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:18px;color:#33363c;background:#e3e8f0;border-radius:8px;padding:5px 10px}
+  .like-btn:hover,.like-btn[aria-expanded=true]{background:#d6dde8}
+  .like-btn .chev{width:12px;height:12px;transition:transform .15s}
+  .like-btn[aria-expanded=true] .chev{transform:rotate(180deg)}
+  .like-menu{position:absolute;left:0;top:calc(100% + 6px);z-index:30;background:#fff;border-radius:12px;box-shadow:0 16px 36px #263b6426;padding:6px;width:min(420px,80vw);max-height:300px;overflow:auto}
+  .like-menu .cap{font-size:12px;line-height:16px;color:#8a8f99;padding:6px 10px 4px}
+  .like-menu button{display:block;width:100%;text-align:left;padding:8px 10px;border-radius:8px;font-size:14px;line-height:18px;color:#222}
+  .like-menu button:hover{background:var(--soft)}
+  .like-menu button small{display:block;color:#6b717c;font-size:13px;line-height:17px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .under-l{display:flex;align-items:center;gap:12px;min-width:0}
+  .dates-like{margin:-2px 0 10px}
+  @media(max-width:800px){.copy-all span{display:none}.copy-all{padding:6px 8px}}
+  .add-emp-btn{display:inline-flex;align-items:center;gap:6px;background:#eef1f6;border-radius:8px;padding:6px 10px;font-size:13px;line-height:18px;color:#53565d;margin-top:8px}
+  .add-emp-btn:hover{background:#e3e8f0}
+  .add-emp-btn svg{width:14px;height:14px}
+  .add-emp-btn small{color:#8a8f99;font-size:12px}
+  .apply-all{display:inline-flex;align-items:center;gap:5px;font-size:13px;line-height:18px;font-weight:600;color:var(--purple);padding:2px 6px;margin:-2px -6px;border-radius:8px}
+  .apply-all:hover{background:#f3e9fa}
+  .apply-all img{filter:invert(52%) sepia(25%) saturate(900%) hue-rotate(235deg)}
+  .under-r{display:flex;gap:14px;align-items:center;margin-left:auto}
+  .dates-act{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  dialog.small.choice{width:520px}
+  dialog.small .acts.col3{flex-wrap:wrap}
+  dialog.small.choice .btn{padding:10px 16px}
+  .chip-btn{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#5a2f7a;background:#f3e9fa;border-radius:10px;padding:6px 12px}
+  .chip-btn:hover{background:#ead9f7}
+  .chip-btn img{filter:invert(27%) sepia(28%) saturate(1300%) hue-rotate(240deg)}
+  .limit{color:#ec6a2c;font-size:13px;line-height:18px}
+  .checkline{font-weight:400;font-size:16px;align-items:flex-start;line-height:22px}
+  .checkline input{margin-top:0}
+  .tag{display:inline-block;font-size:12px;line-height:18px;border-radius:16px;padding:0 8px;margin-left:6px;vertical-align:1px;font-weight:600}
+  .tag.refuse{background:#fff2d6;color:#7a5200}
+  .tag.ban{background:#fbe5dd;color:#8c2a1c}
+  .tag.has{background:var(--selected);color:#53565d}
+  .picker-option[aria-disabled=true]{opacity:.55;cursor:not-allowed}
+  .picker-dropdown{top:50px}
+  .choices{gap:10px;font-size:16px}
+  .comp-block{margin:0 0 24px}
+  .comp-block h3{font-size:16px;margin-bottom:10px}
+  .rest-field{margin:14px 0 0}
+  .rest-field .label{font-weight:400!important}
+  .consent{font-size:16px;line-height:22px;margin:8px 0 0;max-width:600px}
+  .bank-check{margin-bottom:14px}
+  .bank-check .checkline small{display:block;color:#8a8f99;font-size:13px;line-height:18px}
+  .bank-check .field{margin:10px 0 0}
+  .notice{font-size:15px;line-height:20px}
+  .form-error{color:#ec6a2c;font-size:14px;margin-top:16px}
+  /* ---- Подсказки ---- */
+  .tipwrap{position:relative;display:inline-flex}
+  .tip-btn{width:18px;height:18px;border:1.4px solid #53565d;border-radius:50%;font-size:11px;line-height:15px;font-weight:700;color:#53565d;padding:0;text-align:center}
+  .tip-link{color:var(--purple);padding:0;text-align:left;font-size:inherit;line-height:inherit;display:inline}
+  .tip-pop{display:none;position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);width:300px;background:#fff;border-radius:12px;box-shadow:0 10px 30px #263b6430;padding:10px 14px;font-size:13px;line-height:17px;font-weight:400;color:#222;z-index:40;text-align:left}
+  .tip-pop.wide{width:460px}
+  .tip-pop ol{margin:0;padding-left:18px}
+  .tip-pop:after{content:'';position:absolute;top:100%;left:50%;margin-left:-8px;border:8px solid transparent;border-top-color:#fff}
+  .tipwrap:hover .tip-pop,.tipwrap:focus-within .tip-pop{display:block}
+  /* ---- Заявка на нескольких ---- */
+  .progress{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0}
+  .progress span{background:var(--soft);border-radius:10px;padding:4px 12px;font-size:14px}
+  .progress b{margin-right:4px}
+  .emp-th,.emp-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.9fr) minmax(0,1fr) 92px;gap:12px;align-items:center;text-align:left}
+  .emp-th{padding:24px 14px 6px;color:#8a8f99;font-size:14px}
+  .emp-row{width:100%;padding:10px 14px;border-radius:12px;background:var(--soft);margin-bottom:6px;font-size:15px;line-height:20px}
+  .emp-row:hover{box-shadow:inset 0 0 0 1px var(--line)}
+  .emp-row small{display:block;color:#8a8f99;font-size:13px;line-height:17px}
+  .emp-row .st{display:flex;gap:8px;align-items:center}
+  .emp-goal{grid-column:1/-1;font-size:14px;color:#53565d;border-top:1px solid var(--line);padding-top:6px}
+  .sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:#c9ced6}
+  .sdot.wait{background:var(--purple)}.sdot.hr{background:#f0b429}.sdot.ok{background:#7cc417}.sdot.no{background:#cb374c}
+  .back-link{display:inline-flex;gap:6px;align-items:center;color:#53565d;font-size:15px;padding:0;margin:0 0 12px}
+  .by{font-size:14px;color:#5a2f7a;background:#f3e9fa;border-radius:8px;padding:1px 8px}
+  /* ---- Отпуск ---- */
+  .vac{padding:0 48px 32px 16px;max-width:1100px}
+  .vac-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .vac-card{border:1px solid var(--line);border-radius:24px;padding:28px 32px;background:#fff}
+  .vac-card.mutedcard{background:var(--soft);border-color:transparent}
+  .vac-card .big{font-size:44px;line-height:52px;font-weight:600;margin:8px 0 4px}
+  .bank-list{display:grid;gap:8px;margin-top:8px}
+  .bank-item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 18px;border-radius:12px;background:var(--soft);font-size:16px}
+  .bank-item small{display:block;color:#53565d;font-size:14px}
+  .btag{font-size:13px;font-weight:600;border-radius:12px;padding:2px 10px;white-space:nowrap}
+  .btag.av{background:#f2ffe3;color:#375d0f}.btag.res{background:#f3e9fa;color:#5a2f7a}.btag.used{background:#eceef2;color:#53565d}.btag.exp{background:#fbe5dd;color:#8c2a1c}.btag.soon{background:#fff2d6;color:#7a5200}
+  .bank-chip{font-size:15px;color:#53565d;white-space:nowrap}
+  .bank-chip button{color:var(--purple);font-weight:600;font-size:15px}
+  /* ---- Прототип: служебная панель ---- */
+  .proto{position:fixed;right:16px;bottom:16px;z-index:45;display:flex;gap:8px;align-items:center;background:#fff;border:2px dashed var(--purple);border-radius:14px;padding:6px 8px 6px 12px;box-shadow:0 8px 24px #263b6420;font-size:14px}
+  .proto .ptag{color:#5a2f7a;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .proto select{height:32px;border:1px solid var(--line);border-radius:8px;padding:0 8px;font-size:14px;max-width:260px;background:#fff}
+  .proto button{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:#fff;white-space:nowrap}
+  .proto button[aria-pressed=true]{background:#f3e9fa;border-color:var(--purple);color:#5a2f7a}
+  .qpin{display:none;font-size:11px;line-height:16px;font-weight:700;color:#fff;background:var(--purple);border-radius:10px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+  body.show-q .qpin{display:inline-block}
+  .qnote{display:none;border-left:3px solid var(--purple);background:#f7f0fc;border-radius:0 10px 10px 0;padding:10px 14px;font-size:14px;line-height:19px;margin:16px 0 0;color:#3e2752}
+  body.show-q .qnote{display:block}
+  .app-main{padding-bottom:64px}
+  .toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:#222;color:#fff;border-radius:12px;padding:12px 20px;font-size:16px;z-index:60;max-width:calc(100vw - 32px)}
+  /* ---- Модалки ---- */
+  dialog.small{width:440px}
+  dialog.small .modal-head{border:0;padding:20px 20px 4px}
+  dialog.small .modal-head h2{font-size:22px;line-height:28px}
+  dialog.small .modal-body{padding:4px 20px 20px;font-size:15px;line-height:20px}
+  dialog.small textarea{width:100%;height:88px;border:1px solid #a6adba;border-radius:10px;padding:10px 12px;margin-top:14px;font-size:15px;resize:vertical}
+  dialog.small .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+  dialog.small .btn{padding:10px 22px;min-height:40px;font-size:14px}
+  dialog .modal-head h2{font-size:22px;line-height:28px}
+  dialog.wide{width:980px}
+  .close{width:36px;height:36px;border-radius:10px;font-size:24px}
+  .close:hover{background:var(--soft)}
+  .notif-list{display:grid;gap:8px}
+  .notification.unread{box-shadow:inset 3px 0 0 var(--purple)}
+  .demo-actions{display:grid;gap:8px;margin:12px 0 20px}
+  .demo-actions .btn{justify-content:flex-start;font-size:15px;padding:10px 16px}
+  .demo-note{font-size:14px;color:#777;line-height:20px}
+  .an h3{margin:28px 0 10px}.an h3:first-child{margin-top:0}
+  .an table{width:100%;border-collapse:collapse;font-size:15px;line-height:20px}
+  .an th,.an td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .an th{background:var(--soft);font-weight:600;font-size:13px;color:#53565d}
+  .an ul{padding-left:20px;font-size:16px;line-height:22px}.an li{margin-bottom:6px}
+  .an .tablewrap{overflow-x:auto}.an tr.hl td{background:#f7f0fc}
+  .an .pri{font-size:12px;font-weight:700;border-radius:10px;padding:1px 8px;white-space:nowrap}
+  .an .pri.b{background:#fbe5dd;color:#8c2a1c}.an .pri.i{background:#fff2d6;color:#7a5200}.an .pri.d{background:#f2ffe3;color:#375d0f}
+  /* ---- v3: по актуальным макетам ---- */
+  .view-tog{width:44px;height:44px;border-radius:12px;background:var(--selected);display:inline-flex;align-items:center;justify-content:center}
+  .st-cap{font-size:16px;margin:24px 0 4px}
+  .st-grp{margin-top:16px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  .st-lbl{font-size:14px;line-height:18px;display:flex;gap:8px}
+  .st-lbl.wait{color:#2f6fd6}.st-lbl.ok{color:#6cb300}.st-lbl.exp{color:#ec6a2c}.st-lbl.no{color:#d8323f}
+  .st-name{font-size:16px;line-height:22px;padding:0;text-align:left;color:#222}
+  .st-name:hover{color:var(--purple)}
+  .emp-det{padding:24px 0;border-bottom:1px solid var(--line)}
+  .emp-det:first-child{padding-top:4px}.emp-det:last-child{border-bottom:0}
+  .emp-det .st-lbl{margin-bottom:10px}
+  .dates-row{display:flex;flex-wrap:wrap;gap:4px 10px}
+  .comp-q{font-weight:700;font-size:16px;margin-bottom:12px;padding:0}
+  .comp-block .choices label{display:flex;gap:10px;align-items:center}
+  input[type=radio]{accent-color:#222;width:20px;height:20px}
+  .consent.checkline{display:flex;gap:10px}
+  .bank-line{font-size:20px;line-height:26px;font-weight:600;margin:0 0 32px}
+  .off-card{background:#f4f6fa;border-radius:12px;padding:14px 16px;margin:0 0 8px;max-width:440px}
+  .off-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;cursor:pointer}
+  .off-top b{display:block;font-weight:400;font-size:16px;line-height:22px}
+  .off-top small{display:block;font-size:13px;line-height:18px;color:#8a8f99}
+  .off-card .field{margin:14px 0 0}
+  .off-card .label{font-weight:400!important}
+  .off-card .help{font-size:13px;color:#8a8f99;margin-top:2px}
+  .lime-check{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:1.5px solid #a6adba;border-radius:5px;background:#fff;flex-shrink:0;margin-top:2px;cursor:pointer}
+  .lime-check:checked{background:var(--lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23222' stroke-width='2'%3E%3Cpath d='m5 10 3.5 3.5L15 7'/%3E%3C/svg%3E") center/16px no-repeat;border-color:#b6e84f}
+  #budget,#catCheck{accent-color:#b6e84f}
+  body:not(.show-q) #dlNotice,body:not(.show-q) #otgulDl{display:none!important}
+  .proto .scen{max-width:200px;font-weight:600;border-color:var(--purple)!important}
+  .proto .clk{font-size:12px;color:#5a2f7a;background:#f3e9fa;border-radius:8px;padding:4px 8px;white-space:nowrap}
+  /* Отпуск */
+  .vac-head{}
+  .vac{max-width:none;padding:8px 32px 48px 16px}
+  .vac-top{display:flex;align-items:center;gap:56px;margin:8px 0 40px}
+  .vac-top h1{font-size:40px;line-height:48px;font-weight:600}
+  .btn-outline-lime{display:inline-flex;gap:8px;align-items:center;border:2px solid var(--lime);border-radius:12px;padding:10px 20px;font-size:15px;font-weight:600}
+  .vac-row{display:flex;gap:40px;align-items:center;flex-wrap:wrap;margin-bottom:48px}
+  .bal{display:flex;flex-direction:column;gap:4px;font-size:17px;line-height:24px;padding-left:24px}
+  .bal>b{font-size:17px}.bal small{font-size:12px;line-height:14px;color:#53565d;margin-bottom:12px}.bal small.sub{margin:-4px 0 8px}
+  .bal p{display:flex;gap:6px;align-items:center}
+  .vac-create{position:relative;margin-top:16px}
+  .vac-create .btn{padding:12px 32px;display:inline-flex;gap:10px;align-items:center}
+  .vac-menu{left:0;top:calc(100% + 6px);width:340px}
+  .vac-menu button{display:block;width:100%;text-align:left;padding:10px 16px;border-radius:8px;font-size:15px}
+  .vac-menu button:hover{background:var(--soft)}
+  .donut{width:200px;height:200px;border-radius:50%;border:22px solid #eef0f4;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+  .donut:before{content:'';position:absolute;top:-22px;left:50%;width:2px;height:22px;background:var(--purple)}
+  .donut b{font-size:32px;line-height:36px}.donut span{font-size:15px;color:#53565d}
+  .bb{background:#f6effd;border-radius:24px;padding:28px 32px;max-width:620px;font-size:17px;line-height:24px}
+  .bb-logo{font-weight:700;font-size:20px;margin-bottom:14px}.bb>b{display:block;margin-bottom:6px}
+  .cal{border:1px solid var(--line);border-radius:24px;padding:24px}
+  .cal-head{display:flex;justify-content:space-between;align-items:center;font-size:16px;margin-bottom:16px}
+  .cal-y{display:flex;gap:20px;align-items:center}
+  .cal-ms{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:24px}
+  .cal-t{text-align:center;font-weight:600;font-size:16px;margin-bottom:10px}
+  .cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 0;text-align:center;font-size:14px;line-height:28px}
+  .cw{color:#8a8f99;font-size:12px}
+  .cd{display:inline-block;min-width:28px;border-radius:14px}
+  .cd.we{color:#a6adba}.cd.hol{color:#ec6a2c}
+  .cd.rvd{background:var(--lime);color:#222;font-weight:600}
+  .cd.off{background:var(--purple);color:#fff;font-weight:600}
+  .cal-leg{display:flex;gap:10px;align-items:center;font-size:14px;margin-top:20px;flex-wrap:wrap}
+  .cal-leg .cd{margin-left:10px}
+  @media(max-width:1300px){.cal-ms{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:800px){.vac-top{flex-direction:column;align-items:flex-start;gap:16px}.vac-top h1{font-size:28px;line-height:34px}.cal-ms{grid-template-columns:1fr 1fr}.donut{width:150px;height:150px}.proto .scen{max-width:130px}.proto .clk{display:none}.view-tog{display:none}}
+  @media(max-width:1200px){.list-head,.list-row{grid-template-columns:40px minmax(0,1fr)}.list-head>:nth-child(n+3),.list-row>:nth-child(n+3){display:none}.proto select{max-width:180px}}
+  @media(max-width:800px){
+    .emp-body{padding:4px 12px 8px}
+    .proto{left:8px;right:8px;bottom:8px;padding:5px 6px;gap:4px}
+    .proto .ptag,.expand{display:none}
+    .proto select{flex:1;min-width:0;max-width:none;font-size:12px;padding:0 4px}
+    .proto button{font-size:11px;padding:5px 6px}
+    .toast{bottom:64px}
+    .workspace .detail:empty{display:block}
+    .workspace:not(.has-detail) .detail{display:none}
+    .list-row,.list-head{grid-template-columns:40px minmax(0,1fr) 86px}
+    .list-row>:nth-child(3),.list-head>:nth-child(3){display:block}
+    .sign-layout{display:block}
+    .emp-th{display:none}
+    .emp-row{grid-template-columns:1fr 1fr}
+    .vac{padding:0 12px 24px}.vac-grid{grid-template-columns:1fr}.vac-card{padding:20px}
+    .bank-item{grid-template-columns:1fr auto}.bank-item>:nth-child(2){grid-column:1/-1;order:3}
+    .history li{grid-template-columns:1fr;gap:2px}
+    .tip-pop,.tip-pop.wide{width:min(300px,80vw)}
+    .rate-box{position:static;border-radius:12px;margin:0 0 16px;display:inline-block}
+    .steps .step b{font-size:11px;line-height:14px;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+    .steps .step small{font-size:10px}
+    .pagination{padding-bottom:110px}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">К содержимому</a>
+<aside class="sidebar">
+  <div class="brand"><img src="assets/logo.svg" alt="OTP Space"></div>
+  <nav class="nav" aria-label="Основная навигация" id="nav"></nav>
+  <div class="bottom" id="navBottom"></div>
+</aside>
+
+<main class="app-main" id="main">
+  <header class="header">
+    <h2 id="pageTitle">Заявки</h2>
+    <div class="header-tools">
+      <button type="button" class="icon global-search" data-stub aria-label="Поиск"><img class="asset" src="assets/search.svg" alt="" width="24" height="24"></button>
+      <button type="button" class="icon bell" id="bellBtn" aria-label="Уведомления"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><span class="badge" id="bellBadge" hidden></span></button>
+      <span class="avatar" id="avatar" aria-hidden="true"></span>
+    </div>
+  </header>
+  <div class="toolbar" id="toolbar"></div>
+  <div class="workspace" id="workspace">
+    <section class="request-list" id="list" aria-label="Список заявок"></section>
+    <div class="detail" id="detail"></div>
+  </div>
+  <div class="pagination" id="pager"></div>
+  <div class="vac" id="vac" hidden></div>
+</main>
+
+<div class="proto" id="proto" role="region" aria-label="Управление прототипом">
+  <span class="ptag">Прототип</span>
+  <label class="sr" for="scen">Экран из макета</label><select id="scen" class="scen"></select>
+  <label class="sr" for="persona">Смотреть как</label><select id="persona"></select>
+  <span class="clk" id="clk" title="Дата в прототипе"></span>
+  <button type="button" id="qToggle" aria-pressed="false">Вопросы к БТ</button>
+  <button type="button" id="anBtn">Аналитика</button>
+  <button type="button" id="demoBtn">⚙ События</button>
+</div>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+'use strict';
+/* ================= Справочники ================= */
+const MANAGER = {id:'m1', name:'Елена Когут', full:'Когут Елена Викторовна', short:'Когут Е. В.', acc:'Елену Когут', pos:'Начальник отдела отчётности'};
+const DELEGATE = {id:'d1', name:'Марина Белова', full:'Белова Марина Андреевна', short:'Белова М. А.', role:'ИО руководителя'};
+const HR = 'Отдел кадров', HR_MAIL = 'HRadmin@otpbank.ru', HR_PERSON = 'Ольга Смирнова';
+const DEPT = 'Дирекция управления персоналом';
+const mk = (id, full, job, state, extra) => { const [f, n, o] = full.split(' '); return {id, name: f + ' ' + n, first: n + ' ' + f, full, short: `${f} ${n[0]}. ${o[0]}.`, pos: job + ' · ' + DEPT, state, extra}; };
+const PEOPLE = [
+  mk('e1','Конченко Денис Анатольевич','Ведущий аналитик','ok'),
+  mk('e2','Бруев Михаил Олегович','Специалист','refuse'),
+  mk('e4','Афанасьева Дарья Игоревна','Продуктовый дизайнер','ok'),
+  mk('e5','Месниченко Святослав Сергеевич','Экономист','ok'),
+  mk('e9','Иванов Антон Петрович','Аналитик','ok', true),
+  mk('e3','Новиков Артём Ильич','Стажёр, 17 лет','ban', true),
+  ...['Абрамова Ольга Игоревна','Белов Артём Викторович','Васильева Марина Петровна','Гришин Илья Андреевич','Дорохова Анна Сергеевна','Ефимов Кирилл Романович','Жукова Татьяна Олеговна','Зайцев Никита Павлович','Ильина Вера Алексеевна','Ковалёв Роман Дмитриевич','Лаптева Ксения Юрьевна','Морозов Глеб Ильич','Никитина Алёна Викторовна','Орлов Павел Сергеевич','Панова Дарья Михайловна','Романов Егор Николаевич','Соколова Ирина Андреевна']
+    .map((n, i) => mk('x' + i, n, ['Специалист','Аналитик','Экономист','Разработчик'][i % 4], i === 3 ? 'refuse' : 'ok', true)),
+];
+const person = id => PEOPLE.find(p => p.id === id);
+const PERSONAS = [{id:'m1', role:'manager', label:'Руководитель · Елена Когут', ini:'ЕК'}, {id:'d1', role:'manager', label:'ИО руководителя · Марина Белова', ini:'МБ'}]
+  .concat(PEOPLE.filter(p => p.state !== 'ban' && !p.extra).map(p => ({id:p.id, role:'employee', label:'Сотрудник · ' + p.name, ini:p.name.split(' ').map(x => x[0]).join('')})));
+const MAX_EMPS = 20;
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return n + ' ' + (m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c); };
+const COMP = {double:'Оплата в двойном размере', rest:'Одинарная оплата с предоставлением дня отдыха'};
+const TERMINAL = ['done','declined','expired','cancelled','paper'];
+const TITLES = {rvd:'Работа в выходной день', otgul:'Отгул за работу в выходной день', order:'Приказ на отгул за работу в выходной день'};
+/* Шаги: [этап, подпись пока идёт, подпись после выполнения] */
+const STEPS = {
+  rvd: [['created','Заявка сформирована','Заявка сформирована'],['confirm','Формирование уведомления','Формирование уведомления'],['sign','Подписание уведомления','Подписание уведомления'],['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['done','Завершение заявки','Заявка завершена']],
+  otgul: [['draft','Формирование заявки','Заявка сформирована'],['sign','Подписание заявления','Заявление подписано'],['approve','Согласование руководителем','Согласовано руководителем'],['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['orderSign','Подписание приказа','Приказ подписан']],
+  order: [['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['orderSign','Подписание приказа','Приказ подписан']],
+};
+/* Как подписан остановленный шаг: отказ — «Отклонена сотрудником», отмена кадрами — «Заявка отменена», иначе — название шага */
+const STOP_LABEL = {declined:'Отклонена сотрудником', cancelled:'Заявка отменена'};
+const REFUSE_CATS = ['Женщины с детьми до 3 лет.','Работники с инвалидностью.','Работники, у которых есть дети с инвалидностью.','Работники, которые ухаживают за больными членами семьи по медицинскому заключению.','Матери и отцы, которые растят детей до 14 лет без супруга или супруги, и опекуны детей этого возраста.','Работники с ребёнком до 14 лет, если другой родитель работает вахтовым методом.','Работники с тремя и более детьми до 18 лет, пока младшему не исполнилось 14.','Работники с ребёнком до 14 лет, если другой родитель призван по мобилизации, заключил контракт о военной службе (периоды указаны в БТ) или о добровольном содействии Вооружённым Силам либо Росгвардии.'];
+
+/* ================= Даты и сроки ================= */
+/* Часы прототипа: время идёт по сценарию (октябрь 2026, как в макетах), а не по реальному календарю */
+const RealDate = Date;
+let CLOCK = new RealDate(2026, 9, 23, 12, 0).getTime();
+window.Date = class extends RealDate { constructor(...a){ if (a.length) super(...a); else super(CLOCK); } static now(){ return CLOCK; } };
+const at = (y, m, d, h = 12, mi = 0) => new RealDate(y, m - 1, d, h, mi).getTime();
+const pad = n => String(n).padStart(2,'0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const HOLI = ['01-01','01-02','01-03','01-04','01-05','01-06','01-07','01-08','02-23','03-08','05-01','05-09','06-12','11-04'];
+const isHoliday = d => HOLI.includes(pad(d.getMonth()+1) + '-' + pad(d.getDate()));
+const isOffDay = d => d.getDay() === 0 || d.getDay() === 6 || isHoliday(d);
+const prevWorkday = d => { let x = addDays(d,-1); while (isOffDay(x)) x = addDays(x,-1); return x; };
+const nPrevWork = (d,n) => { let x = d; for (let i = 0; i < n; i++) x = prevWorkday(x); return x; };
+const addWorkdays = (d,n) => { let x = new Date(d), k = 0; while (k < n) { x = addDays(x,1); if (!isOffDay(x)) k++; } return x; };
+const atTime = (d,h,m) => { const x = new Date(d); x.setHours(h,m,0,0); return x; };
+const fmtD = d => pad(d.getDate()) + '.' + pad(d.getMonth()+1) + '.' + d.getFullYear();
+const WD = ['вс','пн','вт','ср','чт','пт','сб'];
+const fmtWD = d => WD[d.getDay()] + ' ' + fmtD(d);
+const fmtDayLong = d => fmtD(d) + ', ' + d.toLocaleDateString('ru-RU',{weekday:'long'});
+const fmtDT = d => fmtD(d) + (d.getHours() === 23 && d.getMinutes() === 59 ? '' : ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes()));
+const fmtDTfull = d => fmtD(d) + ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+const fmtStamp = t => { const d = new Date(t); return pad(d.getDate()) + '.' + pad(d.getMonth()+1) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const numStr = x => { const d = new Date(x.created); return String(x.num).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '/' + pad(d.getMonth()+1) + '-' + d.getFullYear(); };
+function nextSaturday(minDays){ let d = addDays(new Date(), minDays); while (d.getDay() !== 6) d = addDays(d,1); return d; }
+/* РВД — по примерам БТ (суббота → чт 13:00 / чт 23:59 / пт 23:59). Формула не утверждена — Q02. */
+function deadlines(firstIso){ const D = prevWorkday(parse(firstIso)), C = prevWorkday(D); return {manager: atTime(C,13,0), employee: atTime(C,23,59), hr: atTime(D,23,59)}; }
+/* Отгул — по примеру «отгул в пятницу»: заявление до пн, руководитель до ср, кадры до чт (Q03). */
+function otgulDeadlines(firstOff){ const d = parse(firstOff); return {employee: atTime(nPrevWork(d,4),23,59), manager: atTime(nPrevWork(d,2),23,59), hr: atTime(nPrevWork(d,1),23,59)}; }
+const orderDeadline = t => atTime(addWorkdays(new Date(t),3),23,59);
+const expiresOf = rvd => rvd >= '2025-03-01' ? iso(addDays(parse(rvd), 364)) : null;
+function bank(empId, exceptId){
+  const today = iso(new Date());
+  const own = S.requests.filter(r => r.type === 'rvd' && r.stage === 'done' && r.employeeId === empId).flatMap(r => r.dates.filter(s => r.comp[s] === 'rest' && !r.rest[s]));
+  const legacy = (S.legacy || []).filter(l => l.employeeId === empId).map(l => l.rvd);
+  const used = new Set(S.requests.filter(r => r.type !== 'rvd' && r.employeeId === empId && r.id !== exceptId && !['expired','cancelled'].includes(r.stage)).flatMap(r => r.pairs.map(p => p.rvd)));
+  return [...new Set(legacy.concat(own))].filter(s => !used.has(s)).map(s => ({rvd:s, expires:expiresOf(s)})).filter(b => !b.expires || b.expires >= today).sort((a,b) => a.rvd < b.rvd ? -1 : 1);
+}
+
+/* ================= Состояние ================= */
+const KEY = 'rvd-figma-v3';
+let S;
+const GOAL = 'Перенос интеграции с 1С на новый сервер в окно минимальной нагрузки';
+const RVD_CREATED = at(2026,10,21,10);
+/* Ветка РВД (один сотрудник в заявке). Для завершённых этапов проставляются даты как в макетах: 21.10 → 22.10. */
+function rvdReq(g, k, emp, stage, o = {}){
+  const keys = STEPS.rvd.map(s => s[0]);
+  const T = {created:g.created, confirm:g.created + 25*36e5, sign:g.created + 26*36e5, hr:g.created + 30*36e5};
+  const stopped = ['declined','expired','cancelled'].includes(stage), cur = stopped ? (o.stopStage || 'confirm') : stage;
+  const dates = o.dates || ['2026-10-31'];
+  const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:emp, goal:GOAL, dates, stage, comp:{}, rest:{}, viewed:false, created:g.created, at:{}, history:[{t:g.created, text:'Елена Когут отправила заявку сотруднику'}]};
+  const ci = stage === 'done' ? keys.length : keys.indexOf(cur);
+  keys.slice(0, ci).forEach(x => r.at[x] = T[x]);
+  if (ci > 1) { dates.forEach(s => r.comp[s] = 'double'); r.history.push({t:T.confirm, text:'Сотрудник выбрал компенсацию и сформировал уведомление'}); }
+  if (ci > 2) { r.signed = true; r.viewed = true; r.history.push({t:T.sign, text:'Сотрудник подписал уведомление — заявка передана в отдел кадров'}); }
+  if (stage === 'done') { r.at.done = T.hr; r.history.push({t:T.hr, text:'Отдел кадров сформировал приказ и подписал УКЭП'}); }
+  if (stopped) { r.stopStage = cur; r.at.stop = o.stopAt || T.confirm; }
+  delete o.stopAt;
+  return Object.assign(r, o);
+}
+/* Заявка на отгул Дарьи: № 3 518 от 23.10, отгулы 03.11 и 05.11 за 31.10 и 01.11 */
+function otgulReq(stage, o = {}){
+  const keys = STEPS.otgul.map(s => s[0]);
+  const T = {draft:at(2026,10,23,10), sign:at(2026,10,23,11), approve:at(2026,10,26,10), hr:at(2026,10,27,15), orderSign:at(2026,10,28,10)};
+  const stopped = ['expired','cancelled','paper'].includes(stage), cur = stopped ? o.stopStage : stage;
+  const r = {id:'r3518', num:'3518', type:'otgul', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-03'},{rvd:'2026-11-01', off:'2026-11-05'}], stage, created:T.draft, at:{}, viewedApp:true, viewedOrder:true,
+    history:[{t:T.draft, text:'Афанасьева Дарья сформировала заявление на отгул'}]};
+  const ci = stage === 'done' ? keys.length : keys.indexOf(cur);
+  keys.slice(0, ci).forEach(x => r.at[x] = T[x]);
+  if (ci > 1) { r.submitted = true; r.history.push({t:T.sign, text:'Сотрудник подписал заявление — заявка у руководителя'}); }
+  if (ci > 2) { r.approvedBy = 'Когут Е. В.'; r.history.push({t:T.approve, text:'Елена Когут согласовала отгул'}); }
+  if (ci > 3) { r.orderAt = T.hr; r.history.push({t:T.hr, text:'Отдел кадров сформировал приказ на отгул и подписал УКЭП'}); }
+  if (stage === 'done') r.history.push({t:T.orderSign, text:'Сотрудник подписал приказ на отгул'});
+  if (stopped) { r.stopStage = cur; r.at.stop = o.stopAt || CLOCK; }
+  delete o.stopAt;
+  return Object.assign(r, o);
+}
+function seed(){
+  CLOCK = at(2026,10,23,12);
+  const g = {id:'g3432', num:'3432', created:RVD_CREATED, by:null, history:[{t:RVD_CREATED, text:'Елена Когут создала заявку на 3 сотрудников и отправила её'}]};
+  const gb = {id:'g3401', num:'3401', created:at(2026,10,14,10), by:null, history:[{t:at(2026,10,14,10), text:'Елена Когут создала заявку'}]};
+  const s = {persona:'m1', tab:'mine', selected:null, view:'requests', expanded:false, seq:3519, refuseMode:'modal', clock:CLOCK,
+    groups:[gb, g],
+    requests:[
+      rvdReq(g, 0, 'e1', 'confirm'),
+      rvdReq(g, 1, 'e2', 'hr'),
+      rvdReq(g, 2, 'e5', 'sign', {viewed:false}),
+      rvdReq(gb, 0, 'e4', 'done', {dates:['2026-10-31','2026-11-01'], comp:{'2026-10-31':'rest','2026-11-01':'rest'}, rest:{}}),
+      otgulReq('approve'),
+    ],
+    notes:[
+      {id:1, to:'e1', t:RVD_CREATED, subject:'Подтверждение работы в выходной или праздничный день', body:'Пожалуйста, подтверди работу в выходной или праздничный день до 29.10.2026.', req:'r3432', read:false},
+      {id:2, to:'m1', t:RVD_CREATED, subject:'Заявка «Работа в выходной день» перешла на этап подтверждение сотрудником', body:'Подробности смотри в заявке.', req:'g3432', read:true},
+      {id:3, to:'m1', t:at(2026,10,23,11), subject:'Заявка «Отгул за работу в выходной день» от сотрудника: Афанасьева Дарья', body:'Пожалуйста, обработай заявку до 30.10.2026.', req:'r3518', read:false},
+    ],
+    legacy:[{employeeId:'e1', rvd:'2025-01-18'}],
+  };
+  // rvdReq для банка Дарьи проставил двойную оплату по умолчанию — здесь одинарная с днём отдыха
+  s.requests[3].comp = {'2026-10-31':'rest','2026-11-01':'rest'};
+  return s;
+}
+function load(){ try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && v.requests && v.groups) { CLOCK = v.clock || CLOCK; return v; } } catch(e){} return seed(); }
+function save(){ S.clock = CLOCK; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+S = load();
+
+const me = () => PERSONAS.find(p => p.id === S.persona);
+const isMgr = () => me().role === 'manager';
+const req = id => S.requests.find(r => r.id === id);
+const grp = id => S.groups.find(g => g.id === id);
+const branches = g => S.requests.filter(r => r.group === g.id);
+const actorName = () => S.persona === 'd1' ? DELEGATE.name + ' (ИО)' : MANAGER.name;
+const actorShort = () => S.persona === 'd1' ? DELEGATE.short : MANAGER.short;
+const myNote = n => n.to === S.persona || (S.persona === 'd1' && n.to === 'm1');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const qpin = (q, label) => `<button type="button" class="qpin" data-q="${q}" title="${esc(label || 'Открытый вопрос к бизнесу')}">${q}</button>`;
+const $ = s => document.querySelector(s);
+function notify(to, subject, body, reqId){ S.notes.unshift({id:Date.now()+Math.random(), to, t:Date.now(), subject, body, req:reqId, read:false}); }
+function log(r, text){ r.history.push({t:Date.now(), text}); }
+function go(r, next){ r.at = r.at || {}; r.at[r.stage] = Date.now(); r.stage = next; if (next === 'done') r.at.done = Date.now(); }
+function stop(r, how){ r.at = r.at || {}; r.stopStage = r.stage; r.at.stop = Date.now(); r.stage = how; }
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 3200); }
+const pairsSorted = r => r.pairs.slice().sort((a,b) => a.off < b.off ? -1 : 1);
+const procName = r => TITLES[r.type];
+
+function stageDeadline(r){
+  if (r.type === 'otgul') { const d = otgulDeadlines(pairsSorted(r)[0].off); return {draft:d.employee, sign:d.employee, approve:d.manager, hr:d.hr, orderSign: r.orderAt ? orderDeadline(r.orderAt) : null}[r.stage] || null; }
+  if (r.type === 'order') return r.stage === 'orderSign' ? orderDeadline(r.orderAt) : null;
+  const d = deadlines(r.dates[0]);
+  return r.stage === 'confirm' || r.stage === 'sign' ? d.employee : r.stage === 'hr' ? d.hr : null;
+}
+const SHORT = {confirm:'Не ответил(а)', sign:'Подписывает', hr:'В отделе кадров', done:'Оформлено', declined:'Отказ', expired:'Истёк срок', cancelled:'Отменено кадрами'};
+function statusText(r){
+  if (r.type !== 'rvd') return {draft: r.returnComment ? 'Возвращена на доработку' : 'Формирование заявки', sign:'Подписание заявления', approve:'Согласование руководителем', hr:'Формирование приказа', orderSign:'Подписание приказа', done:'Завершена', paper:'Бумажное подписание', expired:'Отменена: истёк срок', cancelled:'Отменена отделом кадров'}[r.stage];
+  return {confirm:'Формирование уведомления', sign:'Подписание уведомления', hr:'Формирование приказа', done:'Завершена', declined:'Отказ сотрудника', expired:'Отменена: истёк срок', cancelled:'Отменена отделом кадров'}[r.stage];
+}
+function whoNow(r){
+  if (TERMINAL.includes(r.stage)) return '—';
+  if (r.stage === 'hr') return HR;
+  const emp = person(r.employeeId);
+  if (r.stage === 'approve') return isMgr() ? 'На мне' : MANAGER.short;
+  return r.employeeId === S.persona ? 'На мне' : isMgr() ? 'Сотрудник' : emp.short;
+}
+/* Сводный статус заявки на нескольких. Отказ/просрочка одного закрывает только его часть — допущение, Q06. */
+function gInfo(g){
+  const bs = branches(g), live = bs.filter(r => !TERMINAL.includes(r.stage));
+  const done = bs.filter(r => r.stage === 'done').length, atEmp = bs.filter(r => ['confirm','sign'].includes(r.stage)), atHr = bs.filter(r => r.stage === 'hr').length;
+  let status, cls = '';
+  if (live.length) status = atEmp.length ? (bs.length === 1 ? statusText(atEmp[0]) : `Ответили ${bs.length - atEmp.length} из ${bs.length}`) : 'Формирование приказа';
+  else if (done === bs.length) { status = 'Завершена'; cls = 'done'; }
+  else if (done) { status = `Оформлена частично · ${done} из ${bs.length}`; cls = 'partial'; }
+  else { status = bs.length === 1 ? statusText(bs[0]) : 'Не оформлена'; cls = 'cancel'; }
+  const dl = live.map(stageDeadline).filter(Boolean).sort((a,b) => a - b)[0] || null;
+  const who = !live.length ? '—' : atEmp.length === 1 ? person(atEmp[0].employeeId).short : atEmp.length ? 'Сотрудники' : HR;
+  return {bs, live, done, atEmp:atEmp.length, atHr, off: bs.length - done - live.length, status, cls, dl, who, terminal: !live.length};
+}
+const authorLine = g => g && g.by ? `${esc(g.by.name)} (${esc(g.by.role)}) за ${esc(MANAGER.acc)}` : esc(MANAGER.name);
+
+/* ================= Иконки ================= */
+const I = {
+  clock:'<img class="asset" src="assets/clock.svg" alt="" width="22" height="22">',
+  cancel:'<svg viewBox="0 0 24 24" fill="none" stroke="#cb4b31" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="m8.5 8.5 7 7m0-7-7 7"/></svg>',
+  ret:'<svg viewBox="0 0 24 24" fill="none" stroke="#a06ec5" stroke-width="1.6" stroke-linecap="round"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M17 3.5V7.2h-3.7"/></svg>',
+  paper:'<svg viewBox="0 0 24 24" fill="none" stroke="#a4531d" stroke-width="1.6" stroke-linecap="round"><path d="m15 4 5 5L9 20H4v-5L15 4Z"/></svg>',
+  part:'<svg viewBox="0 0 24 24" fill="none" stroke="#7a5200" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v19A9.5 9.5 0 0 0 12 2.5Z" fill="#f0b429" stroke="none"/></svg>',
+  okc:'<svg viewBox="0 0 24 24" fill="none" stroke="#3c6c00" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.3 3 3 6-6.3" stroke-linecap="round"/></svg>',
+  bulb:'<img class="asset" src="assets/bulb.svg" alt="" width="20" height="20">',
+  zoom:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"/></svg>',
+  expand:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#53565d" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3"/><path d="M5 9v2h2M11 7V5H9"/></svg>',
+  plus:'<svg width="16" height="16" viewBox="0 0 16 16" stroke="#222" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>',
+  ready:'<svg viewBox="0 0 76 64"><ellipse cx="30" cy="50" rx="22" ry="9" fill="#eef1f6"/><ellipse cx="18" cy="47" rx="11" ry="8" fill="#f5f7fa"/><ellipse cx="40" cy="46" rx="12" ry="9" fill="#f5f7fa"/><path d="M14 30 28 43 62 8" fill="none" stroke="#6cbf2a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 30 28 43 62 8" fill="none" stroke="#8fdb46" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  face:m => `<svg viewBox="0 0 26 26" fill="none" stroke="#222" stroke-width="1.4"><circle cx="13" cy="13" r="11.5"/><circle cx="9" cy="10.5" r=".9" fill="#222"/><circle cx="17" cy="10.5" r=".9" fill="#222"/><path d="${m}" stroke-linecap="round"/></svg>`,
+};
+const FACES = ['M8.5 18c2.5-2.6 6.5-2.6 9 0','M8.5 17h9','M8.5 16c2.5 2.6 6.5 2.6 9 0'];
+const icoAsset = n => `<img class="asset" src="assets/${n}.svg" alt="" width="24" height="24">`;
+
+/* ================= Каркас ================= */
+const NAV = [['Главная','home'],['Расчетные листки','income'],['Заявки','requests','requests'],['Отпуск','beach','vacation'],['Командировки','flash',null,true],['Структура','structure'],['Командные цели','recruitment',null,true],['Индивидуальные цели','bulb',null,true],['Новости','flash'],['Next Up','bulb']];
+function renderNav(){
+  const pending = actionCount();
+  $('#nav').innerHTML = NAV.map(([l,ic,view,chev]) => {
+    const on = view && (S.view === view);
+    return `<button type="button" ${view ? `data-view="${view}"` : 'data-stub'} class="${on?'active':''}" ${on?'aria-current="page"':''}>${icoAsset(ic)}<span class="nav-label">${l}</span>${view === 'requests' && pending ? `<span class="badge">${pending}</span>` : ''}${chev ? '<img class="asset chev" src="assets/chevron.svg" alt="" width="16" height="16">' : ''}</button>`;
+  }).join('');
+  $('#navBottom').innerHTML = `<button type="button" data-stub>${icoAsset('home')}<span class="nav-label">Дни рождения</span></button><button type="button" data-stub>${icoAsset('links')}<span class="nav-label">Быстрые ссылки</span></button><button type="button" class="help" data-stub>${icoAsset('headphones')}<span class="nav-label">Поддержка</span><span class="mascot-dot" aria-hidden="true"></span></button>`;
+}
+function needsMe(r){
+  if (r.employeeId === S.persona) return ['confirm','sign','orderSign'].includes(r.stage) || (r.type === 'otgul' && r.stage === 'draft' && !!r.returnComment);
+  return isMgr() && r.type === 'otgul' && r.stage === 'approve';
+}
+const actionCount = () => S.requests.filter(needsMe).length;
+function render(){
+  $('#persona').innerHTML = PERSONAS.map(p => `<option value="${p.id}" ${p.id===S.persona?'selected':''}>${esc(p.label)}</option>`).join('');
+  $('#avatar').textContent = me().ini;
+  $('#clk').textContent = fmtD(new Date());
+  const unread = S.notes.filter(n => myNote(n) && !n.read).length;
+  $('#bellBadge').hidden = !unread; $('#bellBadge').textContent = unread;
+  renderNav();
+  const vac = S.view === 'vacation';
+  $('#pageTitle').textContent = vac ? 'Отпуск' : 'Заявки';
+  $('#toolbar').hidden = vac; $('#workspace').hidden = vac; $('#pager').hidden = vac; $('#vac').hidden = !vac; $('#pageTitle').parentNode.classList.toggle('vac-head', vac);
+  if (vac) $('#vac').innerHTML = vacationPage(); else { renderToolbar(); renderList(); renderDetail(); }
+  save();
+}
+function tabItems(tab){
+  const it = r => ({r, created:r.created});
+  if (isMgr()) return tab === 'mine' ? S.groups.map(g => ({g, created:g.created})) : S.requests.filter(r => r.type === 'otgul' && r.submitted).map(it);
+  return tab === 'mine' ? S.requests.filter(r => r.employeeId === S.persona).map(it) : [];
+}
+function renderToolbar(){
+  const cnt = t => tabItems(t).filter(({r}) => r ? needsMe(r) : false).length;
+  const tab = (k, l) => { const n = cnt(k); return `<button type="button" data-tab="${k}" class="${S.tab===k?'active':''}" aria-pressed="${S.tab===k}">${l}${n ? `<span class="badge">${n}</span>` : ''}</button>`; };
+  const menu = isMgr() ? `<button type="button" data-create="rvd" role="menuitem">${icoAsset('requests')}Работа в выходной день</button>` : `<button type="button" data-create="otgul" role="menuitem">${icoAsset('requests')}Отгул за работу в выходной день</button>`;
+  const bankChip = `<span class="spacer"></span><button type="button" class="view-tog" data-stub aria-label="Вид списка"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/></svg></button>`;
+  $('#toolbar').innerHTML = `<div class="tabs" role="group" aria-label="Заявки">${tab('mine','Мои')}${tab('approve','Нужно согласовать')}</div>
+    <div class="create-wrap"><button type="button" class="btn lime" id="createBtn" aria-haspopup="menu" aria-expanded="false" style="padding:12px 20px"><img class="asset" src="assets/plus.svg" alt="" width="16" height="16">Создать</button>
+    <div class="create-menu" id="createMenu" role="menu" hidden><p class="grp">Кадровые заявки</p>${menu}</div></div>${bankChip}`;
+}
+function bubble(cls, dot){
+  const g = cls === 'done' ? I.okc : cls === 'partial' ? I.part : cls === 'paper' ? I.paper : cls ? I.cancel : I.clock;
+  return `<span class="status-bubble ${cls}">${g}${dot ? '<span class="dot"></span><span class="sr">Нужно твоё действие</span>' : ''}</span>`;
+}
+function renderList(){
+  const items = tabItems(S.tab).sort((a,b) => b.created - a.created);
+  const selGroup = S.selected && req(S.selected) ? req(S.selected).group : null;
+  const rows = items.map(({r, g}) => {
+    if (g) {
+      const X = gInfo(g);
+      return `<button type="button" class="list-row ${S.selected===g.id || selGroup===g.id ?'selected':''}" data-open="${g.id}">${bubble(X.cls, false)}
+        <span class="row-copy"><b>Работа в выходной день</b><small>Иное</small></span><span class="row-meta">${X.who}</span><span class="row-meta">${X.dl ? fmtD(X.dl) : ''}</span></button>`;
+    }
+    const dl = stageDeadline(r), cls = r.stage === 'done' ? 'done' : TERMINAL.includes(r.stage) ? 'cancel' : '';
+    return `<button type="button" class="list-row ${S.selected===r.id?'selected':''}" data-open="${r.id}">${bubble(cls, needsMe(r))}
+      <span class="row-copy"><b>${TITLES[r.type]}</b><small>Иное</small></span><span class="row-meta">${whoNow(r)}</span><span class="row-meta">${dl ? fmtD(dl) : ''}</span></button>`;
+  }).join('');
+  /* Чужие заявки из других процессов — для контекста, как в макетах */
+  const other = S.tab === 'mine' ? [['Выпуск УНЭП'], ['Верификация номера телефона']].map(([t]) => `<button type="button" class="list-row" data-stub>${bubble('done', false)}<span class="row-copy"><b>${t}</b><small>Электронная подпись (УНЭП)</small></span><span class="row-meta"></span><span class="row-meta"></span></button>`).join('') : '';
+  const empty = S.tab === 'approve' ? 'Здесь появятся заявки, которые нужно согласовать.' : '';
+  $('#list').innerHTML = `<div class="list-head"><span><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#8a8f99" stroke-width="1.4"><path d="M2 3h14l-5.5 6.5V15l-3-1.5V9.5L2 3Z"/></svg></span><span>Тип</span><span>На ком сейчас</span><span>Срок до ⇅</span></div>` + (rows || other ? rows + other : `<p class="empty-list">${empty}</p>`);
+  $('#pager').innerHTML = `<span><button type="button" data-stub aria-label="Назад">‹</button><span class="page-one">1</span><button type="button" data-stub aria-label="Вперёд">›</button></span><span>Всего: ${items.length + (other ? 2 : 0)}<span class="per-page"> &nbsp;|&nbsp; На странице 10 ⌄</span></span>`;
+}
+function renderDetail(){
+  const ws = $('#workspace'), d = $('#detail');
+  ws.classList.toggle('has-detail', !!S.selected);
+  ws.classList.toggle('expanded', !!S.expanded && !!S.selected);
+  if (S.selected === 'new') { d.innerHTML = createForm(); bindCreate(); return; }
+  if (S.selected === 'newOtgul') { d.innerHTML = back() + otgulForm(null); bindOtgul(null); return; }
+  const g = S.selected && grp(S.selected);
+  if (g) { d.innerHTML = back() + groupView(g); return; }
+  const r = S.selected && req(S.selected);
+  if (!r) { S.selected = null; ws.classList.remove('has-detail','expanded'); d.innerHTML = `<section class="panel"><div class="empty-detail"><img src="assets/requests.svg" alt="" width="40" height="40"><b>Выбери заявку в списке</b><span>${isMgr() ? 'или создай новую через «Создать»' : 'или оформи отгул через «Создать»'}</span></div></section>`; return; }
+  const mine = r.employeeId === S.persona;
+  d.innerHTML = back() + (r.type === 'otgul' ? (mine ? otgulEmployee(r) : otgulManager(r)) : r.type === 'order' ? orderView(r) : mine ? employeeRvd(r) : managerRvd(r, false));
+  if (r.type === 'rvd' && mine && r.stage === 'confirm') bindConfirm(r);
+  if (r.type === 'otgul' && mine && r.stage === 'draft') bindOtgul(r);
+}
+const back = () => `<button type="button" class="mobile-back" data-back>← К списку</button>`;
+
+/* ================= Компоненты ================= */
+function cardHead(title, x, deadline, dq){
+  return `<div class="panel-head"><button type="button" class="expand" data-expand>${I.expand}${S.expanded ? 'Свернуть' : 'Развернуть'}</button>
+    <h1>${title}</h1><p class="meta"><span>№ ${numStr(x)}</span><span>Дата создания: ${fmtD(new Date(x.created))}</span></p>
+    ${deadline ? `<span class="deadline" title="${fmtDTfull(deadline)}">Срок до ${fmtD(deadline)}${dq || ''}</span>` : ''}</div>`;
+}
+const dlPin = r => r.type === 'rvd' ? qpin('Q02','Срок рассчитан по примерам БТ: формула «день первой РВД − 1» не совпадает с примером «суббота → четверг»') : r.stage === 'orderSign' ? qpin('Q03','3 рабочих дня на подпись приказа — от какой даты считать, не указано. Здесь — от подписи кадров') : qpin('Q03','Формулы «−3 р.д.» и «−1 р.д.» не совпадают с примерами БТ. Здесь — по примерам');
+function statusMsg(kind, title, sub){
+  const ic = {clock:I.clock, cancel:I.cancel, return:I.ret, paper:I.paper, partial:I.part}[kind];
+  return `<div class="status-message"><span class="status-icon ${kind === 'clock' ? '' : kind}" aria-hidden="true">${ic}</span><div><b>${title}</b>${sub ? `<p>${sub}</p>` : ''}</div></div>`;
+}
+const resp = name => `Ответственный — <a href="#" class="link" data-stub>${esc(name)}</a>`;
+const ready = text => `<div class="ready">${I.ready}<div><b>Готово!</b><p>${text}</p></div></div>`;
+const rateBox = () => `<div class="rate-box"><div class="faces">${FACES.map((m,i) => `<button type="button" data-rate="${i}" aria-label="Оценка ${i+1}">${I.face(m)}</button>`).join('')}</div>Оцени заявку</div>`;
+function bubbleMsg(label, who, text){
+  return `<p class="bubble-label">${label}</p><div class="bubble-wrap"><span class="bub-ava" aria-hidden="true">${who === HR ? 'ОК' : esc(who.split(' ').map(x => x[0]).join('').slice(0,2))}</span><div class="bubble"><b>${esc(who)}</b>${esc(text)}</div></div>`;
+}
+const DOCS = {notice:'Уведомление о необходимости работы в выходные (и (или) нерабочие праздничные дни)', order:'Приказ на работу в выходной день', application:'Заявление на отгул', otgulOrder:'Приказ на отгул за работу в выходной день'};
+const pdfRow = (kind, r, name) => `<button type="button" class="pdf-row" data-doc="${kind}" data-req="${r.id}"><span class="pdf-ico">PDF</span><span><b>${esc(name || DOCS[kind])}.pdf</b><small>1,4 Мб</small></span><img class="asset" src="assets/eyeSmall.svg" alt="Открыть" width="20" height="20"></button>`;
+const THUMB = [88,64,92,40,76,58,84,70,46].map(w => `<i style="width:${w}%"></i>`).join('');
+function signBlock(r, kind, viewed, act, extra){
+  return `<div class="sign-layout"><button type="button" class="document-thumb" data-doc="${kind}" data-req="${r.id}" aria-label="Открыть документ">
+      <div class="thumb-image">${THUMB}</div>
+      <span class="zoom">${I.zoom}</span><span class="viewed-tag ${viewed ? '' : 'unread'}">${viewed ? 'просмотрено' : 'не просмотрено'}</span>
+      <span class="thumb-caption"><span class="pdf-ico">PDF</span><span>${DOCS[kind]}</span></span></button>
+    <div class="sign-info"><p class="ttl"><span class="status-icon idea">${I.bulb}</span>Ознакомься и подпиши</p><b>${DOCS[kind]}</b>
+      <p class="instruction">На документе появится отметка «Просмотрено», и станет доступна кнопка «Подписать»${extra ? '. ' + extra : ''}</p></div></div>
+    <div class="form-actions"><button type="button" class="btn ${viewed ? '' : 'grey'}" data-act="${act}" ${viewed ? '' : 'disabled'}>Подписать</button></div>`;
+}
+function detailsBlock(inner){
+  return `<details class="details"><summary><h2>Посмотреть детали по заявке</h2><img class="asset" src="assets/chevron.svg" alt="" width="20" height="20"></summary><div class="details-body">${inner}</div></details>`;
+}
+function historyHtml(x){ return `<div class="pair"><dt>История</dt><dd><ul class="history">${x.history.slice().reverse().map(h => `<li><time>${fmtStamp(h.t)}</time><span>${esc(h.text)}</span></li>`).join('')}</ul></dd></div>`; }
+function steps(kind, x, extra = {}, mgr = false){
+  let st = STEPS[kind];
+  if (mgr) st = st.map(s => s[0] === 'orderSign' ? [s[0], 'Подписание приказа сотрудником', 'Приказ подписан сотрудником'] : s);
+  const keys = st.map(s => s[0]), stopped = ['declined','expired','cancelled','paper'].includes(x.stage);
+  const cur = x.stage === 'done' ? keys.length : stopped ? Math.max(0, keys.indexOf(x.stopStage)) : keys.indexOf(x.stage);
+  if (stopped) st = st.slice(0, cur + 1); /* после остановки дальнейшие шаги не показываем — как в макетах */
+  const at = x.at || {};
+  return `<div class="steps" aria-label="Этапы заявки">` + st.map(([k, l, ld], i) => {
+    let c = '', mark = '', lbl = l, date = '', cls = '';
+    if (i < cur) { c = 'ok'; mark = '✓'; lbl = ld; date = at[k] ? fmtD(new Date(at[k])) : ''; }
+    else if (i === cur && stopped) { c = 'stop'; mark = '✕'; lbl = STOP_LABEL[x.stage] || l; date = at.stop ? fmtD(new Date(at.stop)) : ''; cls = x.stage === 'expired' || x.stage === 'paper' ? 'future' : ''; }
+    else if (i === cur) { c = 'wait'; }
+    else cls = 'future';
+    if (k === 'created' && x.created) date = fmtD(new Date(x.created));
+    if (k === 'done' && x.stage === 'done' && at.done) date = fmtD(new Date(at.done));
+    const ex = i < cur && extra[k] ? `<small>${esc(extra[k])}</small>` : '';
+    return `<div class="step ${cls}"><div class="step-circle ${c}" aria-hidden="true">${mark}</div><b>${lbl}</b>${ex}${date ? `<small>${date}</small>` : ''}<span class="sr">: ${i < cur ? 'выполнено' : i === cur ? 'текущий этап' : 'впереди'}</span></div>`;
+  }).join('') + `</div>`;
+}
+function rvdFields(r, withComp){
+  const g = grp(r.group);
+  let comp = '';
+  if (withComp && Object.keys(r.comp).length) comp = `<div class="pair"><dt>Компенсация</dt><dd><table class="comp-table">` + r.dates.map(s => {
+    const rest = r.comp[s] === 'rest' ? (r.rest[s] ? '<br><small class="muted">Дата отгула: ' + fmtD(parse(r.rest[s])) + '</small>' : '<br><small class="muted">День отдыха — позже, из банка отгулов</small>') : '';
+    return `<tr><td>${fmtWD(parse(s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
+  }).join('') + `</table></dd></div>`;
+  return `<dl class="general-fields"><div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}<br><small class="muted">${esc(person(r.employeeId).pos)}</small></dd></div>
+    <div class="pair"><dt>Дата работы в выходной день</dt><dd>${r.dates.map(s => fmtD(parse(s))).join(', ')}</dd></div>
+    <div class="pair"><dt>Цель работы в выходной день</dt><dd>${esc(r.goal)}</dd></div>${comp}
+    <div class="pair"><dt>Инициатор</dt><dd>${authorLine(g)}</dd></div>${historyHtml(r)}</dl>`;
+}
+const pairsRead = r => `<dl class="pairs-read">${pairsSorted(r).map(p => `<div><dt>Дата отгула за ${fmtWD(parse(p.rvd))}</dt><dd>${fmtD(parse(p.off))}</dd></div>`).join('')}</dl>`;
+const tip = text => `<span class="tipwrap"><button type="button" class="tip-btn" aria-label="Подсказка">i</button><span class="tip-pop" role="tooltip">${text}</span></span>`;
+const tipLink = (label, html) => `<span class="tipwrap"><button type="button" class="tip-link">${label}</button><span class="tip-pop wide" role="tooltip">${html}</span></span>`;
+
+/* ================= РВД · сотрудник ================= */
+function employeeRvd(r){
+  const head = cardHead(TITLES.rvd, r, stageDeadline(r), dlPin(r));
+  if (r.stage === 'confirm') return confirmForm(r, head);
+  let body, rate = false;
+  if (r.stage === 'sign') body = signBlock(r, 'notice', r.viewed, 'signNotice');
+  else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
+  else if (r.stage === 'done') { rate = true; body = ready('Заявка завершена, посмотри приказ ниже') + pdfRow('order', r); }
+  else if (r.stage === 'declined') { rate = true; body = statusMsg('cancel', 'Заявка отклонена') + (r.declineComment ? bubbleMsg('Твой комментарий:', person(r.employeeId).name, r.declineComment) : ''); }
+  else if (r.stage === 'expired') { rate = true; body = expiredMsg(r, true); }
+  else { rate = true; body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, r.hrComment || '—') + `<p class="qnote">Q08: что откатывается в 1С/КЭДО и что с подписанными документами — не описано.</p>`; }
+  const det = ['declined','cancelled'].includes(r.stage) ? '' : detailsBlock(rvdFields(r, true));
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${det}${steps('rvd', r)}`;
+}
+/* Просрочки РВД: по БТ (R14) заявка отменяется, на бумагу не переходит */
+function expiredMsg(r, mine){
+  const who = mine ? '' : person(r.employeeId).first + ': ';
+  const t = {confirm: who + 'истёк срок выбора компенсации и формирования уведомления',
+    sign: (who ? who + 'и' : 'И') + 'стёк срок ознакомления и электронного подписания документа',
+    hr: 'Истёк срок оформления приказа'}[r.stopStage] || '';
+  return statusMsg('cancel', 'Заявка отменена', t + (mine && r.stopStage !== 'hr' ? `<br>Остались вопросы — пиши <a class="link" href="mailto:${HR_MAIL}">${HR_MAIL}</a>` : '')) + `<p class="qnote">Q15: в письмах — «отменена», в шагах БТ — «завершается». Нужен единый термин.</p>`;
+}
+function confirmForm(r, head){
+  const multi = r.dates.length > 1;
+  const block = (s, i) => {
+    const d = parse(s), v = r.comp[s] || '', rest = r.rest[s] || '', max = iso(addDays(d, 364));
+    const longMax = parse(max).toLocaleDateString('ru-RU', {day:'numeric', month:'long', year:'numeric'});
+    return `<fieldset class="comp-block" data-date="${s}" style="border:0;padding:0;min-width:0"><legend class="comp-q">Выбери, как получить компенсацию за работу ${multi ? fmtD(d) : 'в выходной'}</legend>
+      <div class="choices" role="radiogroup" aria-label="Компенсация за ${fmtD(d)}">
+        <label><input type="radio" name="comp-${i}" value="double" ${v==='double'?'checked':''}>Оплата в двойном размере</label>
+        <label><input type="radio" name="comp-${i}" value="rest" ${v==='rest'?'checked':''}>Одинарная оплата с предоставлением дня отдыха (выбери дни отгула)</label></div>
+      <p class="err" data-err="comp-${i}" hidden>Выбери компенсацию за этот день</p>
+      <div class="field rest-field" data-rest="${s}" ${v==='rest'?'':'hidden'}><span class="label">${multi ? 'Дата отгула' : 'Дата отгула за ' + fmtD(d)} ${tip(`Можно не выбирать сейчас — день останется в банке отгулов. Доступен рабочий день до ${longMax}`)}</span>
+        <div class="date-line"><input type="date" id="rest-${i}" value="${rest}" min="${iso(addDays(d,1))}" max="${max}" aria-label="Дата отгула за ${fmtD(d)}"></div><p class="err" data-err="rest-${i}" hidden></p></div></fieldset>`;
+  };
+  const cats = `<ol>${REFUSE_CATS.map(c => '<li>' + c + '</li>').join('')}</ol>`;
+  /* Два варианта отказа (решено держать оба): «модалка» — отказ доступен всем, с комментарием; «чекбокс» — по БТ (R11), только для категорий */
+  const consent = S.refuseMode === 'checkbox'
+    ? `<label class="checkline consent"><input type="checkbox" id="catCheck"><span>Я отношусь к ${tipLink('категории граждан, которые могут отказаться от привлечения к работе в выходной/праздничный день', cats)}</span></label>`
+    : `<div class="consent">Формируя уведомление, я подтверждаю, что ознакомлен<br>с правом ${tipLink('отказаться от привлечения к работе в выходной/праздничный день', cats)}</div>`;
+  return `<section class="panel">${head}
+    <dl class="pairs-read" style="margin-bottom:24px"><div><dt>Дата работы в выходной день</dt><dd>${r.dates.map(s => fmtD(parse(s))).join(', ')}</dd></div><div><dt>Цель работы в выходной день</dt><dd>${esc(r.goal)}</dd></div></dl>
+    <form id="confirmForm" novalidate>
+      ${r.dates.map(block).join('')}
+      ${consent}
+      <p class="qnote">${S.refuseMode === 'checkbox' ? 'Вариант по БТ (R11, стр. 11): «Отклонить» активна только после отметки категории. Q05: кто подтверждает категорию — открыт.' : 'Вариант команды: «Отклонить» доступна любому сотруднику, с комментарием. В БТ — только по чекбоксу категории (Q20).'}</p>
+      <p class="form-error" id="confirmErr" role="alert" hidden></p>
+      <div class="form-actions"><button type="submit" class="btn">Сформировать уведомление</button><button type="button" class="btn outline-dark" id="declineBtn" ${S.refuseMode === 'checkbox' ? 'disabled' : ''}>Отклонить</button></div>
+    </form></section>${steps('rvd', r)}`;
+}
+function bindConfirm(r){
+  const f = $('#confirmForm');
+  f.addEventListener('change', e => {
+    const blk = e.target.closest('.comp-block'); if (!blk) return;
+    const s = blk.dataset.date;
+    if (e.target.type === 'radio') { r.comp[s] = e.target.value; blk.querySelector('[data-rest]').hidden = e.target.value !== 'rest'; blk.querySelector('[data-err^=comp]').hidden = true; if (e.target.value !== 'rest') delete r.rest[s]; save(); }
+    if (e.target.type === 'date') { r.rest[s] = e.target.value || null; checkRest(blk, r); save(); }
+  });
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    let ok = true;
+    f.querySelectorAll('.comp-block').forEach(blk => { const s = blk.dataset.date; if (!r.comp[s]) { blk.querySelector('[data-err^=comp]').hidden = false; ok = false; } if (r.comp[s] === 'rest' && !checkRest(blk, r)) ok = false; });
+    const err = $('#confirmErr');
+    if (!ok) { err.hidden = false; err.textContent = 'Выбери компенсацию за каждый день.'; return; }
+    go(r, 'sign'); r.viewed = false; log(r, 'Сотрудник выбрал компенсацию и сформировал уведомление');
+    toast('Уведомление сформировано — ознакомься и подпиши'); render();
+  });
+  const cc = $('#catCheck'); if (cc) cc.onchange = () => { $('#declineBtn').disabled = !cc.checked; };
+  $('#declineBtn').onclick = async () => {
+    let c = '';
+    if (S.refuseMode === 'checkbox') { if (!await confirmDlg('Отказаться от работы в выходной день?', 'Ты уверен, что хочешь отклонить заявку? Заявку невозможно будет восстановить', 'Отказаться')) return; }
+    else { c = await commentDlg({title:'Отказаться от работы в выходной день?', text:'Ты уверен, что хочешь отклонить заявку? Заявку невозможно будет восстановить', ok:'Отказаться', cancel:'Вернуться', min:0}); if (c == null) return; }
+    stop(r, 'declined'); r.declineComment = c; log(r, 'Сотрудник отказался от работы в выходной день' + (c ? ': «' + c + '»' : ''));
+    notify(r.employeeId, 'Заявка Работа в выходной день отклонена', 'Подробности смотри в заявке.', r.id);
+    notify('m1', 'Заявка Работа в выходной день отклонена', person(r.employeeId).name + ' отказался(-ась) от работы в выходной день.', r.group);
+    toast('Заявка отклонена'); render();
+  };
+}
+function checkRest(blk, r){
+  const s = blk.dataset.date, v = r.rest[s], input = blk.querySelector('input[type=date]'), err = blk.querySelector('[data-err^=rest]');
+  let msg = '';
+  if (v) { const d = parse(v), rvd = parse(s), max = addDays(rvd, 364);
+    if (isOffDay(d)) msg = 'Выбери рабочий день — это выходной или праздник';
+    else if (d <= rvd) msg = 'Дата отгула должна быть после дня работы';
+    else if (d > max) msg = 'Отгул можно взять до ' + fmtD(max);
+    else if (d < new Date(new Date().toDateString())) msg = 'Дата уже прошла'; }
+  err.hidden = !msg; err.textContent = msg; input.classList.toggle('invalid', !!msg);
+  return !msg;
+}
+
+/* ================= РВД · руководитель ================= */
+function managerRvd(r, single){
+  const g = grp(r.group), p = person(r.employeeId), multi = !single && branches(g).length > 1;
+  const head = cardHead(multi ? `${TITLES.rvd} | ${esc(p.name)}` : TITLES.rvd, g || r, stageDeadline(r), dlPin(r));
+  let body, rate = false;
+  if (['confirm','sign'].includes(r.stage)) body = statusMsg('clock', 'Заявка обрабатывается', resp(p.first)) + (p.state === 'refuse' ? `<p class="emp-note"><span class="tag refuse" style="margin:0">Может отказаться</span></p>` : '');
+  else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
+  else if (r.stage === 'done') { rate = true; body = ready('Сотрудник подписал уведомление') + pdfRow('order', r); }
+  else if (r.stage === 'declined') { rate = true; body = statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (r.declineComment ? bubbleMsg('Комментарий сотрудника:', p.name, r.declineComment) : ''); }
+  else if (r.stage === 'expired') { rate = true; body = expiredMsg(r, false); }
+  else { rate = true; body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, r.hrComment || '—'); }
+  const up = `<button type="button" class="back-link" data-open="${g.id}">← К заявке (${plural(branches(g).length, 'сотрудник', 'сотрудника', 'сотрудников')})</button>`;
+  return `${up}<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${detailsBlock(rvdFields(r, r.signed))}${steps('rvd', r)}`;
+}
+/* Сводка руководителя по макету: «Статусы по сотрудникам» и детали по каждому */
+const ST_GROUPS = [['wait','На подписании', r => ['confirm','sign'].includes(r.stage)], ['ok','Подписано', r => ['hr','done'].includes(r.stage)], ['exp','Отменено по дедлайну', r => r.stage === 'expired'], ['no','Отклонено', r => r.stage === 'declined'], ['no','Отменено отделом кадров', r => r.stage === 'cancelled']];
+function statusList(bs){
+  return `<p class="st-cap">Статусы по сотрудникам:</p>` + ST_GROUPS.map(([cls, label, f]) => { const l = bs.filter(f); return l.length ? `<div class="st-grp"><p class="st-lbl ${cls}">${label}<span>${l.length}</span></p>${l.map(r => `<button type="button" class="st-name" data-open="${r.id}">${esc(person(r.employeeId).full)}</button>`).join('')}</div>` : ''; }).join('');
+}
+function empDetails(bs, terminal){
+  return bs.map(r => { const g = ST_GROUPS.find(x => x[2](r)), signed = ['hr','done'].includes(r.stage);
+    return `<div class="emp-det">${terminal ? `<p class="st-lbl ${signed ? 'ok' : 'exp'}">${signed ? 'Подписано' : 'Не подписано'}</p>` : ''}<dl class="pairs-read">
+      <div><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div><div><dt>Дата работы</dt><dd class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</dd></div>
+      <div><dt>Цель работы</dt><dd>${esc(r.goal)}</dd></div>${r.declineComment ? `<div><dt>Комментарий</dt><dd>${esc(r.declineComment)}</dd></div>` : ''}</dl></div>`; }).join('');
+}
+function groupView(g){
+  const X = gInfo(g), n = X.bs.length, one = n === 1 ? X.bs[0] : null;
+  let body, rate = X.terminal;
+  if (!X.terminal) body = X.atEmp ? statusMsg('clock', 'Заявка обрабатывается', one ? resp(person(one.employeeId).first) : '') + (one ? '' : statusList(X.bs))
+    : statusMsg('clock', 'Приказ формируется', resp(HR)) + (one ? '' : statusList(X.bs));
+  else if (X.done === n) body = ready(n === 1 ? 'Сотрудник подписал уведомление' : 'Сотрудники подписали уведомление') + (one ? pdfRow('order', one) : '');
+  else if (X.done) body = ready('Заявка завершена') + `<p class="qnote">Q06: отказ или просрочка одного сотрудника не отменяет заявку для остальных — допущение, сверить с БТ.</p>`;
+  else if (one) body = one.stage === 'declined' ? statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (one.declineComment ? bubbleMsg('Комментарий сотрудника:', person(one.employeeId).name, one.declineComment) : '')
+    : one.stage === 'expired' ? expiredMsg(one, false) : statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, one.hrComment || '—');
+  else body = statusMsg('cancel', 'Заявка отменена', 'Ни один сотрудник не подписал уведомление') + statusList(X.bs);
+  const keys = STEPS.rvd.map(s => s[0]), gat = {};
+  keys.forEach(k => { const v = X.bs.map(r => r.at && r.at[k]).filter(Boolean); if (v.length) gat[k] = Math.min(...v); });
+  const gs = one ? one : !X.terminal ? {stage: X.atEmp ? (X.bs.some(r => r.stage === 'confirm') ? 'confirm' : 'sign') : 'hr', created:g.created, at:gat}
+    : X.done ? {stage:'done', created:g.created, at:Object.assign(gat, {done: gat.hr})} : {stage:'cancelled', stopStage:'confirm', created:g.created, at:gat};
+  const showDet = !(one && ['declined','cancelled'].includes(one.stage));
+  return `<section class="panel">${rate ? rateBox() : ''}${cardHead(TITLES.rvd, g, X.dl, qpin('Q25','Срок в заявке на нескольких: от самой ранней даты или своей у каждого? Здесь — у каждого свой'))}${body}</section>${showDet ? detailsBlock(empDetails(X.bs, X.terminal) + (g.by ? `<p class="emp-note">Инициатор: ${authorLine(g)}</p>` : '')) : ''}${steps('rvd', gs)}`;
+}
+const SDOT = {confirm:'wait', sign:'wait', hr:'hr', done:'ok', paper:'hr'};
+function groupViewOld(g){
+  const X = gInfo(g), n = X.bs.length;
+  let body, rate = false;
+  if (!X.terminal) body = X.atEmp ? statusMsg('clock', 'Ждём ответа сотрудников', `Ответили ${n - X.atEmp} из ${n} · ${resp('Сотрудники')}${qpin('Q06','Отказ или просрочка одного — закрывает всю заявку или только его часть? Здесь — только его часть')}`)
+    : statusMsg('clock', 'Приказ формируется', resp(HR) + qpin('Q24','Один приказ на всех или отдельный на каждого — не описано. Здесь — по каждому'));
+  else if (X.cls === 'done') { rate = true; body = ready(`Отдел кадров оформил приказы по всем сотрудникам (${n}).`); }
+  else if (X.cls === 'partial') { rate = true; body = statusMsg('partial', 'Заявка оформлена частично', `Оформлено ${X.done} из ${n}. По остальным — отказ, истёк срок или отмена кадрами.`); }
+  else { rate = true; body = statusMsg('cancel', 'Заявка не оформлена', 'Ни по одному сотруднику заявка не дошла до приказа.'); }
+  const pr = [['Всего', n], ['Ждём ответа', X.atEmp], ['В отделе кадров', X.atHr], ['Оформлено', X.done], ['Не оформлено', X.off]].filter(([,v], i) => i === 0 || v).map(([l,v]) => `<span><b>${v}</b>${l}</span>`).join('');
+  const goals = [...new Set(X.bs.map(r => r.goal))], one = goals.length === 1 ? goals[0] : null;
+  const rows = X.bs.map(r => { const p = person(r.employeeId), dl = stageDeadline(r);
+    return `<button type="button" class="emp-row" data-open="${r.id}"><span><b>${esc(p.full)}</b><small>${esc(p.pos)}</small></span><span>${r.dates.map(s => fmtD(parse(s)).slice(0,5)).join(', ')}<small>${plural(r.dates.length, 'дата', 'даты', 'дат')}</small></span>
+      <span class="st"><i class="sdot ${SDOT[r.stage] || 'no'}"></i>${SHORT[r.stage] || statusText(r)}</span><span>${dl ? fmtD(dl) : '—'}</span>${one ? '' : `<span class="emp-goal">Цель: ${esc(r.goal)}</span>`}</button>`; }).join('');
+  const dq = qpin('Q25','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого? Здесь — у каждого свой');
+  const det = `<dl class="general-fields">${one ? `<div class="pair"><dt>Цель работы в выходной день</dt><dd>${esc(one)}</dd></div>` : ''}<div class="pair"><dt>Бюджет</dt><dd>Согласован с владельцем бюджета</dd></div><div class="pair"><dt>Инициатор</dt><dd>${authorLine(g)}${g.by ? qpin('Q09','Права ИО/ассистента/делегата и как это видно сотруднику — не раскрыто') : ''}</dd></div>${historyHtml(g)}</dl>`;
+  const gs = !X.terminal ? {stage: X.atEmp ? (X.bs.some(r => r.stage === 'confirm') ? 'confirm' : 'sign') : 'hr', created:g.created, at:{}} : X.done ? {stage:'done', created:g.created, at:{}} : {stage:'cancelled', stopStage:'confirm', created:g.created, at:{}};
+  return `<section class="panel">${rate ? rateBox() : ''}${cardHead(TITLES.rvd, g, X.dl, dq)}${body}<div class="progress">${pr}</div>
+    <div class="emp-th"><span>Сотрудник</span><span>Даты работы</span><span>Статус</span><span>Срок до</span></div>${rows}
+    <p class="qnote">Сводный статус и таблица — предложение для полной версии (в макетах MVP их нет). Q06: что с заявкой при отказе одного сотрудника.</p></section>${detailsBlock(det)}${steps('rvd', gs)}`;
+}
+
+/* ================= РВД · форма руководителя ================= */
+let F;
+const blankEmp = () => ({id:null, q:'', goal:'', dates:[''], open:false, col:false});
+const nmShort = j => F.emps[j].id ? person(F.emps[j].id).short : 'Сотрудник ' + (j + 1);
+const datesOk = j => F.emps[j].dates.some(Boolean) && !F.emps[j].dates.some((v,i) => dateError(j,i));
+const canCopyAll = k => F.emps.length > 1 && !goalError(k) && datesOk(k);
+const COPY_IC = '<img class="asset" src="assets/copy.svg" alt="" width="16" height="16">';
+const TRASH_IC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#33363c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8V7M6 7l.9 12.2c.1 1 .9 1.8 1.9 1.8h6.4c1 0 1.8-.8 1.9-1.8L18 7M10 11v6M14 11v6"/></svg>';
+/* «Как у… ▾» под пустым полем: забрать цель или даты у другого сотрудника */
+function likeChip(k, what){
+  const isGoal = what === 'goal', src = F.emps.map((x,j) => j).filter(j => j !== k && (isGoal ? !goalError(j) : datesOk(j)));
+  if (!src.length) return '';
+  const e = F.emps[k], empty = isGoal ? !e.goal.trim() : !e.dates.some(Boolean);
+  const open = F.menu === what + ':' + k;
+  const opts = src.map(j => { const x = F.emps[j], sub = isGoal ? x.goal.trim() : x.dates.filter(Boolean).slice().sort().map(v => fmtD(parse(v))).join(', ');
+    return `<button type="button" role="menuitem" data-likepick="${what}:${k}:${j}"><b style="font-weight:600">${esc(nmShort(j))}</b><small>${esc(sub)}</small></button>`; }).join('');
+  return `<span class="like-wrap" id="like${isGoal ? 'G' : 'D'}${k}" ${empty ? '' : 'hidden'}><button type="button" class="like-btn" data-like="${what}:${k}" aria-haspopup="menu" aria-expanded="${open}">${COPY_IC}${isGoal ? 'Цель как у…' : 'Даты как у…'}<img class="asset chev" src="assets/chevron.svg" alt=""></button>
+    <div class="like-menu" role="menu" ${open ? '' : 'hidden'}><p class="cap">${isGoal ? 'Взять цель у сотрудника' : 'Взять даты у сотрудника'}</p>${opts}</div></span>`;
+}
+function newForm(){ F = {emps:[blankEmp()], budget:false, tried:false, menu:null}; }
+function createForm(){
+  const today = {num:String(S.seq), created:Date.now()};
+  return `<section class="panel"><div class="panel-head"><button type="button" class="expand" data-expand>${I.expand}${S.expanded ? 'Свернуть' : 'Развернуть'}</button><h1>${TITLES.rvd}</h1>
+    <p class="meta"><span>№ ${numStr(today)}</span><span>Дата создания: ${fmtD(new Date())}</span></p>
+    ${S.persona === 'd1' ? `<p class="meta" style="margin-top:6px"><span class="by">Заполняет ${DELEGATE.name} (ИО) за ${MANAGER.acc}</span>${qpin('Q09','Права ИО/делегата не раскрыты: здесь ИО создаёт заявку как руководитель')}</p>` : ''}</div>
+    <form id="createForm" novalidate><div id="emps"></div>
+      <div class="field" style="margin-top:8px"><label class="checkline"><input type="checkbox" id="budget" ${F.budget?'checked':''}>Я подтверждаю согласование с владельцем бюджета привлечения работников к работе в выходной/праздничный день</label>
+        <p class="err" id="errBudget" hidden style="margin-left:36px">Без подтверждения согласования бюджета заявку отправить нельзя</p></div>
+      <div class="notice" id="dlNotice" hidden></div>
+      <p class="form-error" id="createErr" role="alert" hidden></p>
+      <div class="form-actions"><button type="submit" class="btn">Отправить</button><button type="button" class="btn outline-dark" id="delBtn">Удалить</button></div>
+    </form></section>${steps('rvd', {stage:'created', created:Date.now(), at:{}})}`;
+}
+const allDates = () => F.emps.flatMap(e => e.dates).filter(Boolean);
+/* Статус карточки сотрудника для свёрнутой строки */
+function empStatus(k){
+  const e = F.emps[k];
+  if (!e.id) return {ok:false, text:'Не выбран сотрудник'};
+  const g = goalError(k); if (g) return {ok:false, text: e.goal.trim() ? 'Цель короче 20 символов' : 'Нет цели'};
+  if (!e.dates.some(Boolean)) return {ok:false, text:'Нет дат'};
+  if (e.dates.some((v,i) => dateError(k,i))) return {ok:false, text:'Ошибка в датах'};
+  return {ok:true, text:'Заполнено'};
+}
+function refreshChip(k){ const el = $('#est'+k); if (!el || !F.tried) return; const st = empStatus(k), p = F.emps[k].id && person(F.emps[k].id); el.className = st.ok ? '' : 'bad'; el.textContent = st.ok ? (p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение') : st.text; }
+/* Свернуть заполненные карточки; except — индекс, который оставить открытым */
+function collapseDone(except){ F.emps.forEach((e,k) => { if (k !== except && empStatus(k).ok) { e.col = true; e.open = false; } }); }
+function renderEmps(){
+  const k1 = F.emps.length, sts = F.emps.map((e,k) => empStatus(k));
+  const anyOpen = F.emps.some(e => !e.col);
+  const bar = `<div class="emp-bar"><b>Сотрудники</b><span class="cnt">${k1}/${MAX_EMPS}</span>${tip('Можешь выбрать до 20 сотрудников в одной заявке. У каждого — своя цель и даты работы.')}${k1 > 1 ? `<button type="button" class="tog-all" id="togAll">${anyOpen ? 'Свернуть все' : 'Развернуть все'}</button>` : ''}</div>`;
+  $('#emps').innerHTML = bar + F.emps.map((e,k) => {
+    const p = e.id && person(e.id), gl = e.goal.trim().length, gErr = F.tried ? goalError(k) : '', st = sts[k], showBad = !st.ok && (e.col || F.tried);
+    const dates = e.dates.map((v,i) => `<div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}">${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errD${k}_${i}" hidden></p>`).join('');
+    const dept = p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение';
+    /* По макету: ФИО и подразделение в шапке — только у свёрнутой карточки; у развёрнутой шапка — поле «Выбери сотрудника» */
+    const left = e.col ? `<button type="button" class="emp-toggle" data-tog="${k}" aria-expanded="false" aria-controls="empb${k}">
+        <span class="emp-title"><b>${p ? esc(p.full) : 'Сотрудник'}${p && p.state === 'refuse' ? '<span class="tag refuse">Может отказаться</span>' : ''}</b>${showBad ? `<small class="bad" id="est${k}">${st.text}</small>` : `<small id="est${k}">${esc(dept)}</small>`}</span>
+        </button>` : `<span class="emp-open-lbl label">Выбери сотрудника <span class="required">*</span></span>`;
+    const head = `<div class="emp-head ${e.col ? '' : 'open'}">${left}<span class="emp-acts">${k1 > 1 ? `<button type="button" class="copy-all" id="copyAll${k}" data-apply="both:${k}" ${canCopyAll(k) ? '' : 'hidden'} title="Скопировать цель и даты всем сотрудникам">${COPY_IC}<span>Скопировать даты и цель всем</span></button><button type="button" class="ic del" data-rmemp="${k}" aria-label="Убрать сотрудника из заявки" title="Убрать из заявки">${TRASH_IC}</button>` : ''}<button type="button" class="ic" data-tog="${k}" aria-label="${e.col ? 'Развернуть' : 'Свернуть'}"><img class="asset emp-chev" src="assets/chevron.svg" alt="" width="18" height="18"></button></span></div>`;
+    return `<div class="emp-card ${e.col ? 'col' : ''}" id="emp${k}">${head}${e.col ? '' : `<div class="emp-body" id="empb${k}">
+      <div class="field">
+        <div class="emp-line"><div class="picker"><div class="search-input"><input type="text" id="q${k}" data-q="${k}" value="${esc(p ? p.full : e.q)}" placeholder="Введи ФИО или выбери из списка" autocomplete="off" ${p ? 'readonly' : ''} aria-label="Сотрудник ${k+1}"><img class="asset" src="assets/search.svg" alt="" width="22" height="22"></div>
+          <div class="picker-dropdown" id="dd${k}" ${e.open ? '' : 'hidden'} role="listbox"></div></div>${p ? `<button type="button" class="x-btn" data-clremp="${k}" aria-label="Выбрать другого сотрудника">×</button>` : ''}</div>
+        <p class="err" id="errEmp${k}" hidden>Выбери сотрудника</p></div>
+      <div class="field"><label class="label" for="goal${k}">Цель работы в выходной день <span class="required">*</span></label>
+        <textarea id="goal${k}" data-goal="${k}" placeholder="Опиши цель привлечения сотрудника для работы в выходной день" class="long ${gErr ? 'invalid' : ''}" style="height:120px" maxlength="512">${esc(e.goal)}</textarea>
+        <div class="under"><span class="under-l"><span class="bad" id="errGoal${k}" ${gErr ? '' : 'hidden'}>${gErr}</span>${likeChip(k,'goal')}</span><span class="under-r"><span id="goalCnt${k}" class="${gErr ? 'bad' : gl >= 20 ? 'ok' : ''}">${e.goal.length}/512</span></span></div></div>
+      <div class="field"><span class="label">Дата работы в выходной день <span class="required">*</span> ${tip('Только выходные и праздничные дни, до 10 дат. Все даты заявки — в одном календарном месяце.')}</span>${dates}${(() => { const c = likeChip(k,'dates'); return c ? `<div class="dates-like">${c}</div>` : ''; })()}
+        <div class="dates-act"><button type="button" class="add-link" data-addd="${k}" ${e.dates.length >= 10 ? 'disabled' : ''}>${I.plus}Добавить дату</button></div></div></div>`}</div>`;
+  }).join('') + (k1 < MAX_EMPS ? `<button type="button" class="add-emp-btn" id="addEmp">${I.plus}Добавить сотрудника</button>` : '')
+    + `
+    ${k1 >= MAX_EMPS ? `<p class="limit">Выбрано 20 сотрудников, больше выбрать нельзя.<br>Если нужно добавить еще — создай новую заявку</p>` : ''}
+    <p class="qnote">Карточка на каждого сотрудника: своя цель и даты (решение команды, Q23). Копирование по наброску дизайнера: в шапке заполненной карточки — «Скопировать цель и даты всем» (видна и в свёрнутой; заполненные у других заменяет только после подтверждения), под пустыми полями — «Цель как у… / Даты как у…» со списком сотрудников-образцов. Заполненные карточки сворачиваются в строку-сводку, карточки с ошибками остаются открытыми. Отказ или просрочка одного не отменяет заявку для остальных (Q06). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
+  F.emps.forEach((e,k) => { if (e.open && $('#dd'+k)) renderPicker(k); });
+  validateDates(F.tried); updateDeadline();
+}
+/* «Скопировать цель и даты всем»: источник — карточка, где нажали. Заполненные у других не перезаписываем без вопроса. */
+async function applyToAll(what, k){
+  const src = F.emps[k], goal = src.goal.trim(), dates = src.dates.filter(Boolean).slice().sort();
+  const has = x => !!x.goal.trim() || x.dates.some(Boolean);
+  const same = x => x.goal.trim() === goal && JSON.stringify(x.dates.filter(Boolean).slice().sort()) === JSON.stringify(dates);
+  const others = F.emps.map((x,j) => ({x, j})).filter(o => o.j !== k && !same(o.x));
+  if (!others.length) { toast('У всех сотрудников уже такие цель и даты'); return; }
+  const empty = others.filter(o => !has(o.x)), filled = others.filter(o => has(o.x));
+  let targets = empty;
+  if (filled.length) {
+    const name = o => o.x.id ? person(o.x.id).full : 'Сотрудник ' + (o.j + 1);
+    const ch = await choiceDlg('Заменить цель и даты?',
+      `У ${plural(filled.length, 'сотрудника', 'сотрудников', 'сотрудников')} уже есть своя цель или даты:`, filled.map(name),
+      [['all', 'Заменить у всех'], ...(empty.length ? [['empty', `Только пустые (${empty.length})`]] : [])]);
+    if (!ch) return;
+    targets = ch === 'all' ? others : empty;
+  }
+  targets.forEach(o => { o.x.goal = goal; o.x.dates = dates.slice(); });
+  collapseDone(k); renderEmps();
+  toast(`Цель и даты скопированы: ${plural(targets.length, 'сотрудник', 'сотрудника', 'сотрудников')}. У каждого можно поправить`);
+}
+function goalError(k){ const n = F.emps[k].goal.trim().length; return !n ? 'Укажи цель работы' : n < 20 ? 'Введи минимум 20 символов' : ''; }
+function dateError(k, i){
+  const ds = F.emps[k].dates, v = ds[i]; if (!v) return '';
+  const d = parse(v);
+  if (!isOffDay(d)) return 'Это рабочий день — выбери выходной или праздник';
+  if (ds.indexOf(v) !== i) return 'Эта дата уже есть у сотрудника';
+  const first = allDates()[0];
+  if (first && first.slice(0,7) !== v.slice(0,7)) return 'Все даты заявки — в одном месяце (' + parse(first).toLocaleDateString('ru-RU',{month:'long'}) + ')';
+  if (Date.now() > deadlines(v).manager.getTime()) return 'Срок подачи на эту дату истёк (' + fmtDTfull(deadlines(v).manager) + ')';
+  return '';
+}
+function validateDates(show){
+  let bad = 0;
+  F.emps.forEach((e,k) => {
+    let b = !e.id || !e.dates.some(Boolean) || !!goalError(k);
+    e.dates.forEach((v,i) => {
+      const m = dateError(k,i) || (show && i === 0 && !e.dates.some(Boolean) ? 'Укажи хотя бы одну дату' : ''), el = $('#errD'+k+'_'+i);
+      if (m) b = true;
+      if (el) { el.hidden = !m || (!show && !v); el.textContent = m; $('#d'+k+'_'+i).classList.toggle('invalid', !!m && (show || !!v)); }
+    });
+    const ee = $('#errEmp'+k); if (ee) { ee.hidden = !(show && !e.id); $('#q'+k).classList.toggle('invalid', show && !e.id); }
+    if (b) bad++;
+  });
+  return bad;
+}
+function updateDeadline(){
+  const valid = F.emps.flatMap((e,k) => e.dates.filter((v,i) => v && !dateError(k,i))).sort(), n = $('#dlNotice');
+  if (!valid.length) { n.hidden = true; return; }
+  const d = deadlines(valid[0]); n.hidden = false;
+  n.innerHTML = `<b>Сроки по заявке${qpin('Q02','Формула «день первой РВД − 1» и пример «суббота → четверг» расходятся. Здесь — по примеру')}</b>Отправить до ${fmtDTfull(d.manager)} — по самой ранней дате${qpin('Q25','От какой даты считать срок в заявке на нескольких — не описано')}. Сотрудник подтверждает до ${fmtDTfull(d.employee)}, кадры оформляют до ${fmtDTfull(d.hr)}.`;
+}
+function renderPicker(k){
+  const q = (F.emps[k].q || '').toLowerCase(), taken = F.emps.map((e,j) => j !== k && e.id).filter(Boolean);
+  $('#dd'+k).innerHTML = PEOPLE.filter(p => p.full.toLowerCase().includes(q)).map(p => {
+    const ban = p.state === 'ban', has = taken.includes(p.id), off = ban || has;
+    const tag = ban ? '<span class="tag ban">Нельзя привлечь</span>' : has ? '<span class="tag has">Уже в заявке</span>' : p.state === 'refuse' ? '<span class="tag refuse">Может отказаться</span>' : '';
+    return `<button type="button" role="option" class="picker-option" data-pick="${k}:${p.id}" ${off ? 'aria-disabled="true"' : ''}>${esc(p.full)}${tag}<small>${esc(p.pos)}${ban ? ' · привлечение к работе в выходной день запрещено' : ''}</small></button>`;
+  }).join('') || '<p style="padding:8px 16px;font-size:14px;color:#53565d">Никого не нашли. Доступны только твои подчинённые.</p>';
+}
+function openPicker(k, open){
+  F.emps.forEach((e,j) => { if (j !== k && e.open) { e.open = false; const dd = $('#dd'+j); if (dd) dd.hidden = true; } });
+  const dd = $('#dd'+k); F.emps[k].open = open && !!dd; if (dd) { dd.hidden = !open; if (open) renderPicker(k); }
+}
+function bindCreate(){
+  renderEmps();
+  const f = $('#createForm');
+  f.addEventListener('focusin', e => { const k = e.target.dataset.q; if (k != null && !F.emps[+k].id) openPicker(+k, true); });
+  f.addEventListener('input', e => {
+    const t = e.target;
+    if (t.dataset.q != null) { const k = +t.dataset.q; F.emps[k].q = t.value; openPicker(k, true); }
+    if (t.dataset.goal != null) { const k = +t.dataset.goal; F.emps[k].goal = t.value; const n = t.value.trim().length, c = $('#goalCnt'+k); c.textContent = t.value.length + '/512'; const m = F.tried ? goalError(k) : ''; c.className = m ? 'bad' : n >= 20 ? 'ok' : ''; const er = $('#errGoal'+k); er.hidden = !m; er.textContent = m; t.classList.toggle('invalid', !!m); refreshChip(k); const ca = $('#copyAll'+k); if (ca) ca.hidden = !canCopyAll(k); const lg = $('#likeG'+k); if (lg) lg.hidden = !!t.value.trim(); }
+  });
+  f.addEventListener('change', e => { const t = e.target; if (t.dataset.k != null) { F.emps[+t.dataset.k].dates[+t.dataset.i] = t.value; renderEmps(); } if (t.id === 'budget') { F.budget = t.checked; if (F.budget) $('#errBudget').hidden = true; } });
+  f.addEventListener('keydown', e => { if (e.key === 'Escape' && e.target.dataset.q != null) openPicker(+e.target.dataset.q, false); if (e.key === 'Escape' && F.menu) { const m = F.menu; F.menu = null; renderEmps(); $(`[data-like="${m}"]`)?.focus(); } });
+  f.addEventListener('click', e => {
+    if (e.target.dataset.q != null) { const k = +e.target.dataset.q; if (!F.emps[k].id && !F.emps[k].open) openPicker(k, true); return; }
+    const pk = e.target.closest('[data-pick]');
+    if (pk) { if (pk.getAttribute('aria-disabled')) return; const [k, id] = pk.dataset.pick.split(':'); F.emps[+k].id = id; F.emps[+k].open = false; F.emps[+k].q = ''; renderEmps(); $('#goal'+k).focus(); return; }
+    const rd = e.target.closest('[data-rmd]'); if (rd) { const [k,i] = rd.dataset.rmd.split('_').map(Number); F.emps[k].dates.splice(i,1); renderEmps(); return; }
+    const re = e.target.closest('[data-rmemp]'); if (re) { const k = +re.dataset.rmemp; if (F.emps.length > 1) F.emps.splice(k,1); else F.emps[0] = Object.assign(blankEmp(), {goal:F.emps[0].goal, dates:F.emps[0].dates}); renderEmps(); return; }
+    const ad = e.target.closest('[data-addd]'); if (ad) { const k = +ad.dataset.addd; F.emps[k].dates.push(''); renderEmps(); $('#d'+k+'_'+(F.emps[k].dates.length-1)).focus(); return; }
+    const lk = e.target.closest('[data-like]'); if (lk) { F.menu = F.menu === lk.dataset.like ? null : lk.dataset.like; renderEmps(); return; }
+    const lp = e.target.closest('[data-likepick]'); if (lp) { const [what, k, j] = lp.dataset.likepick.split(':'), x = F.emps[+k], src = F.emps[+j];
+      if (what === 'goal') x.goal = src.goal.trim(); else x.dates = src.dates.filter(Boolean).slice().sort();
+      F.menu = null; renderEmps(); toast(`${what === 'goal' ? 'Цель взята' : 'Даты взяты'} у ${nmShort(+j)} — можно поправить`); return; }
+    const cl = e.target.closest('[data-clremp]'); if (cl) { const k = +cl.dataset.clremp; F.emps[k].id = null; F.emps[k].q = ''; renderEmps(); $('#q'+k)?.focus(); return; }
+    if (e.target.closest('#addEmp')) { collapseDone(-1); F.menu = null; F.emps.push(blankEmp()); renderEmps(); $('#q'+(F.emps.length-1))?.focus(); $('#emp'+(F.emps.length-1)).scrollIntoView({block:'nearest', behavior:'smooth'}); return; }
+    const tg = e.target.closest('[data-tog]'); if (tg) { const x = F.emps[+tg.dataset.tog]; x.col = !x.col; x.open = false; renderEmps(); return; }
+    if (e.target.closest('#togAll')) { const close = F.emps.some(x => !x.col); F.emps.forEach(x => { x.col = close; x.open = false; }); renderEmps(); return; }
+    const ap = e.target.closest('[data-apply]'); if (ap) { const [what, k] = ap.dataset.apply.split(':'); applyToAll(what, +k); return; }
+    if (F.menu && !e.target.closest('.like-wrap')) { F.menu = null; document.querySelectorAll('.like-menu').forEach(m => m.hidden = true); document.querySelectorAll('.like-btn').forEach(b => b.setAttribute('aria-expanded','false')); }
+    if (!e.target.closest('.picker')) F.emps.forEach((x,k) => { if (x.open) openPicker(k, false); });
+  });
+  $('#delBtn').onclick = async () => { if (!await confirmDlg('Удалить заявку?', 'Введённые данные не сохранятся.', 'Удалить')) return; S.selected = null; F = null; render(); toast('Заявка удалена'); };
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    F.tried = true; F.emps.forEach((x,k) => { x.col = empStatus(k).ok && F.emps.length > 1; x.open = false; }); renderEmps();
+    const bad = validateDates(true), errs = [];
+    if (bad) errs.push('данные у ' + plural(bad, 'сотрудника', 'сотрудников', 'сотрудников'));
+    $('#errBudget').hidden = F.budget; if (!F.budget) errs.push('согласование бюджета');
+    const ce = $('#createErr');
+    if (errs.length) { ce.hidden = false; ce.textContent = 'Проверь ' + errs.join(' и ') + '.'; document.querySelector('#emps .invalid, #emps .err:not([hidden])')?.scrollIntoView({block:'center', behavior:'smooth'}); return; }
+    ce.hidden = true;
+    const names = F.emps.map(x => person(x.id).full);
+    if (!await confirmDlg(F.emps.length === 1 ? 'Отправить заявку сотруднику?' : 'Отправить заявку ' + plural(F.emps.length, 'сотруднику', 'сотрудникам', 'сотрудникам') + '?', 'Каждый получит уведомление и сам выберет компенсацию. Изменить заявку после отправки нельзя.', 'Отправить', names)) return;
+    const by = S.persona === 'd1' ? DELEGATE : null, now = Date.now();
+    const g = {id:'g' + S.seq, num:String(S.seq++), created:now, by, history:[]};
+    log(g, actorName() + ' создал(а) заявку на ' + plural(F.emps.length, 'сотрудника', 'сотрудников', 'сотрудников') + (by ? ' за ' + MANAGER.acc : '') + ' и отправил(а) её');
+    S.groups.push(g);
+    F.emps.forEach((x,k) => {
+      const dates = [...new Set(x.dates.filter(Boolean))].sort();
+      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:x.goal.trim(), dates, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
+      log(r, actorName() + ' отправил(а) заявку сотруднику'); S.requests.push(r);
+      notify(r.employeeId, 'Подтверждение работы в выходной или праздничный день', 'Пожалуйста, подтверди работу в выходной или праздничный день до ' + fmtDT(deadlines(dates[0]).employee) + '.', r.id);
+    });
+    notify('m1', 'Заявка «Работа в выходной день» перешла на этап подтверждение сотрудником', 'Отправлено: ' + names.join(', ') + '.', g.id);
+    S.selected = g.id; S.tab = 'mine'; F = null; toast('Заявка отправлена: ' + plural(names.length, 'сотрудник', 'сотрудника', 'сотрудников')); render();
+  });
+}
+
+/* ================= Отгул ================= */
+function otgulEmployee(r){
+  if (r.stage === 'draft') return otgulForm(r);
+  const head = cardHead(TITLES.otgul, r, stageDeadline(r), dlPin(r));
+  let body, rate = false;
+  if (r.stage === 'sign') body = signBlock(r, 'application', r.viewedApp, 'signApp') + `<p class="qnote">Q13: тип подписи сотрудника и ошибки подписи не заданы. Q12: вернуться к выбору дат после «Сформировать заявление» — не описано.</p>`;
+  else if (r.stage === 'approve') body = statusMsg('clock', 'Согласование руководителем', resp(MANAGER.name));
+  else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
+  else if (r.stage === 'orderSign') body = signBlock(r, 'otgulOrder', r.viewedOrder, 'signOrder', `Подпиши до ${fmtDTfull(orderDeadline(r.orderAt))}, иначе подписывать придётся на бумаге`) + `<p class="qnote">Q04: на стр. 25 после подписи кадров стоит «Done», а на стр. 26 идёт этот шаг. Здесь отгул оформлен только после подписи сотрудника.</p>`;
+  else ({body, rate} = otgulEnd(r, true));
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${detailsBlock(otgulFields(r))}${steps('otgul', r, {approve: r.approvedBy})}`;
+}
+function otgulEnd(r, mine){
+  if (r.stage === 'done') return {rate:true, body: mine ? ready('Заявка завершена, посмотри приказ ниже') + pdfRow('otgulOrder', r) : ready('Заявка завершена')};
+  /* R32: приказ не подписан за 3 р. д. — электронная заявка завершается, подписание на бумаге */
+  if (r.stage === 'paper') return {rate:true, body: statusMsg('paper', 'Подписание на бумаге', `Истек срок ознакомления и электронного подписания документа. ${mine ? 'Для подписания документа на бумаге обратись' : 'Сотруднику нужно подписать приказ на бумаге, обращение'} в <a class="link" href="mailto:${HR_MAIL}">${HR_MAIL}</a>`) + pdfRow('otgulOrder', r) + `<p class="qnote">Q04: как учитывается бумажная подпись и когда отгул считается оформленным — не описано.</p>`};
+  if (r.stage === 'expired') {
+    const why = {draft:'Истёк срок формирования заявления', sign:'Истёк срок подписания заявления', approve:'Завершился срок её согласования', hr:'Отдел кадров не оформил приказ в срок'}[r.stopStage] || 'Истёк срок';
+    return {rate:true, body: statusMsg('cancel', 'Заявка отменена', why + '. Дни остались в банке отгулов' + qpin('Q07','Возвращается ли выходной в банк после отмены — не описано, здесь возвращается'))};
+  }
+  return {rate:true, body: statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, r.hrComment || '—') + `<p class="qnote">R16: отдел кадров может отменить заявку с комментарием. Дни возвращаются в банк отгулов (допущение, Q07).</p>`};
+}
+function otgulFields(r){
+  const files = [];
+  if (r.submitted) files.push(pdfRow('application', r));
+  if (['orderSign','done','paper'].includes(r.stage)) files.push(pdfRow('otgulOrder', r));
+  return `<dl class="general-fields"><div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div><div class="pair"><dt>Даты</dt><dd>${pairsRead(r)}</dd></div>${files.length ? `<div class="pair"><dt>Документы</dt><dd>${files.join('')}</dd></div>` : ''}${historyHtml(r)}</dl>`;
+}
+function otgulManager(r){
+  const p = person(r.employeeId), head = cardHead(`${TITLES.otgul} | ${esc(p.name)}`, r, stageDeadline(r), dlPin(r));
+  let body, rate = false;
+  if (r.stage === 'approve') body = pairsRead(r) + `<div class="form-actions"><button type="button" class="btn" data-act="approve">Согласовать</button><button type="button" class="btn outline-dark" data-act="return">Отправить на доработку</button></div><p class="qnote">В БТ у руководителя нет окончательного отказа — только «Согласовать» и «Вернуть на доработку» (стр. 22).</p>`;
+  else if (r.stage === 'draft') body = statusMsg('return', 'Заявка отправлена на доработку сотруднику') + bubbleMsg('Мой комментарий:', r.returnBy || MANAGER.name, r.returnComment || '');
+  else if (r.stage === 'sign') body = statusMsg('clock', 'Подписание заявления', resp(p.first));
+  else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
+  else if (r.stage === 'orderSign') body = statusMsg('clock', 'Подписание приказа сотрудником', resp(p.first));
+  else ({body, rate} = otgulEnd(r, false));
+  const det = r.stage === 'approve' || r.stage === 'draft' ? '' : detailsBlock(otgulFields(r));
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${det}${steps('otgul', r, {approve: r.approvedBy}, true)}`;
+}
+function orderView(r){
+  const head = cardHead(TITLES.order, r, stageDeadline(r), dlPin(r));
+  let body, rate = false;
+  if (r.stage === 'orderSign') body = `<p style="font-size:16px;margin-bottom:20px">Отдел кадров оформил тебе день отдыха и подписал приказ — заявление не нужно.</p>` + signBlock(r, 'otgulOrder', r.viewedOrder, 'signOrder', `Подпиши до ${fmtDTfull(orderDeadline(r.orderAt))}, иначе подписывать придётся на бумаге`) + `<p class="qnote">Q07: в каком случае кадры отправляют отдельный приказ вместо заявки сотрудника — не описано.</p>`;
+  else ({body, rate} = otgulEnd(r, true));
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${detailsBlock(otgulFields(r))}${steps('order', r)}`;
+}
+let O;
+function otgulForm(r){
+  if (!O || O.reqId !== (r ? r.id : null)) O = {reqId: r ? r.id : null, sel: Object.fromEntries((r ? r.pairs : []).map(p => [p.rvd, p.off]))};
+  const items = bank(S.persona, r && r.id);
+  const rows = items.map((b,i) => { const on = b.rvd in O.sel, d = parse(b.rvd);
+    return `<div class="off-card ${on ? 'on' : ''}"><label class="off-top"><span><b>${fmtDayLong(d)}</b><small>${b.expires ? 'Можно взять до ' + fmtD(parse(b.expires)) : 'Без ограничения срока'}</small></span><input type="checkbox" class="lime-check" data-rvd="${b.rvd}" ${on?'checked':''} aria-label="Отгул за ${fmtD(d)}"></label>
+      <div class="field" data-offbox="${b.rvd}" ${on?'':'hidden'}><span class="label">Дата отгула</span>
+      <div class="date-line"><input type="date" id="off-${i}" data-off="${b.rvd}" value="${O.sel[b.rvd] || ''}" min="${iso(addDays(new Date(),1))}" ${b.expires ? `max="${b.expires}"` : ''} aria-label="Дата отгула за ${fmtD(d)}"></div><p class="help">Можно выбрать только рабочий день</p><p class="err" data-offerr="${b.rvd}" hidden></p></div></div>`; }).join('');
+  const x = r || {num:String(S.seq), created:Date.now()};
+  const ret = r && r.returnComment ? bubbleMsg('Комментарий от руководителя:', r.returnBy || MANAGER.name, r.returnComment) + '<div style="height:24px"></div>' : '';
+  return `<section class="panel">${cardHead(TITLES.otgul, x, r ? stageDeadline(r) : null, r ? qpin('Q12','Пересчитывается ли срок после возврата на доработку — не описано') : '')}${ret}
+  <form id="otgulForm" novalidate><p class="bank-line">В банке отгулов — ${plural(items.length, 'день', 'дня', 'дней')}</p><fieldset class="field" style="max-width:none;border:0;padding:0"><legend>За какие выходные берёшь отгул? ${tip('Можешь выбрать до 10 дат')}${qpin('Q21','В БТ поля «Дата работы в выходной день 1–10» — «только просмотр». Как сотрудник выбирает выходные, не описано: здесь — из банка отгулов')}</legend>
+      ${rows || '<div class="notice"><b>В банке нет отгулов</b>Отгул появляется за работу в выходной с одинарной оплатой и днём отдыха, если дату отдыха не выбрали сразу.</div>'}
+      <p class="err" id="errPairs" hidden>Отметь хотя бы один выходной и выбери дату отгула</p></fieldset>
+    <div class="notice" id="otgulDl" hidden></div><p class="form-error" id="otgulErr" role="alert" hidden></p>
+    <p class="qnote">Q17: в таблице БТ нет поля «Отгул за РВД 8» — здесь список до 10 выходных. Q07: выбранный выходной резервируется за заявкой, пока она не отменена (допущение).</p>
+    <div class="form-actions"><button type="submit" class="btn" ${items.length ? '' : 'disabled'}>Сформировать заявление</button><button type="button" class="btn outline-dark" data-act="delOtgul">Удалить</button></div>
+  </form></section>${steps('otgul', r || {stage:'draft', at:{}})}`;
+}
+function offError(rvd){
+  const v = O.sel[rvd]; if (!v) return 'Выбери дату отгула';
+  const d = parse(v), exp = expiresOf(rvd);
+  if (isOffDay(d)) return 'Выбери рабочий день — это выходной или праздник';
+  if (d <= new Date()) return 'Выбери дату в будущем';
+  if (exp && v > exp) return 'Отгул за этот выходной можно взять до ' + fmtD(parse(exp));
+  if (Object.entries(O.sel).some(([k,x]) => k !== rvd && x === v)) return 'Этот день уже выбран для другого выходного';
+  if (Date.now() > otgulDeadlines(v).employee.getTime()) return 'Слишком близко: заявление на эту дату нужно было подписать до ' + fmtDTfull(otgulDeadlines(v).employee);
+  return '';
+}
+function checkOtgul(show){
+  let ok = Object.keys(O.sel).length > 0;
+  Object.keys(O.sel).forEach(rvd => { const m = offError(rvd), e = document.querySelector(`[data-offerr="${rvd}"]`), vis = !!m && (show || !!O.sel[rvd]); if (m) ok = false; if (e) { e.hidden = !vis; e.textContent = m; document.querySelector(`[data-off="${rvd}"]`).classList.toggle('invalid', vis); } });
+  const offs = Object.keys(O.sel).filter(k => O.sel[k] && !offError(k)).map(k => O.sel[k]).sort(), n = $('#otgulDl');
+  if (offs.length) { const d = otgulDeadlines(offs[0]); n.hidden = false; n.innerHTML = `<b>Сроки по заявке${qpin('Q03','«−3 р.д.» и пример «пятница → понедельник» не сходятся. Здесь — по примеру')}</b>Подписать заявление до ${fmtDTfull(d.employee)} · руководитель согласует до ${fmtDTfull(d.manager)} · кадры оформляют приказ до ${fmtDTfull(d.hr)}`; }
+  else n.hidden = true;
+  return ok;
+}
+function bindOtgul(r){
+  const f = $('#otgulForm'); if (!f) return;
+  checkOtgul(false);
+  f.addEventListener('change', e => {
+    const t = e.target;
+    if (t.dataset.rvd) { if (t.checked && Object.keys(O.sel).length >= 10) { t.checked = false; toast('В одной заявке — не больше 10 дней'); return; }
+      if (t.checked) O.sel[t.dataset.rvd] = ''; else delete O.sel[t.dataset.rvd];
+      document.querySelector(`[data-offbox="${t.dataset.rvd}"]`).hidden = !t.checked; t.closest('.off-card').classList.toggle('on', t.checked); $('#errPairs').hidden = true; }
+    if (t.dataset.off && t.dataset.off in O.sel) O.sel[t.dataset.off] = t.value;
+    checkOtgul(false);
+  });
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    const ok = checkOtgul(true); $('#errPairs').hidden = Object.keys(O.sel).length > 0;
+    if (!ok) { $('#otgulErr').hidden = false; $('#otgulErr').textContent = 'Проверь выбранные выходные и даты отгула.'; return; }
+    const pairs = Object.entries(O.sel).map(([rvd, off]) => ({rvd, off}));
+    let x = r;
+    if (!x) { x = {id:'r' + S.seq, num:String(S.seq++), type:'otgul', employeeId:S.persona, pairs, stage:'draft', created:Date.now(), at:{}, history:[]}; S.requests.push(x); log(x, person(S.persona).name + ' сформировал(а) заявление на отгул'); }
+    else { x.pairs = pairs; x.returnComment = ''; log(x, 'Сотрудник исправил даты и заново сформировал заявление'); }
+    go(x, 'sign'); x.viewedApp = false; O = null; S.selected = x.id; S.tab = 'mine'; toast('Заявление сформировано — ознакомься и подпиши'); render();
+  });
+}
+function signApp(r){
+  go(r, 'approve'); r.submitted = true; log(r, 'Сотрудник подписал заявление — заявка у руководителя');
+  notify(r.employeeId, 'Заявка «Отгул за работу в выходной день» перешла на этап Согласование руководителем', 'Подробности смотри в заявке.', r.id);
+  notify('m1', 'Заявка «Отгул за работу в выходной день» от сотрудника: ' + person(r.employeeId).name, 'Пожалуйста, обработай заявку до ' + fmtDT(otgulDeadlines(pairsSorted(r)[0].off).manager) + '.', r.id);
+  toast('Заявление подписано и отправлено руководителю'); render();
+}
+function signOrder(r){
+  go(r, 'done'); log(r, 'Сотрудник подписал приказ на отгул');
+  notify(r.employeeId, 'Заявка «' + procName(r) + '» успешно завершена', 'Оформление документов завершено. Подробности смотри в заявке.', r.id);
+  toast('Приказ подписан — отгул оформлен'); render();
+}
+function signNotice(r){
+  go(r, 'hr'); r.signed = true; log(r, 'Сотрудник подписал уведомление — заявка передана в отдел кадров');
+  notify(r.employeeId, 'Заявка «Работа в выходной день» перешла на этап Обработка в отделе кадров', 'Подробности смотри по ссылке.', r.id);
+  toast('Уведомление подписано и передано в отдел кадров'); render();
+}
+function approveOtgul(r){
+  go(r, 'hr'); r.approvedBy = actorShort(); log(r, actorName() + ' согласовал(а) отгул');
+  notify(r.employeeId, 'Заявка «Отгул за работу в выходной день» перешла на этап Обработка в отделе кадров', 'Подробности смотри в заявке.', r.id);
+  toast('Отгул согласован и передан в отдел кадров'); render();
+}
+async function returnOtgul(r){
+  const c = await commentDlg({title:'Отправить на доработку', text:'Оставь комментарий', ok:'Отправить', min:2, max:256, placeholder:'Например: в этот день у нас релиз, выбери другую дату'});
+  if (c == null) return;
+  r.at = r.at || {}; r.at.approve = Date.now(); r.stage = 'draft'; r.returnComment = c; r.returnBy = S.persona === 'd1' ? DELEGATE.name : MANAGER.name;
+  log(r, actorName() + ' вернул(а) заявление на доработку: «' + c + '»');
+  notify(r.employeeId, 'Заявка «Отгул за работу в выходной день» возвращена на доработку', 'Комментарий руководителя: ' + c, r.id);
+  toast('Заявление отправлено на доработку'); render();
+}
+async function delOtgul(r){
+  if (!await confirmDlg('Удалить заявку на отгул?', r ? 'Заявка удалится, выбранные выходные вернутся в банк отгулов.' : 'Введённые данные не сохранятся.', 'Удалить')) return;
+  if (r) S.requests = S.requests.filter(x => x.id !== r.id);
+  O = null; S.selected = null; render(); toast('Заявка удалена');
+}
+
+/* ================= Документы ================= */
+function docHtml(kind, r){
+  const p = person(r.employeeId);
+  if (kind === 'application' || kind === 'otgulOrder') {
+    const list = pairsSorted(r).map(x => `<li>за работу ${fmtD(parse(x.rvd))} — день отдыха ${fmtD(parse(x.off))}</li>`).join('');
+    if (kind === 'application') return `<div class="document-paper"><p class="paper-meta">Код 12.999 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Заявление о предоставлении дня отдыха за работу в выходной день</h2><p>От: <b>${esc(p.full)}</b>, ${esc(p.pos)}</p><p>Прошу предоставить мне дни отдыха:</p><ul>${list}</ul><p class="paper-meta">${r.stage === 'sign' ? 'Ожидает подписи работника' : 'Подписано работником'}</p></div>`;
+    const st = {orderSign:'Подписан отделом кадров (УКЭП) · ожидает подписи работника', done:'Подписан отделом кадров и работником', paper:'Подписан отделом кадров · работник подписывает на бумаге'}[r.stage] || '';
+    return `<div class="document-paper"><p class="paper-meta">Код 12.999 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Приказ о предоставлении дня отдыха за работу в выходной день</h2><p>Предоставить <b>${esc(p.full)}</b>, ${esc(p.pos)}, дни отдыха:</p><ul>${list}</ul><p class="paper-meta">${st}</p></div>`;
+  }
+  const g = grp(r.group);
+  const rows = r.dates.map(s => `<li>${fmtWD(parse(s))} — ${r.comp[s] ? COMP[r.comp[s]].toLowerCase() + (r.comp[s]==='rest' && r.rest[s] ? ' (день отдыха ' + fmtD(parse(r.rest[s])) + ')' : '') : '—'}</li>`).join('');
+  if (kind === 'notice') return `<div class="document-paper"><p class="paper-meta">Форма 02.010 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Уведомление о необходимости работы в выходные (и (или) нерабочие праздничные дни)</h2>
+    <p>Работник: <b>${esc(p.full)}</b>, ${esc(p.pos)}</p><p>Инициатор: ${authorLine(g)}</p><h3>Цель привлечения</h3><p>${esc(r.goal)}</p><h3>Даты и компенсация</h3><ul>${rows}</ul>
+    <p>Я согласен(-на) на привлечение к работе в указанные дни на условиях выбранной компенсации.</p><p class="paper-meta">${r.stage === 'sign' ? 'Ожидает подписи работника' : 'Подписано работником электронной подписью'}</p></div>`;
+  return `<div class="document-paper"><p class="paper-meta">Форма 02.011 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Приказ о привлечении к работе в выходной или нерабочий праздничный день</h2>
+    <p>Привлечь к работе <b>${esc(p.full)}</b>, ${esc(p.pos)}:</p><ul>${rows}</ul><h3>Основание</h3><p>Уведомление работника о согласии, служебная необходимость: ${esc(r.goal)}</p><p class="paper-meta">Подписано отделом кадров (УКЭП) · для работника — только просмотр</p></div>`;
+}
+function openDoc(kind, r){
+  const dlg = $('#dlg'); dlg.className = 'viewer';
+  const mine = r.employeeId === S.persona;
+  const canSign = mine && ((kind === 'notice' && r.stage === 'sign') || (kind === 'application' && r.stage === 'sign') || (kind === 'otgulOrder' && r.stage === 'orderSign'));
+  dlg.innerHTML = `<div class="modal-head"><h2>${DOCS[kind]}</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+    <div class="modal-body document-body">${docHtml(kind, r)}</div>
+    <div class="viewer-actions"><span>${canSign ? 'Проверь данные перед подписью' : 'Документ для просмотра'}</span>${canSign ? '<button type="button" class="btn" id="dlgSign">Подписать</button>' : '<button type="button" class="btn secondary" data-close>Закрыть</button>'}</div>`;
+  if (canSign) { r[{notice:'viewed', application:'viewedApp', otgulOrder:'viewedOrder'}[kind]] = true; save(); }
+  dlg.showModal(); dlg.onclose = () => render();
+  const sb = $('#dlgSign'); if (sb) sb.onclick = () => { dlg.onclose = null; dlg.close(); ({notice:signNotice, application:signApp, otgulOrder:signOrder})[kind](r); };
+}
+
+/* ================= Диалоги ================= */
+function choiceDlg(title, text, list, opts){
+  return new Promise(res => {
+    const dlg = $('#dlg'); dlg.className = 'small choice';
+    dlg.innerHTML = `<div class="modal-head"><h2>${esc(title)}</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+      <div class="modal-body"><p>${esc(text)}</p><ul style="margin:8px 0 0;padding-left:20px;line-height:22px;max-height:200px;overflow:auto">${list.map(x => '<li>' + esc(x) + '</li>').join('')}</ul>
+      <div class="acts col3"><button type="button" class="btn ghost" data-close>Отмена</button>${opts.slice().reverse().map(([v,l], i) => `<button type="button" class="btn ${i === opts.length - 1 ? '' : 'outline-dark'}" data-choice="${v}">${esc(l)}</button>`).join('')}</div></div>`;
+    let v = null; dlg.onclose = () => res(v);
+    dlg.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { v = b.dataset.choice; dlg.close(); });
+    dlg.showModal();
+  });
+}
+function confirmDlg(title, text, okLabel, list){
+  return new Promise(res => {
+    const dlg = $('#dlg'); dlg.className = 'small';
+    dlg.innerHTML = `<div class="modal-head"><h2>${esc(title)}</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+      <div class="modal-body"><p>${esc(text)}</p>${list ? '<ul style="margin:12px 0 0;padding-left:20px;line-height:22px;max-height:240px;overflow:auto">' + list.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : ''}
+      <div class="acts"><button type="button" class="btn ghost" data-close>Отмена</button><button type="button" class="btn" id="okBtn">${esc(okLabel)}</button></div></div>`;
+    let v = false; dlg.onclose = () => res(v);
+    $('#okBtn').onclick = () => { v = true; dlg.close(); };
+    dlg.showModal();
+  });
+}
+function commentDlg({title, text, ok, cancel, min = 0, max = 512, placeholder = 'Комментарий'}){
+  return new Promise(res => {
+    const dlg = $('#dlg'); dlg.className = 'small';
+    dlg.innerHTML = `<div class="modal-head"><h2>${esc(title)}</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+      <div class="modal-body"><p>${esc(text)}</p><textarea id="cmt" maxlength="${max}" placeholder="${esc(placeholder)}" aria-label="Комментарий"></textarea>
+      <div class="under"><span class="bad" id="cmtErr" hidden>Минимум ${min} символа</span>${min ? `<span id="cmtCnt" style="margin-left:auto">0/${max}</span>` : ''}</div>
+      <div class="acts">${cancel ? `<button type="button" class="btn ghost" data-close>${esc(cancel)}</button>` : ''}<button type="button" class="btn" id="cmtOk" ${min ? 'disabled' : ''}>${esc(ok)}</button></div></div>`;
+    let v = null; dlg.onclose = () => res(v);
+    $('#cmt').oninput = e => { const n = e.target.value.trim().length; if (min) { $('#cmtCnt').textContent = e.target.value.length + '/' + max; $('#cmtCnt').className = n >= min ? 'ok' : ''; $('#cmtOk').disabled = n < min; } };
+    $('#cmtOk').onclick = () => { const t = $('#cmt').value.trim(); if (t.length < min) { $('#cmtErr').hidden = false; return; } v = t; dlg.close(); };
+    dlg.showModal(); $('#cmt').focus();
+  });
+}
+function openNotes(){
+  const dlg = $('#dlg'); dlg.className = '';
+  const list = S.notes.filter(myNote);
+  dlg.innerHTML = `<div class="modal-head"><h2>Уведомления</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+    <div class="modal-body"><div class="notif-list">${list.map(n => `<button type="button" class="notification ${n.read?'':'unread'}" data-note="${n.id}"><small>${fmtStamp(n.t)}</small><p><b>${esc(n.subject)}</b></p><span class="small">${esc(n.body)}</span><p class="link small">Перейти к заявке →</p></button>`).join('') || '<p class="muted">Уведомлений нет</p>'}</div>
+    <p class="qnote">Тексты — из таблиц уведомлений БТ. В письме о передаче в кадры исправлено ошибочное «Уведомление о начале оплачиваемого отпуска» — Q16. Ежедневные напоминания в 09:00 не моделируются.</p></div>`;
+  list.forEach(n => n.read = true); save();
+  dlg.onclose = () => render(); dlg.showModal();
+}
+
+/* ================= Демо: события вне Space ================= */
+function openDemo(){
+  const dlg = $('#dlg'); dlg.className = '';
+  const g = S.selected && grp(S.selected), r = S.selected && !String(S.selected).startsWith('new') ? req(S.selected) : null;
+  let acts = '';
+  if (g) { const X = gInfo(g);
+    if (X.atHr) acts += `<button type="button" class="btn lime" data-ev="hrAll">Кадры подписали приказы по всем, кто подписал уведомление (${X.atHr})</button>`;
+    if (X.atEmp) acts += `<button type="button" class="btn secondary" data-ev="expireAll">Истёк срок у всех, кто не ответил (${X.atEmp})</button>`; }
+  if (r && !TERMINAL.includes(r.stage)) {
+    if (r.type === 'rvd' && r.stage === 'hr') acts += `<button type="button" class="btn lime" data-ev="hrDone">Кадры подписали приказ о РВД (УКЭП в 1С → КЭДО)</button>`;
+    if (r.type === 'otgul' && r.stage === 'hr') acts += `<button type="button" class="btn lime" data-ev="hrOrder">Кадры подписали приказ на отгул → сотруднику на подпись</button>`;
+    acts += `<button type="button" class="btn secondary" data-ev="expire">${r.stage === 'orderSign' ? 'Истёк срок подписи приказа → бумага' : 'Истёк срок на этапе «' + statusText(r) + '»'}</button>`;
+    acts += `<label class="field" style="margin:8px 0 0;max-width:none"><span class="label" style="font-size:14px">Комментарий отдела кадров</span><textarea id="hrComment" style="height:64px">Сотрудник в эти даты в командировке.</textarea></label><button type="button" class="btn secondary" data-ev="hrCancel">Кадры отменили заявку</button>`;
+  }
+  const withBank = PEOPLE.filter(p => p.state !== 'ban' && bank(p.id).length);
+  const send = withBank.length ? `<label class="field" style="margin:0;max-width:none"><span class="label" style="font-size:14px">Сотрудник</span><select id="ordEmp" style="width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px">${withBank.map(p => `<option value="${p.id}">${esc(p.name)} · в банке ${bank(p.id).length}</option>`).join('')}</select></label><button type="button" class="btn secondary" data-ev="sendOrder">Кадры отправили отдельный приказ на отгул</button>` : '<p class="muted">Ни у кого нет отгулов в банке.</p>';
+  const cur = g ? `<p style="margin-top:16px"><b>Работа в выходной день · № ${numStr(g)}</b> · ${gInfo(g).status}</p><div class="demo-actions">${acts || '<p class="muted">Заявка уже завершена.</p>'}</div><p class="demo-note">Чтобы имитировать событие для одного сотрудника, открой его строку в заявке.</p>`
+    : r ? `<p style="margin-top:16px"><b>${procName(r)} · № ${numStr(r)}</b>${isMgr() ? ' · ' + esc(person(r.employeeId).name) : ''} · ${statusText(r)}</p><div class="demo-actions">${acts || '<p class="muted">Заявка уже завершена.</p>'}</div>` : '<p style="margin:16px 0" class="muted">Открой заявку, чтобы имитировать для неё событие.</p>';
+  dlg.innerHTML = `<div class="modal-head"><h2>Демо: события вне Space</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+    <div class="modal-body"><p class="demo-note">Отдел кадров работает в 1С HR и КЭДО, а таймауты срабатывают по времени. Эта панель имитирует такие события — в продукте её нет.</p>${cur}
+    <hr class="divider"><p><b>Время в прототипе: ${fmtDTfull(new Date())}</b></p><div class="demo-actions"><button type="button" class="btn secondary" data-ev="day">Перевести часы на +1 день</button></div>
+    <p><b>Вариант отказа сотрудника</b></p><div class="demo-actions"><label class="checkline"><input type="radio" name="rm" value="modal" ${S.refuseMode !== 'checkbox' ? 'checked' : ''}>Модалка с комментарием — доступна всем (решение команды)</label><label class="checkline"><input type="radio" name="rm" value="checkbox" ${S.refuseMode === 'checkbox' ? 'checked' : ''}>Чекбокс категории — по БТ, R11</label></div>
+    <hr class="divider"><p><b>Отдельный приказ на отгул</b></p><div class="demo-actions">${send}</div><hr class="divider"><button type="button" class="btn ghost" data-ev="reset">Сбросить демо-данные</button></div>`;
+  dlg.onclose = () => render(); dlg.showModal();
+}
+function demoEvent(ev){
+  if (ev === 'day') { CLOCK += 864e5; $('#dlg').close(); toast('Сегодня в прототипе: ' + fmtD(new Date())); return; }
+  if (ev === 'reset') { S = seed(); F = null; O = null; $('#dlg').close(); toast('Демо-данные сброшены'); return; }
+  if (ev === 'sendOrder') {
+    const emp = $('#ordEmp').value, b = bank(emp)[0];
+    let off = addDays(new Date(), 7); while (isOffDay(off)) off = addDays(off,1);
+    const x = {id:'r' + S.seq, num:String(S.seq++), type:'order', employeeId:emp, pairs:[{rvd:b.rvd, off:iso(off)}], stage:'orderSign', orderAt:Date.now(), created:Date.now(), at:{hr:Date.now()}, history:[]};
+    log(x, 'Отдел кадров сформировал приказ на отгул в 1С и подписал УКЭП'); S.requests.push(x);
+    notify(emp, 'Подпиши приказ на отгул за работу в выходной день', 'Пожалуйста, подпиши приказ до ' + fmtDT(orderDeadline(x.orderAt)) + '.', x.id);
+    $('#dlg').close(); toast('Приказ отправлен: ' + person(emp).name + '. Переключись на этого сотрудника'); return;
+  }
+  const g = S.selected && grp(S.selected);
+  if (g) { branches(g).forEach(r => { if (ev === 'hrAll' && r.stage === 'hr') applyEv(r, 'hrDone'); if (ev === 'expireAll' && ['confirm','sign'].includes(r.stage)) applyEv(r, 'expire'); }); $('#dlg').close(); toast('Событие применено'); return; }
+  const r = S.selected && req(S.selected); if (!r) return;
+  applyEv(r, ev); $('#dlg').close(); toast('Событие применено');
+}
+function applyEv(r, ev){
+  if (ev === 'hrDone') { go(r, 'done'); log(r, 'Отдел кадров сформировал приказ и подписал УКЭП'); notify(r.employeeId, 'Работа в выходной день оформлена', 'Приказ доступен для просмотра в заявке.', r.id); notify('m1', 'Работа в выходной день оформлена', person(r.employeeId).name + ': приказ подписан отделом кадров.', r.group); }
+  if (ev === 'hrOrder') { go(r, 'orderSign'); r.orderAt = Date.now(); r.viewedOrder = false; log(r, 'Отдел кадров сформировал приказ на отгул и подписал УКЭП'); notify(r.employeeId, 'Подпиши приказ в заявке «Отгул за работу в выходной день»', 'Пожалуйста, подпиши приказ до ' + fmtDT(orderDeadline(r.orderAt)) + '.', r.id); }
+  if (ev === 'expire') {
+    if (r.stage === 'orderSign') { stop(r, 'paper'); log(r, 'Срок подписи приказа истёк — переход на бумажное подписание'); notify(r.employeeId, 'Приказ по заявке «' + procName(r) + '» перешёл на бумажное подписание', 'Срок подписания электронного документа истёк. Необходимо подписать приказ на бумаге.', r.id); }
+    else { stop(r, 'expired'); log(r, 'Истёк срок — заявка отменена'); notify(r.employeeId, 'Заявка «' + procName(r) + '» отменена', 'Заявка «' + procName(r) + '» была отменена. Подробности смотри по ссылке.', r.id); }
+  }
+  if (ev === 'hrCancel') { stop(r, 'cancelled'); r.hrComment = ($('#hrComment').value || '').trim(); log(r, 'Отдел кадров отменил заявку'); notify(r.employeeId, 'Заявка «' + procName(r) + '» отменена', 'Комментарий отдела кадров: ' + (r.hrComment || '—'), r.id); }
+}
+
+/* ================= Отпуск: банк отгулов ================= */
+function bankAll(empId){
+  const today = iso(new Date()), soon = iso(addDays(new Date(), 30));
+  const own = S.requests.filter(r => r.type === 'rvd' && r.stage === 'done' && r.employeeId === empId).flatMap(r => r.dates.filter(s => r.comp[s] === 'rest' && !r.rest[s]).map(s => ({rvd:s, src:'Заявка № ' + numStr(r)})));
+  const legacy = (S.legacy || []).filter(l => l.employeeId === empId).map(l => ({rvd:l.rvd, src:'Работа до 01.03.2025'}));
+  return legacy.concat(own).map(b => {
+    const expires = expiresOf(b.rvd), use = S.requests.find(r => r.type !== 'rvd' && r.employeeId === empId && !['expired','cancelled'].includes(r.stage) && r.pairs.some(p => p.rvd === b.rvd));
+    let st = 'av'; if (use) st = ['done','paper'].includes(use.stage) ? 'used' : 'res'; else if (expires && expires < today) st = 'exp'; else if (expires && expires <= soon) st = 'soon';
+    return {...b, expires, st, use, off: use ? use.pairs.find(p => p.rvd === b.rvd).off : null};
+  }).sort((a,b) => a.rvd < b.rvd ? -1 : 1);
+}
+const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+function monthGrid(y, m, marks){
+  const first = new Date(y, m, 1), shift = (first.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+  let cells = '<span></span>'.repeat(shift);
+  for (let d = 1; d <= days; d++) { const dt = new Date(y, m, d), k = iso(dt), mk = marks[k] || '';
+    cells += `<span class="cd ${isHoliday(dt) ? 'hol' : isOffDay(dt) ? 'we' : ''} ${mk}" ${mk ? `title="${mk === 'rvd' ? 'Работа в выходной день' : mk === 'off' ? 'Отгул' : ''}"` : ''}>${d}</span>`; }
+  return `<div class="cal-m"><p class="cal-t">${MONTHS[m]}</p><div class="cal-g">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(w => `<span class="cw">${w}</span>`).join('')}${cells}</div></div>`;
+}
+function vacationPage(){
+  if (isMgr()) return `<section class="panel"><div class="empty-detail"><img src="assets/beach.svg" alt="" width="40" height="40"><b>Банк отгулов виден сотруднику в его модуле «Отпуск»</b><span>Переключись на сотрудника в панели прототипа.${qpin('Q14','Нужен ли руководителю обзор остатков команды — в БТ не описано')}</span></div></section>`;
+  const all = bankAll(S.persona), av = all.filter(b => b.st === 'av' || b.st === 'soon');
+  const marks = {};
+  S.requests.filter(r => r.employeeId === S.persona && r.type === 'rvd' && r.stage === 'done').forEach(r => r.dates.forEach(d => marks[d] = 'rvd'));
+  S.requests.filter(r => r.employeeId === S.persona && r.type !== 'rvd' && !['expired','cancelled'].includes(r.stage)).forEach(r => r.pairs.forEach(p => marks[p.off] = 'off'));
+  const now = new Date(), start = now.getMonth() < 6 ? 0 : 6, y = now.getFullYear();
+  return `<button type="button" class="mobile-back" data-view="requests">← К заявкам</button>
+  <div class="vac-top"><h1>График отпусков и отсутствий</h1><button type="button" class="btn-outline-lime" data-stub>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>График команды</button></div>
+  <div class="vac-row"><section class="bal"><b>Баланс отпусков</b><small>Данные обновляются раз в сутки</small>
+      <p>Дней отпуска на 31.12.26 — 32 дня</p><small class="sub">28 ежегодного оплачиваемого</small><p>Заработано на текущую дату — 3 дня</p>
+      <p>В банке отгулов — ${plural(av.length, 'день', 'дня', 'дней')} ${tip('Дни, заработанные за работу в выходной день')}${qpin('Q07','Когда день попадает в банк, резервируется и возвращается — не описано')}</p>
+      <div class="vac-create"><button type="button" class="btn" id="vacCreate" aria-haspopup="menu" aria-expanded="false">Создать заявку на отпуск <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.6"><path d="m4 6 4 4 4-4"/></svg></button>
+      <div class="create-menu vac-menu" id="vacMenu" role="menu" hidden><button type="button" role="menuitem" data-stub>Ежегодный оплачиваемый отпуск</button><button type="button" role="menuitem" data-stub>Отпуск без сохранения зарплаты</button><button type="button" role="menuitem" data-gootgul ${av.length ? '' : 'disabled'}>Отгул за работу в выходной день</button></div></div></section>
+    <div class="donut"><b>0</b><span>дней доступно</span></div>
+    <section class="bb"><p class="bb-logo">◯ BestBenefits</p><b>Планируй отпуск с BestBenefits ›</b><p>Спецпредложения на путешествия и билеты.<br>Для входа введи корп. почту. Если её нет — подробности регистрации в OTP Life</p></section></div>
+  <section class="cal"><div class="cal-head"><span>Весь год</span><span class="cal-y"><button type="button" data-stub aria-label="Назад">‹</button><b>${y}</b><button type="button" data-stub aria-label="Вперёд">›</button></span></div>
+    <div class="cal-ms">${[0,1,2,3,4,5].map(i => monthGrid(y, start + i, marks)).join('')}</div>
+    <p class="cal-leg"><span class="cd rvd">1</span>Работа в выходной день <span class="cd off">1</span>Отгул <span class="cd hol">1</span>Праздник</p></section>`;
+}
+/* ================= Аналитика ================= */
+const QS = [
+  ['Q01','d','Объём: MVP (1 сотрудник) или полная версия.','Решено: полная версия — до 20 сотрудников, банк в «Отпуске», ИО/делегат'],
+  ['Q02','b','Формула сроков РВД «день первой РВД − 1» не совпадает с примером «суббота → четверг». Календарные или рабочие дни, часовой пояс?','Прототип: трактовка по примерам'],
+  ['Q03','b','Сроки отгула: «−3 р.д.» иллюстрируется понедельником для пятницы, «−1 р.д.» — средой. От какой даты считать 3 р.д. на подпись приказа?','Прототип: по примерам; 3 р.д. от подписи кадров'],
+  ['Q04','b','Когда отгул завершён: после подписи кадров (стр. 25, Done) или после подписи приказа сотрудником (шаг 5, стр. 26)? Что значит переход на бумагу?','Прототип: оформлен после подписи сотрудника'],
+  ['Q05','b','Категории «нельзя привлечь» и «может отказаться»: из данных HR или со слов сотрудника?','Прототип: признаки в справочнике, отказ — без проверки категории'],
+  ['Q06','b','Заявка на нескольких: отказ или просрочка одного завершает всю заявку или его часть? Какой сводный статус?','Прототип: закрывается только часть сотрудника; «Завершена / оформлена частично / не оформлена»'],
+  ['Q07','b','Когда отгул начисляется, резервируется и списывается в банке? Что с датой отдыха, выбранной сразу в РВД? Когда кадры шлют отдельный приказ?','Прототип: дата из РВД в банк не попадает; выходной резервируется за активной заявкой'],
+  ['Q08','i','Что значит «HR может отменить в любой момент» после подписи; что откатывается в 1С/КЭДО и в банке?','Прототип: отмена с комментарием'],
+  ['Q09','b','Права ИО/ассистента/делегата, срок полномочий, что видит сотрудник.','Прототип: ИО делает всё как руководитель, в заявке видно «за кого»'],
+  ['Q10','i','Проверки дат РВД: региональный календарь, график, отпуска, лимит 6 дней подряд.','Прототип: федеральные праздники, без графика'],
+  ['Q11','i','Граница «1 год со следующего дня» для отгула; старые РВД до 01.03.2025.','Прототип: до РВД + 364 дня; старые — без срока'],
+  ['Q12','i','Можно ли изменить выбор после «Сформировать уведомление/заявление»? Пересчёт срока после доработки?','Прототип: возврата к форме нет; срок не пересчитывается'],
+  ['Q13','i','Финальные шаблоны и коды документов (12.999 у заявления и приказа), тип ЭП сотрудника.','Прототип: условный текст документов'],
+  ['Q14','i','Банк отгулов в «Отпуске»: что показываем; нужен ли обзор руководителю.','Прототип: остаток и списки у сотрудника'],
+  ['Q15','i','Единые названия терминальных статусов («завершается» vs «отменена») и кому слать уведомления.','Прототип: «Заявка отменена» + причина'],
+  ['Q16','i','В письме о передаче РВД в кадры стоит «Уведомление о начале оплачиваемого отпуска».','Прототип: текст исправлен'],
+  ['Q17','i','В таблице заявки на отгул нет поля «Отгул за РВД 8» (стр. 19–20).','Прототип: список до 10 пар'],
+  ['Q20','d','Может ли любой сотрудник отказаться от РВД, или только категории из БТ?','Решено по макетам: «Отклонить» доступна всем, с комментарием. Сверить с БТ/юристами'],
+  ['Q21','i','В заявке на отгул поля «Дата работы в выходной день 1–10» — «только просмотр». Как сотрудник выбирает выходные?','Прототип и макеты: чекбоксы из банка отгулов'],
+  ['Q22','i','Письмо HR «загрузить документы в OTP Space» (стр. 23): кадры что-то делают в Space?','Прототип: экраны кадров не рисуем'],
+  ['Q23','d','Заявка на нескольких: цель и даты общие или свои у каждого?','Решено: блок на каждого сотрудника — своя цель и даты; «Цель/Даты первого — всем»'],
+  ['Q24','b','Кадры оформляют один приказ на всех или отдельный на каждого?','Прототип: приказ на каждого сотрудника'],
+  ['Q25','i','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого?','Прототип: отправить — по самой ранней; сотрудник и кадры — от его первой даты'],
+];
+function openAnalytics(focusQ){
+  const dlg = $('#dlg'); dlg.className = 'wide';
+  dlg.innerHTML = `<div class="modal-head"><h2>Аналитика · РВД и отгул, полная версия</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
+  <div class="modal-body an">
+    <h3>Источник и охват</h3><ul><li>БТ «Работа в выходной или праздничный день», страницы 4–28 из 28. </li>
+    <li>Визуал, тексты и данные — по макетам в Figma, страница «Работа в выходной день» (версия от 19.11.2026): № 3 432 и № 3 518, даты октября 2026. Любой экран макета открывается из списка «Экран из макета».</li>
+    </ul>
+    <h3>Что сверх макетов</h3><ul><li>Экраны, которых нет в Figma, собраны в том же стиле и помечены в «Экран из макета» как «нет в макетах»: просрочки РВД у руководителя, просрочки и отмена кадрами в отгуле, отдельный приказ на отгул (процесс В).</li><li>Единое боковое меню на всех экранах (в части итоговых макетов — старая версия меню).</li><li>Календарь в «Отпуске» — за 2026 год, с отметками РВД и отгулов.</li><li>Оба варианта отказа сотрудника переключаются в «⚙ События».</li></ul>
+    <h3>Открытые вопросы</h3><div class="tablewrap"><table><thead><tr><th>ID</th><th>Статус*</th><th>Вопрос</th><th>Как сделано сейчас</th></tr></thead><tbody>
+    ${QS.map(([id,p,q,a]) => `<tr id="an-${id}" class="${id===focusQ?'hl':''}"><td><b>${id}</b></td><td><span class="pri ${p}">${p==='b'?'Блокер':p==='d'?'Решено':'Важно'}</span></td><td>${q}</td><td>${a}</td></tr>`).join('')}
+    </tbody></table></div><p class="demo-note">*Приоритет — рекомендация аналитика, не решение бизнеса.</p></div>`;
+  dlg.onclose = null; dlg.showModal();
+  if (focusQ) setTimeout(() => document.getElementById('an-' + focusQ)?.scrollIntoView({block:'center'}), 50);
+}
+
+/* ================= Сценарии: любой экран из макета в один клик ================= */
+const D = (d, h = 12) => at(2026, +d.split('.')[1], +d.split('.')[0], h);
+function freshG(s){ s.seq = 3432; s.groups = s.groups.filter(g => g.id !== 'g3432'); s.requests = s.requests.filter(r => r.group !== 'g3432'); }
+function setG(s, list, gOpts = {}){
+  const g = s.groups.find(x => x.id === 'g3432'); Object.assign(g, gOpts);
+  s.requests = s.requests.filter(r => r.group !== 'g3432');
+  list.forEach(([e, st, o], k) => s.requests.push(rvdReq(g, k, e, st, Object.assign({}, o))));
+  g.history = [{t:g.created, text:'Елена Когут создала заявку на ' + plural(list.length, 'сотрудника', 'сотрудников', 'сотрудников') + ' и отправила её'}];
+}
+function setO(s, stage, o){ s.requests = s.requests.filter(r => r.id !== 'r3518'); if (stage) s.requests.push(otgulReq(stage, Object.assign({}, o))); }
+const formEmp = (id, o = {}) => Object.assign({id, q:'', goal:GOAL, dates:['2026-10-31'], open:false, col:true}, o);
+const TWO = {dates:['2026-10-31','2026-11-01']};
+/* [группа, подпись, кто смотрит, часы, настройка → что открыть] */
+const SCEN = [
+  ['Руководитель · РВД', 'Создание, 1 сотрудник', 'm1', '21.10', s => { freshG(s); F = {emps:[formEmp('e1', {col:false})], budget:true, tried:false, menu:null}; return 'new'; }],
+  ['Руководитель · РВД', 'Создание, 3 сотрудника', 'm1', '21.10', s => { freshG(s); F = {emps:['e1','e2','e5'].map(id => formEmp(id)), budget:true, tried:false, menu:null}; return 'new'; }],
+  ['Руководитель · РВД', 'Создание, 20 сотрудников', 'm1', '21.10', s => { freshG(s); F = {emps:['e1','e2','e5'].concat([...Array(17)].map((_, i) => 'x' + i)).map(id => formEmp(id)), budget:true, tried:false, menu:null}; return 'new'; }],
+  ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); F = {emps:[formEmp('e1', {col:false, goal:'Перенос инте', dates:['']})], budget:false, tried:true, menu:null}; return 'new'; }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
+  ['Руководитель · РВД', 'На подписании, 1 сотрудник', 'm1', '22.10', s => { setG(s, [['e1','sign']]); return 'g3432'; }],
+  ['Руководитель · РВД', 'На подписании у сотрудников, статусы', 'm1', '22.10', s => { setG(s, [['e1','sign', TWO.dates.length && {dates:['2026-10-31']}],['e2','hr'],['e5','sign'],['e9','expired',{stopStage:'sign'}],['x10','declined',{declineComment:'Ребёнок на больничном.'}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'У отдела кадров', 'm1', '22.10', s => { setG(s, [['e1','hr']]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','done']]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена, один отказ', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','declined',{declineComment:'Отклонил по причине соответствия списку кто может отклонить'}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена, 1 сотрудник', 'm1', '23.10', s => { setG(s, [['e1','done']]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Отменена отделом кадров', 'm1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Сотрудник отказался', 'm1', '22.10', s => { setG(s, [['e1','declined',{declineComment:'Ребёнок на больничном.'}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Просрочка подписи сотрудником (нет в макетах)', 'm1', '30.10', s => { setG(s, [['e1','expired',{stopStage:'sign', stopAt:D('29.10',23)}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Просрочка отдела кадров (нет в макетах)', 'm1', '31.10', s => { setG(s, [['e1','expired',{stopStage:'hr', stopAt:D('30.10',23)}]]); return 'g3432'; }],
+  ['Руководитель · отгул', 'На согласовании', 'm1', '26.10', s => { setO(s, 'approve'); s.tab = 'approve'; return 'r3518'; }],
+  ['Руководитель · отгул', 'Доработка: окно комментария', 'm1', '26.10', s => { setO(s, 'approve'); s.tab = 'approve'; return 'r3518'; }, () => { returnOtgul(req('r3518')); setTimeout(() => { const t = $('#cmt'); if (t) { t.value = 'в этот день у нас релиз, выбери другую дату'; t.dispatchEvent(new Event('input')); } }, 30); }],
+  ['Руководитель · отгул', 'Возвращено на доработку', 'm1', '26.10', s => { setO(s, 'draft', {returnComment:'в этот день у нас релиз, выбери другую дату', returnBy:'Елена Когут', submitted:true}); s.tab = 'approve'; return 'r3518'; }],
+  ['Руководитель · отгул', 'У отдела кадров', 'm1', '26.10', s => { setO(s, 'hr'); s.tab = 'approve'; return 'r3518'; }],
+  ['Руководитель · отгул', 'Завершена', 'm1', '28.10', s => { setO(s, 'done'); s.tab = 'approve'; return 'r3518'; }],
+  ['Сотрудник · РВД', 'Компенсация, двойная оплата', 'e1', '22.10', s => { setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Компенсация, отгул', 'e1', '22.10', s => { setG(s, [['e1','confirm',{comp:{'2026-10-31':'rest'}, rest:{'2026-10-31':'2026-11-03'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Компенсация, отгул за 2 даты', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'rest','2026-11-01':'rest'}, rest:{'2026-10-31':'2026-11-03','2026-11-01':'2026-11-05'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Отказ через модалку', 'e1', '22.10', s => { s.refuseMode = 'modal'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }, () => $('#declineBtn')?.click()],
+  ['Сотрудник · РВД', 'Отказ через чекбокс (по БТ)', 'e1', '22.10', s => { s.refuseMode = 'checkbox'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Подписание, не просмотрено', 'e1', '22.10', s => { setG(s, [['e1','sign',{viewed:false}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Подписание, просмотрено', 'e1', '22.10', s => { setG(s, [['e1','sign',{viewed:true}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'У отдела кадров', 'e1', '22.10', s => { setG(s, [['e1','hr']]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Завершена, приказ', 'e1', '23.10', s => { setG(s, [['e1','done']]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Отменена: истёк срок подписания', 'e1', '30.10', s => { setG(s, [['e1','expired',{stopStage:'sign', stopAt:D('29.10',23)}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Отменена: истёк срок отдела кадров', 'e1', '31.10', s => { setG(s, [['e1','expired',{stopStage:'hr', stopAt:D('30.10',23)}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Отклонена сотрудником', 'e1', '22.10', s => { setG(s, [['e1','declined']]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Отменена отделом кадров', 'e1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'r3432'; }],
+  ['Сотрудник · отгул', 'Отпуск: банк отгулов', 'e4', '23.10', s => { setO(s, null); s.view = 'vacation'; return null; }],
+  ['Сотрудник · отгул', 'Заявление: выбор выходных', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = null; return 'newOtgul'; }],
+  ['Сотрудник · отгул', 'Заявление: 1 дата', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = {reqId:null, sel:{'2026-10-31':'2026-11-03'}}; return 'newOtgul'; }],
+  ['Сотрудник · отгул', 'Заявление: 2 даты', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = {reqId:null, sel:{'2026-10-31':'2026-11-03','2026-11-01':'2026-11-05'}}; return 'newOtgul'; }],
+  ['Сотрудник · отгул', 'Подписание заявления, не просмотрено', 'e4', '23.10', s => { setO(s, 'sign', {viewedApp:false}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Подписание заявления, просмотрено', 'e4', '23.10', s => { setO(s, 'sign', {viewedApp:true}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'На согласовании у руководителя', 'e4', '23.10', s => { setO(s, 'approve'); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Возвращено на доработку', 'e4', '26.10', s => { setO(s, 'draft', {returnComment:'в этот день у нас релиз, выбери другую дату', returnBy:'Елена Когут', submitted:true}); O = null; return 'r3518'; }],
+  ['Сотрудник · отгул', 'У отдела кадров', 'e4', '26.10', s => { setO(s, 'hr'); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Подписание приказа, не просмотрено', 'e4', '27.10', s => { setO(s, 'orderSign', {viewedOrder:false}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Подписание приказа, просмотрено', 'e4', '27.10', s => { setO(s, 'orderSign', {viewedOrder:true}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Завершена', 'e4', '28.10', s => { setO(s, 'done'); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Приказ не подписан → бумага', 'e4', '31.10', s => { setO(s, 'paper', {stopStage:'orderSign', stopAt:D('30.10',23)}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Истёк срок согласования', 'e4', '31.10', s => { setO(s, 'expired', {stopStage:'approve', stopAt:D('30.10',23)}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Истёк срок подписания заявления (нет в макетах)', 'e4', '29.10', s => { setO(s, 'expired', {stopStage:'sign', stopAt:D('28.10',23)}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Истёк срок у отдела кадров (нет в макетах)', 'e4', '03.11', s => { setO(s, 'expired', {stopStage:'hr', stopAt:D('02.11',23)}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Отменена отделом кадров (нет в макетах)', 'e4', '27.10', s => { setO(s, 'cancelled', {stopStage:'hr', hrComment:'В эти даты у тебя запланирована командировка.'}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Отдельный приказ от отдела кадров (нет в макетах)', 'e4', '27.10', s => { setO(s, null); s.requests.push({id:'r3530', num:'3530', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-03'}], stage:'orderSign', orderAt:D('27.10',15), created:D('27.10',15), at:{hr:D('27.10',15)}, viewedOrder:false, history:[{t:D('27.10',15), text:'Отдел кадров сформировал приказ на отгул в 1С и подписал УКЭП'}]}); return 'r3530'; }],
+];
+function openScenario(i){
+  const [, , persona, day, setup, after] = SCEN[i];
+  const s = seed(); CLOCK = D(day, 12); s.clock = CLOCK; s.persona = persona; s.tab = 'mine'; s.view = 'requests'; s.expanded = false;
+  F = null; O = null;
+  S = s; const sel = setup(s); S.selected = sel;
+  if ($('#dlg').open) { $('#dlg').onclose = null; $('#dlg').close(); }
+  render(); scrollTo(0, 0);
+  if (after) setTimeout(after, 50);
+}
+
+/* ================= События ================= */
+document.addEventListener('click', e => {
+  const t = e.target;
+  const q = t.closest('.qpin'); if (q) { e.preventDefault(); e.stopPropagation(); if ($('#dlg').open) $('#dlg').close(); openAnalytics(q.dataset.q); return; }
+  if (t.closest('[data-close]')) { $('#dlg').close(); return; }
+  const menu = $('#createMenu');
+  if (t.closest('#createBtn')) { menu.hidden = !menu.hidden; $('#createBtn').setAttribute('aria-expanded', !menu.hidden); return; }
+  if (menu && !menu.hidden && !t.closest('#createMenu')) menu.hidden = true;
+  const cr = t.closest('[data-create]'); if (cr) { if (cr.dataset.create === 'rvd') { newForm(); S.selected = 'new'; } else { O = null; S.selected = 'newOtgul'; } S.tab = 'mine'; render(); return; }
+  const o = t.closest('[data-open]'); if (o) { S.selected = o.dataset.open; render(); if (innerWidth <= 800) scrollTo(0,0); return; }
+  const tb = t.closest('[data-tab]'); if (tb) { S.tab = tb.dataset.tab; render(); return; }
+  if (t.closest('[data-expand]')) { S.expanded = !S.expanded; render(); return; }
+  if (t.closest('[data-back]')) { S.selected = null; S.expanded = false; render(); return; }
+  const doc = t.closest('[data-doc]'); if (doc) { openDoc(doc.dataset.doc, req(doc.dataset.req)); return; }
+  const rt = t.closest('[data-rate]'); if (rt) { rt.parentNode.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === rt)); toast('Спасибо за оценку!'); return; }
+  const act = t.closest('[data-act]');
+  if (act) { const r = req(S.selected); ({signNotice:() => signNotice(r), signApp:() => signApp(r), signOrder:() => signOrder(r), approve:() => approveOtgul(r), return:() => returnOtgul(r), delOtgul:() => delOtgul(r)})[act.dataset.act](); return; }
+  const n = t.closest('[data-note]'); if (n) { const note = S.notes.find(x => String(x.id) === n.dataset.note); $('#dlg').onclose = null; $('#dlg').close(); if (note && (req(note.req) || grp(note.req))) { S.view = 'requests'; S.selected = note.req; const r = req(note.req); S.tab = isMgr() && r && r.type === 'otgul' ? 'approve' : 'mine'; } render(); return; }
+  const v = t.closest('[data-view]'); if (v) { S.view = v.dataset.view; render(); return; }
+  if (t.closest('#vacCreate')) { const m = $('#vacMenu'); m.hidden = !m.hidden; return; }
+  if ($('#vacMenu') && !$('#vacMenu').hidden && !t.closest('#vacMenu')) $('#vacMenu').hidden = true;
+  if (t.closest('[data-gootgul]')) { S.view = 'requests'; S.tab = 'mine'; O = null; S.selected = 'newOtgul'; render(); return; }
+  const ev = t.closest('[data-ev]'); if (ev) { demoEvent(ev.dataset.ev); return; }
+  if (t.closest('[data-stub]')) { e.preventDefault(); toast('В прототипе этот раздел не работает'); return; }
+});
+$('#scen').innerHTML = '<option value="">Экран из макета…</option>' + [...new Set(SCEN.map(x => x[0]))].map(gr => `<optgroup label="${gr}">${SCEN.map((x, i) => x[0] === gr ? `<option value="${i}">${esc(x[1])}</option>` : '').join('')}</optgroup>`).join('');
+$('#scen').onchange = e => { if (e.target.value !== '') openScenario(+e.target.value); e.target.value = ''; };
+$('#persona').onchange = e => { S.persona = e.target.value; S.selected = null; S.expanded = false; S.tab = 'mine'; F = null; O = null; render(); };
+$('#bellBtn').onclick = openNotes;
+$('#anBtn').onclick = () => openAnalytics();
+$('#demoBtn').onclick = openDemo;
+$('#qToggle').onclick = e => { const on = document.body.classList.toggle('show-q'); e.currentTarget.setAttribute('aria-pressed', on); };
+$('#dlg').addEventListener('click', e => { if (e.target === $('#dlg')) $('#dlg').close(); });
+$('#dlg').addEventListener('change', e => { if (e.target.name === 'rm') { S.refuseMode = e.target.value; save(); toast(e.target.value === 'checkbox' ? 'Отказ: чекбокс категории (по БТ)' : 'Отказ: модалка с комментарием'); } });
+if (S.selected === 'new' || S.selected === 'newOtgul') S.selected = null;
+render();
+</script>
+</body>
+</html>
