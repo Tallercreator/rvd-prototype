@@ -368,6 +368,74 @@
     .steps .step small{font-size:10px}
     .pagination{padding-bottom:110px}
   }
+
+  /* ---- v4: макеты от 23.11 ---- */
+  .bub-ava{width:40px;height:40px;background:var(--lime)}
+  .bubble{background:#ecf3ff;font-size:16px}
+  .bubble b{font-size:14px;font-weight:600}
+  .hint-card{display:inline-flex;gap:12px;align-items:flex-start;background:#f6f7fa;border-radius:16px;padding:12px;margin:0 0 40px;max-width:100%}
+  .hint-card b{display:block;font-size:16px;line-height:22px;font-weight:600}
+  .hint-card p{font-size:13px;line-height:18px;color:#717171;margin:0}
+  .goal-field{max-width:452px;margin-bottom:24px}
+  .goal-field textarea{height:200px;border:1px solid #a6adba;border-radius:12px}
+  #createForm .invalid{border-color:#a6adba!important}
+  .emp-bar .tog-all{color:var(--purple);font-size:16px}
+  .emp-card .search-input{max-width:452px}
+  .emp-card .picker{max-width:452px}
+  .copy-all{font-weight:400;font-size:15px}
+  .conf-read{gap:32px!important;margin-bottom:32px!important}
+  .comp-q{line-height:24px;margin-bottom:20px}
+  .comp-block{border:0;padding:0 0 28px;min-width:0;max-width:600px;margin:0 0 28px!important;border-bottom:1px solid var(--line)}
+  .comp-block:last-of-type{border-bottom:0;padding-bottom:0}
+  .comp-day{font-weight:600;font-size:16px;padding:0;margin-bottom:12px}
+  .comp-block .choices{gap:16px}
+  .choices input[type=radio]{border-radius:50%!important;appearance:none;-webkit-appearance:none;width:24px;height:24px;border:1.5px solid #a6adba;border-radius:50%;background:#fff;flex-shrink:0;margin:0;cursor:pointer}
+  .choices input[type=radio]:checked{border-color:var(--lime);background:radial-gradient(circle,#222 0 5px,var(--lime) 5.5px)}
+  .rest-field .help,.off-field .help{font-size:13px;line-height:17px;color:#8a8f99;margin-top:4px}
+  .tip-pop ul{margin:0;padding-left:16px}
+  .bank-sum{font-size:16px;line-height:24px;margin-bottom:32px}
+  .bank-sum b{display:flex;gap:8px;align-items:center;font-size:18px;font-weight:600;margin-bottom:6px}
+  .bank-sum p{margin:4px 0 0;display:block}
+  .bal .bank-sum{margin:0;max-width:330px}
+  .bal-hr{border:0;border-top:1px solid var(--line);width:100%;margin:12px 0}
+  .day-field{max-width:none}
+  .sel{position:relative;width:352px;max-width:100%}
+  .sel-btn{width:100%;height:46px;border:1px solid #a6adba;border-radius:10px;background:#fff;display:flex;align-items:center;gap:10px;padding:0 16px;font-size:16px;text-align:left}
+  .sel-btn>span{flex:1}.sel-btn .ph{color:#53565d}.sel-btn small{font-size:13px;color:#717171;white-space:nowrap}
+  .cv{width:16px;height:16px;flex-shrink:0;transition:transform .15s}
+  .sel.open .cv,[aria-expanded=true]>.cv{transform:rotate(180deg)}
+  .sel-list{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 6px);background:#fff;border-radius:8px;box-shadow:0 12px 32px #263b6426;padding:4px;max-height:300px;overflow:auto}
+  .sel-opt{width:100%;min-height:40px;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px;border-radius:8px;font-size:15px;line-height:19px;text-align:left}
+  button.sel-opt:hover,button.sel-opt:focus-visible,.sel-opt[aria-selected=true]{background:#f6f7fa}
+  .sel-opt small{font-size:13px;color:#717171;white-space:nowrap}
+  .sel-opt.off,.sel-opt.off small{color:#9b9b9b;cursor:not-allowed}.sel-opt.off>span small{display:block}
+  .off-field{margin-top:16px}.off-field .label{font-weight:400!important}.off-field input{width:352px!important}
+  .off-date{font-size:16px;line-height:24px;margin:0 0 24px;display:flex;flex-direction:column;gap:6px}
+  .off-date b{font-weight:600;font-size:17px;margin:0!important}
+  .sign-info .off-date{margin:28px 0 0}
+  .goal-read{margin:40px 0 24px!important}.goal-read dd{margin-top:8px}
+  .et-h,.et-line{display:grid;grid-template-columns:minmax(0,1.35fr) 222px 130px 24px;gap:12px;align-items:center}
+  .et.nodl .et-h,.et.nodl .et-line{grid-template-columns:minmax(0,1.35fr) minmax(222px,1fr) 24px}
+  .et-h{padding:0 16px 8px 0;color:#717171;font-size:16px}
+  .et-row{background:#f6f7fa;border-radius:12px;margin-bottom:8px;padding:16px}
+  .et-h{padding-left:0;padding-right:16px}
+  .et-name{font-size:16px;line-height:22px;padding:0;text-align:left;color:#222}
+  .et-dl{font-size:16px;white-space:nowrap}
+  .et-chev{padding:4px;display:inline-flex;justify-self:end}
+  .et-body{margin-top:18px;display:flex;flex-direction:column;gap:4px;font-size:16px;line-height:22px}
+  .et-body b{font-weight:600}.et-body b:nth-of-type(n+2){margin-top:8px}
+  .chip-wrap{position:relative;display:block;width:222px;max-width:100%}
+  .echip{width:100%;display:flex;align-items:center;gap:7px;border:1px solid #d7e5fc;background:#ecf3ff;color:#1668b6;border-radius:8px;padding:3px 8px;font-size:14px;line-height:18px;text-align:left;min-height:26px}
+  .echip{gap:6px;padding:3px 7px;letter-spacing:-.1px}.echip>span{flex:1}.echip svg:first-child,.ep svg{width:16px;height:16px;flex-shrink:0}
+  .echip .cv{width:14px;height:14px}
+  .echip.ok{background:#f0fbdf;border-color:#d3eaa9;color:#254002}
+  .echip.no{background:#fae1e2;border-color:#f7d7cf;color:#c51e37}
+  .echip.exp{background:#fae1e2;border-color:#f7d7cf;color:#c15217}
+  .echip-pop{position:absolute;z-index:30;left:0;top:calc(100% + 6px);width:100%;background:#fff;border:1px solid #eff0f2;border-radius:8px;box-shadow:0 12px 32px #263b6426;padding:8px;display:flex;flex-direction:column;gap:14px}
+  .ep{display:flex;gap:8px;align-items:center;font-size:14px;line-height:18px;color:#222}
+  .ep small{display:block;font-size:12px;line-height:16px;color:#8a8f99}
+  @media(max-width:1300px){.et-h{display:none}.et-line,.et.nodl .et-line{grid-template-columns:minmax(0,1fr) 24px}.et-line .chip-wrap{grid-row:2;grid-column:1}.et-line .et-dl{grid-row:3;grid-column:1}.et-line .et-dl:not(:empty):before{content:'Срок до '}.et-line .et-chev{grid-row:1;grid-column:2}}
+  @media(max-width:800px){.sel,.off-field input{width:100%!important}.tip-pop,.tip-pop.wide{position:fixed;left:16px;right:16px;bottom:76px;width:auto!important;transform:none;max-height:60vh;overflow:auto;z-index:50}.tip-pop:after{display:none}.vac-row{gap:24px;margin-bottom:24px}.bal{padding-left:0}.cal-ms{grid-template-columns:minmax(0,1fr)!important}.hint-card p br{display:none}}
 </style>
 </head>
 <body>
@@ -419,7 +487,7 @@ const mk = (id, full, job, state, extra) => { const [f, n, o] = full.split(' ');
 const PEOPLE = [
   mk('e1','Конченко Денис Анатольевич','Ведущий аналитик','ok'),
   mk('e2','Бруев Михаил Олегович','Специалист','refuse'),
-  mk('e4','Афанасьева Дарья Игоревна','Продуктовый дизайнер','ok'),
+  mk('e4','Афанасьева Дарья Антоновна','Продуктовый дизайнер','ok'),
   mk('e5','Месниченко Святослав Сергеевич','Экономист','ok'),
   mk('e9','Иванов Антон Петрович','Аналитик','ok', true),
   mk('e3','Новиков Артём Ильич','Стажёр, 17 лет','ban', true),
@@ -433,16 +501,18 @@ const MAX_EMPS = 20;
 const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return n + ' ' + (m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c); };
 const COMP = {double:'Оплата в двойном размере', rest:'Одинарная оплата с предоставлением дня отдыха'};
 const TERMINAL = ['done','declined','expired','cancelled','paper'];
-const TITLES = {rvd:'Работа в выходной день', otgul:'Отгул за работу в выходной день', order:'Приказ на отгул за работу в выходной день'};
+const TITLES = {rvd:'Работа в выходной день', otgul:'Отгул за работу в выходной день', order:'Приказ на отгул'};
 /* Шаги: [этап, подпись пока идёт, подпись после выполнения] */
 const STEPS = {
-  rvd: [['created','Заявка сформирована','Заявка сформирована'],['confirm','Формирование уведомления','Формирование уведомления'],['sign','Подписание уведомления','Подписание уведомления'],['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['done','Завершение заявки','Заявка завершена']],
+  rvd: [['created','Формирование заявки','Заявка сформирована'],['confirm','Формирование уведомления','Уведомление сформировано'],['sign','Подписание уведомления','Уведомление подписано'],['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['done','Завершение заявки','Заявка завершена']],
   otgul: [['draft','Формирование заявки','Заявка сформирована'],['sign','Подписание заявления','Заявление подписано'],['approve','Согласование руководителем','Согласовано руководителем'],['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['orderSign','Подписание приказа','Приказ подписан']],
+  /* Заявка на нескольких, пока идёт: у каждого свой статус, поэтому общий шаг — «Заявка на исполнении» */
+  rvdMulti: [['created','Формирование заявки','Заявка сформирована'],['confirm','Формирование уведомления','Формирование уведомления'],['exec','Заявка на исполнении','Заявка на исполнении'],['done','Завершение заявки','Заявка завершена']],
   order: [['hr','Формирование приказа Отделом кадров','Приказ сформирован Отделом кадров'],['orderSign','Подписание приказа','Приказ подписан']],
 };
 /* Как подписан остановленный шаг: отказ — «Отклонена сотрудником», отмена кадрами — «Заявка отменена», иначе — название шага */
 const STOP_LABEL = {declined:'Отклонена сотрудником', cancelled:'Заявка отменена'};
-const REFUSE_CATS = ['Женщины с детьми до 3 лет.','Работники с инвалидностью.','Работники, у которых есть дети с инвалидностью.','Работники, которые ухаживают за больными членами семьи по медицинскому заключению.','Матери и отцы, которые растят детей до 14 лет без супруга или супруги, и опекуны детей этого возраста.','Работники с ребёнком до 14 лет, если другой родитель работает вахтовым методом.','Работники с тремя и более детьми до 18 лет, пока младшему не исполнилось 14.','Работники с ребёнком до 14 лет, если другой родитель призван по мобилизации, заключил контракт о военной службе (периоды указаны в БТ) или о добровольном содействии Вооружённым Силам либо Росгвардии.'];
+const REFUSE_CATS = ['Женщины с детьми до 3 лет.','Работники с инвалидностью.','Работники, у которых есть дети с инвалидностью.','Работники, которые ухаживают за больными членами семьи по медицинскому заключению.','Матери и отцы, которые растят детей до 14 лет без супруга или супруги, и опекуны детей этого возраста.','Работники с ребёнком до 14 лет, если другой родитель работает вахтовым методом.','Работники с тремя и более детьми до 18 лет, пока младшему не исполнилось 14.','Работники с ребёнком до 14 лет, если другой родитель:<ul><li>призван по мобилизации;</li><li>или заключил контракт о военной службе;</li><li>или заключил контракт о добровольном содействии Вооружённым Силам либо Росгвардии.</li></ul>'];
 
 /* ================= Даты и сроки ================= */
 /* Часы прототипа: время идёт по сценарию (октябрь 2026, как в макетах), а не по реальному календарю */
@@ -477,16 +547,24 @@ function deadlines(firstIso){ const D = prevWorkday(parse(firstIso)), C = prevWo
 function otgulDeadlines(firstOff){ const d = parse(firstOff); return {employee: atTime(nPrevWork(d,4),23,59), manager: atTime(nPrevWork(d,2),23,59), hr: atTime(nPrevWork(d,1),23,59)}; }
 const orderDeadline = t => atTime(addWorkdays(new Date(t),3),23,59);
 const expiresOf = rvd => rvd >= '2025-03-01' ? iso(addDays(parse(rvd), 364)) : null;
-function bank(empId, exceptId){
-  const today = iso(new Date());
+function bankDays(empId, exceptId){
   const own = S.requests.filter(r => r.type === 'rvd' && r.stage === 'done' && r.employeeId === empId).flatMap(r => r.dates.filter(s => r.comp[s] === 'rest' && !r.rest[s]));
   const legacy = (S.legacy || []).filter(l => l.employeeId === empId).map(l => l.rvd);
   const used = new Set(S.requests.filter(r => r.type !== 'rvd' && r.employeeId === empId && r.id !== exceptId && !['expired','cancelled'].includes(r.stage)).flatMap(r => r.pairs.map(p => p.rvd)));
-  return [...new Set(legacy.concat(own))].filter(s => !used.has(s)).map(s => ({rvd:s, expires:expiresOf(s)})).filter(b => !b.expires || b.expires >= today).sort((a,b) => a.rvd < b.rvd ? -1 : 1);
+  return [...new Set(legacy.concat(own))].filter(s => !used.has(s)).map(s => ({rvd:s, expires:expiresOf(s)})).sort((a,b) => a.rvd < b.rvd ? 1 : -1);
+}
+/* Можно взять отгулом / истёк год — день остаётся только для компенсации при увольнении */
+const isLive = b => !b.expires || b.expires >= iso(new Date());
+const bank = (empId, exceptId) => bankDays(empId, exceptId).filter(isLive);
+const bankLost = (empId, exceptId) => bankDays(empId, exceptId).filter(b => !isLive(b));
+const days = n => plural(n, 'день', 'дня', 'дней');
+function bankSummary(empId, exceptId){
+  const a = bank(empId, exceptId).length, l = bankLost(empId, exceptId).length;
+  return `<div class="bank-sum"><b>${days(a + l)} в банке отгулов ${tip('Дни, заработанные за работу в выходной день')}${qpin('Q07','Когда день попадает в банк, резервируется и возвращается — не описано')}</b><p>Доступно для использования — ${days(a)}</p><p>Доступно для компенсации при увольнении — ${days(l)}</p></div>`;
 }
 
 /* ================= Состояние ================= */
-const KEY = 'rvd-figma-v3';
+const KEY = 'rvd-figma-v4';
 let S;
 const GOAL = 'Перенос интеграции с 1С на новый сервер в окно минимальной нагрузки';
 const RVD_CREATED = at(2026,10,21,10);
@@ -506,12 +584,12 @@ function rvdReq(g, k, emp, stage, o = {}){
   delete o.stopAt;
   return Object.assign(r, o);
 }
-/* Заявка на отгул Дарьи: № 3 518 от 23.10, отгулы 03.11 и 05.11 за 31.10 и 01.11 */
+/* Заявка на отгул Дарьи: № 3 518 от 23.10, отгул 03.11 за 31.10. По макету — один отгул в заявке */
 function otgulReq(stage, o = {}){
   const keys = STEPS.otgul.map(s => s[0]);
   const T = {draft:at(2026,10,23,10), sign:at(2026,10,23,11), approve:at(2026,10,26,10), hr:at(2026,10,27,15), orderSign:at(2026,10,28,10)};
   const stopped = ['expired','cancelled','paper'].includes(stage), cur = stopped ? o.stopStage : stage;
-  const r = {id:'r3518', num:'3518', type:'otgul', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-03'},{rvd:'2026-11-01', off:'2026-11-05'}], stage, created:T.draft, at:{}, viewedApp:true, viewedOrder:true,
+  const r = {id:'r3518', num:'3518', type:'otgul', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-03'}], stage, created:T.draft, at:{}, viewedApp:true, viewedOrder:true,
     history:[{t:T.draft, text:'Афанасьева Дарья сформировала заявление на отгул'}]};
   const ci = stage === 'done' ? keys.length : keys.indexOf(cur);
   keys.slice(0, ci).forEach(x => r.at[x] = T[x]);
@@ -533,7 +611,7 @@ function seed(){
       rvdReq(g, 0, 'e1', 'confirm'),
       rvdReq(g, 1, 'e2', 'hr'),
       rvdReq(g, 2, 'e5', 'sign', {viewed:false}),
-      rvdReq(gb, 0, 'e4', 'done', {dates:['2026-10-31','2026-11-01'], comp:{'2026-10-31':'rest','2026-11-01':'rest'}, rest:{}}),
+      rvdReq(gb, 0, 'e4', 'done', {dates:['2026-10-31'], comp:{'2026-10-31':'rest'}, rest:{}}),
       otgulReq('approve'),
     ],
     notes:[
@@ -541,10 +619,11 @@ function seed(){
       {id:2, to:'m1', t:RVD_CREATED, subject:'Заявка «Работа в выходной день» перешла на этап подтверждение сотрудником', body:'Подробности смотри в заявке.', req:'g3432', read:true},
       {id:3, to:'m1', t:at(2026,10,23,11), subject:'Заявка «Отгул за работу в выходной день» от сотрудника: Афанасьева Дарья', body:'Пожалуйста, обработай заявку до 30.10.2026.', req:'r3518', read:false},
     ],
-    legacy:[{employeeId:'e1', rvd:'2025-01-18'}],
+    /* У Дарьи 5 дней: 2 можно взять (31.10.2026 и бессрочный за 09.02.2025), у 3 истёк год */
+    legacy:[{employeeId:'e1', rvd:'2025-01-18'}, ...['2025-02-09','2025-03-09','2025-03-15','2025-05-10'].map(rvd => ({employeeId:'e4', rvd}))],
   };
   // rvdReq для банка Дарьи проставил двойную оплату по умолчанию — здесь одинарная с днём отдыха
-  s.requests[3].comp = {'2026-10-31':'rest','2026-11-01':'rest'};
+  s.requests[3].comp = {'2026-10-31':'rest'};
   return s;
 }
 function load(){ try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && v.requests && v.groups) { CLOCK = v.clock || CLOCK; return v; } } catch(e){} return seed(); }
@@ -582,11 +661,8 @@ function statusText(r){
   return {confirm:'Формирование уведомления', sign:'Подписание уведомления', hr:'Формирование приказа', done:'Завершена', declined:'Отказ сотрудника', expired:'Отменена: истёк срок', cancelled:'Отменена отделом кадров'}[r.stage];
 }
 function whoNow(r){
-  if (TERMINAL.includes(r.stage)) return '—';
-  if (r.stage === 'hr') return HR;
-  const emp = person(r.employeeId);
-  if (r.stage === 'approve') return isMgr() ? 'На мне' : MANAGER.short;
-  return r.employeeId === S.persona ? 'На мне' : isMgr() ? 'Сотрудник' : emp.short;
+  if (TERMINAL.includes(r.stage)) return '';
+  return r.stage === 'hr' ? HR : r.stage === 'approve' ? MANAGER.name : 'Сотрудник';
 }
 /* Сводный статус заявки на нескольких. Отказ/просрочка одного закрывает только его часть — допущение, Q06. */
 function gInfo(g){
@@ -598,7 +674,7 @@ function gInfo(g){
   else if (done) { status = `Оформлена частично · ${done} из ${bs.length}`; cls = 'partial'; }
   else { status = bs.length === 1 ? statusText(bs[0]) : 'Не оформлена'; cls = 'cancel'; }
   const dl = live.map(stageDeadline).filter(Boolean).sort((a,b) => a - b)[0] || null;
-  const who = !live.length ? '—' : atEmp.length === 1 ? person(atEmp[0].employeeId).short : atEmp.length ? 'Сотрудники' : HR;
+  const who = !live.length ? '' : !atEmp.length ? HR : bs.length === 1 ? 'Сотрудник' : 'Сотрудники';
   return {bs, live, done, atEmp:atEmp.length, atHr, off: bs.length - done - live.length, status, cls, dl, who, terminal: !live.length};
 }
 const authorLine = g => g && g.by ? `${esc(g.by.name)} (${esc(g.by.role)}) за ${esc(MANAGER.acc)}` : esc(MANAGER.name);
@@ -612,6 +688,7 @@ const I = {
   part:'<svg viewBox="0 0 24 24" fill="none" stroke="#7a5200" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v19A9.5 9.5 0 0 0 12 2.5Z" fill="#f0b429" stroke="none"/></svg>',
   okc:'<svg viewBox="0 0 24 24" fill="none" stroke="#3c6c00" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.3 3 3 6-6.3" stroke-linecap="round"/></svg>',
   bulb:'<img class="asset" src="assets/bulb.svg" alt="" width="20" height="20">',
+  mark:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="3"><path d="M19.6 9.5A8 8 0 1 1 12 4"/><circle cx="12" cy="12" r="3" fill="#222" stroke="none"/><circle cx="18" cy="5.5" r="2" fill="#222" stroke="none"/></svg>',
   zoom:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"/></svg>',
   expand:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#53565d" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3"/><path d="M5 9v2h2M11 7V5H9"/></svg>',
   plus:'<svg width="16" height="16" viewBox="0 0 16 16" stroke="#222" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>',
@@ -655,7 +732,7 @@ function tabItems(tab){
   return tab === 'mine' ? S.requests.filter(r => r.employeeId === S.persona).map(it) : [];
 }
 function renderToolbar(){
-  const cnt = t => tabItems(t).filter(({r}) => r ? needsMe(r) : false).length;
+  const cnt = t => tabItems(t).filter(({r}) => r ? needsMe(r) : false).length + (t === 'mine' && ['new','newOtgul'].includes(S.selected) ? 1 : 0);
   const tab = (k, l) => { const n = cnt(k); return `<button type="button" data-tab="${k}" class="${S.tab===k?'active':''}" aria-pressed="${S.tab===k}">${l}${n ? `<span class="badge">${n}</span>` : ''}</button>`; };
   const menu = isMgr() ? `<button type="button" data-create="rvd" role="menuitem">${icoAsset('requests')}Работа в выходной день</button>` : `<button type="button" data-create="otgul" role="menuitem">${icoAsset('requests')}Отгул за работу в выходной день</button>`;
   const bankChip = `<span class="spacer"></span><button type="button" class="view-tog" data-stub aria-label="Вид списка"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/></svg></button>`;
@@ -674,17 +751,20 @@ function renderList(){
     if (g) {
       const X = gInfo(g);
       return `<button type="button" class="list-row ${S.selected===g.id || selGroup===g.id ?'selected':''}" data-open="${g.id}">${bubble(X.cls, false)}
-        <span class="row-copy"><b>Работа в выходной день</b><small>Иное</small></span><span class="row-meta">${X.who}</span><span class="row-meta">${X.dl ? fmtD(X.dl) : ''}</span></button>`;
+        <span class="row-copy"><b>Работа в выходной день</b><small>Иное</small></span><span class="row-meta">${X.who}</span><span class="row-meta">${X.dl && X.bs.length === 1 ? fmtD(X.dl) : ''}</span></button>`;
     }
     const dl = stageDeadline(r), cls = r.stage === 'done' ? 'done' : TERMINAL.includes(r.stage) ? 'cancel' : '';
     return `<button type="button" class="list-row ${S.selected===r.id?'selected':''}" data-open="${r.id}">${bubble(cls, needsMe(r))}
       <span class="row-copy"><b>${TITLES[r.type]}</b><small>Иное</small></span><span class="row-meta">${whoNow(r)}</span><span class="row-meta">${dl ? fmtD(dl) : ''}</span></button>`;
   }).join('');
+  /* Черновик, который сейчас заполняют */
+  const isDraft = S.tab === 'mine' && ['new','newOtgul'].includes(S.selected);
+  const draft = isDraft ? `<button type="button" class="list-row selected" data-open="${S.selected}">${bubble('', true)}<span class="row-copy"><b>${S.selected === 'new' ? TITLES.rvd : TITLES.otgul}</b><small>Иное</small></span><span class="row-meta">${S.selected === 'new' ? 'Руководитель' : 'Сотрудник'}</span><span class="row-meta"></span></button>` : '';
   /* Чужие заявки из других процессов — для контекста, как в макетах */
   const other = S.tab === 'mine' ? [['Выпуск УНЭП'], ['Верификация номера телефона']].map(([t]) => `<button type="button" class="list-row" data-stub>${bubble('done', false)}<span class="row-copy"><b>${t}</b><small>Электронная подпись (УНЭП)</small></span><span class="row-meta"></span><span class="row-meta"></span></button>`).join('') : '';
   const empty = S.tab === 'approve' ? 'Здесь появятся заявки, которые нужно согласовать.' : '';
-  $('#list').innerHTML = `<div class="list-head"><span><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#8a8f99" stroke-width="1.4"><path d="M2 3h14l-5.5 6.5V15l-3-1.5V9.5L2 3Z"/></svg></span><span>Тип</span><span>На ком сейчас</span><span>Срок до ⇅</span></div>` + (rows || other ? rows + other : `<p class="empty-list">${empty}</p>`);
-  $('#pager').innerHTML = `<span><button type="button" data-stub aria-label="Назад">‹</button><span class="page-one">1</span><button type="button" data-stub aria-label="Вперёд">›</button></span><span>Всего: ${items.length + (other ? 2 : 0)}<span class="per-page"> &nbsp;|&nbsp; На странице 10 ⌄</span></span>`;
+  $('#list').innerHTML = `<div class="list-head"><span><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#8a8f99" stroke-width="1.4"><path d="M2 3h14l-5.5 6.5V15l-3-1.5V9.5L2 3Z"/></svg></span><span>Тип</span><span>На ком сейчас</span><span>Срок до ⇅</span></div>` + (draft || rows || other ? draft + rows + other : `<p class="empty-list">${empty}</p>`);
+  $('#pager').innerHTML = `<span><button type="button" data-stub aria-label="Назад">‹</button><span class="page-one">1</span><button type="button" data-stub aria-label="Вперёд">›</button></span><span>Всего: ${items.length + (other ? 2 : 0) + (isDraft ? 1 : 0)}<span class="per-page"> &nbsp;|&nbsp; На странице 10 ⌄</span></span>`;
 }
 function renderDetail(){
   const ws = $('#workspace'), d = $('#detail');
@@ -697,7 +777,7 @@ function renderDetail(){
   const r = S.selected && req(S.selected);
   if (!r) { S.selected = null; ws.classList.remove('has-detail','expanded'); d.innerHTML = `<section class="panel"><div class="empty-detail"><img src="assets/requests.svg" alt="" width="40" height="40"><b>Выбери заявку в списке</b><span>${isMgr() ? 'или создай новую через «Создать»' : 'или оформи отгул через «Создать»'}</span></div></section>`; return; }
   const mine = r.employeeId === S.persona;
-  d.innerHTML = back() + (r.type === 'otgul' ? (mine ? otgulEmployee(r) : otgulManager(r)) : r.type === 'order' ? orderView(r) : mine ? employeeRvd(r) : managerRvd(r, false));
+  d.innerHTML = back() + (r.type === 'otgul' ? (mine ? otgulEmployee(r) : otgulManager(r)) : r.type === 'order' ? orderView(r) : mine ? employeeRvd(r) : groupView(grp(r.group)));
   if (r.type === 'rvd' && mine && r.stage === 'confirm') bindConfirm(r);
   if (r.type === 'otgul' && mine && r.stage === 'draft') bindOtgul(r);
 }
@@ -715,10 +795,10 @@ function statusMsg(kind, title, sub){
   return `<div class="status-message"><span class="status-icon ${kind === 'clock' ? '' : kind}" aria-hidden="true">${ic}</span><div><b>${title}</b>${sub ? `<p>${sub}</p>` : ''}</div></div>`;
 }
 const resp = name => `Ответственный — <a href="#" class="link" data-stub>${esc(name)}</a>`;
-const ready = text => `<div class="ready">${I.ready}<div><b>Готово!</b><p>${text}</p></div></div>`;
+const ready = (text, title = 'Готово!') => `<div class="ready">${I.ready}<div><b>${title}</b><p>${text}</p></div></div>`;
 const rateBox = () => `<div class="rate-box"><div class="faces">${FACES.map((m,i) => `<button type="button" data-rate="${i}" aria-label="Оценка ${i+1}">${I.face(m)}</button>`).join('')}</div>Оцени заявку</div>`;
 function bubbleMsg(label, who, text){
-  return `<p class="bubble-label">${label}</p><div class="bubble-wrap"><span class="bub-ava" aria-hidden="true">${who === HR ? 'ОК' : esc(who.split(' ').map(x => x[0]).join('').slice(0,2))}</span><div class="bubble"><b>${esc(who)}</b>${esc(text)}</div></div>`;
+  return `<p class="bubble-label">${label}</p><div class="bubble-wrap"><span class="bub-ava" aria-hidden="true">${I.mark}</span><div class="bubble"><b>${esc(who)}</b>${esc(text)}</div></div>`;
 }
 const DOCS = {notice:'Уведомление о необходимости работы в выходные (и (или) нерабочие праздничные дни)', order:'Приказ на работу в выходной день', application:'Заявление на отгул', otgulOrder:'Приказ на отгул за работу в выходной день'};
 const pdfRow = (kind, r, name) => `<button type="button" class="pdf-row" data-doc="${kind}" data-req="${r.id}"><span class="pdf-ico">PDF</span><span><b>${esc(name || DOCS[kind])}.pdf</b><small>1,4 Мб</small></span><img class="asset" src="assets/eyeSmall.svg" alt="Открыть" width="20" height="20"></button>`;
@@ -729,16 +809,16 @@ function signBlock(r, kind, viewed, act, extra){
       <span class="zoom">${I.zoom}</span><span class="viewed-tag ${viewed ? '' : 'unread'}">${viewed ? 'просмотрено' : 'не просмотрено'}</span>
       <span class="thumb-caption"><span class="pdf-ico">PDF</span><span>${DOCS[kind]}</span></span></button>
     <div class="sign-info"><p class="ttl"><span class="status-icon idea">${I.bulb}</span>Ознакомься и подпиши</p><b>${DOCS[kind]}</b>
-      <p class="instruction">На документе появится отметка «Просмотрено», и станет доступна кнопка «Подписать»${extra ? '. ' + extra : ''}</p></div></div>
+      <p class="instruction">На документе появится отметка «Просмотрено», и станет доступна кнопка «Подписать»</p>${extra || ''}</div></div>
     <div class="form-actions"><button type="button" class="btn ${viewed ? '' : 'grey'}" data-act="${act}" ${viewed ? '' : 'disabled'}>Подписать</button></div>`;
 }
-function detailsBlock(inner){
-  return `<details class="details"><summary><h2>Посмотреть детали по заявке</h2><img class="asset" src="assets/chevron.svg" alt="" width="20" height="20"></summary><div class="details-body">${inner}</div></details>`;
+function detailsBlock(inner, open){
+  return `<details class="details" ${open ? 'open' : ''}><summary><h2>Посмотреть детали по заявке</h2><img class="asset" src="assets/chevron.svg" alt="" width="20" height="20"></summary><div class="details-body">${inner}</div></details>`;
 }
 function historyHtml(x){ return `<div class="pair"><dt>История</dt><dd><ul class="history">${x.history.slice().reverse().map(h => `<li><time>${fmtStamp(h.t)}</time><span>${esc(h.text)}</span></li>`).join('')}</ul></dd></div>`; }
 function steps(kind, x, extra = {}, mgr = false){
   let st = STEPS[kind];
-  if (mgr) st = st.map(s => s[0] === 'orderSign' ? [s[0], 'Подписание приказа сотрудником', 'Приказ подписан сотрудником'] : s);
+  if (mgr) st = st.map(s => s[0] === 'orderSign' ? [s[0], 'Подписание приказа сотрудником', 'Приказ подписан сотрудником'] : kind === 'rvd' && ['confirm','sign'].includes(s[0]) ? [s[0], s[1], s[1]] : s);
   const keys = st.map(s => s[0]), stopped = ['declined','expired','cancelled','paper'].includes(x.stage);
   const cur = x.stage === 'done' ? keys.length : stopped ? Math.max(0, keys.indexOf(x.stopStage)) : keys.indexOf(x.stage);
   if (stopped) st = st.slice(0, cur + 1); /* после остановки дальнейшие шаги не показываем — как в макетах */
@@ -749,25 +829,25 @@ function steps(kind, x, extra = {}, mgr = false){
     else if (i === cur && stopped) { c = 'stop'; mark = '✕'; lbl = STOP_LABEL[x.stage] || l; date = at.stop ? fmtD(new Date(at.stop)) : ''; cls = x.stage === 'expired' || x.stage === 'paper' ? 'future' : ''; }
     else if (i === cur) { c = 'wait'; }
     else cls = 'future';
-    if (k === 'created' && x.created) date = fmtD(new Date(x.created));
+    if (k === 'created' && i < cur && x.created) date = fmtD(new Date(x.created));
     if (k === 'done' && x.stage === 'done' && at.done) date = fmtD(new Date(at.done));
     const ex = i < cur && extra[k] ? `<small>${esc(extra[k])}</small>` : '';
     return `<div class="step ${cls}"><div class="step-circle ${c}" aria-hidden="true">${mark}</div><b>${lbl}</b>${ex}${date ? `<small>${date}</small>` : ''}<span class="sr">: ${i < cur ? 'выполнено' : i === cur ? 'текущий этап' : 'впереди'}</span></div>`;
   }).join('') + `</div>`;
 }
 function rvdFields(r, withComp){
-  const g = grp(r.group);
   let comp = '';
   if (withComp && Object.keys(r.comp).length) comp = `<div class="pair"><dt>Компенсация</dt><dd><table class="comp-table">` + r.dates.map(s => {
     const rest = r.comp[s] === 'rest' ? (r.rest[s] ? '<br><small class="muted">Дата отгула: ' + fmtD(parse(r.rest[s])) + '</small>' : '<br><small class="muted">День отдыха — позже, из банка отгулов</small>') : '';
-    return `<tr><td>${fmtWD(parse(s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
+    return `<tr><td>${fmtDayLong(parse(s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
   }).join('') + `</table></dd></div>`;
-  return `<dl class="general-fields"><div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}<br><small class="muted">${esc(person(r.employeeId).pos)}</small></dd></div>
-    <div class="pair"><dt>Дата работы в выходной день</dt><dd>${r.dates.map(s => fmtD(parse(s))).join(', ')}</dd></div>
-    <div class="pair"><dt>Цель работы в выходной день</dt><dd>${esc(r.goal)}</dd></div>${comp}
-    <div class="pair"><dt>Инициатор</dt><dd>${authorLine(g)}</dd></div>${historyHtml(r)}</dl>`;
+  return `<dl class="general-fields"><div class="pair"><dt>Цель работы</dt><dd>${esc(r.goal)}</dd></div>
+    <div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div>
+    <div class="pair"><dt>Дата работы</dt><dd class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</dd></div>${comp}</dl>`;
 }
-const pairsRead = r => `<dl class="pairs-read">${pairsSorted(r).map(p => `<div><dt>Дата отгула за ${fmtWD(parse(p.rvd))}</dt><dd>${fmtD(parse(p.off))}</dd></div>`).join('')}</dl>`;
+const pairsRead = r => `<dl class="pairs-read">${pairsSorted(r).map(p => `<div><dt>Дата отгула за ${fmtDayLong(parse(p.rvd))}</dt><dd>${fmtDayLong(parse(p.off))}</dd></div>`).join('')}</dl>`;
+/* «Дата отгула: 03.11.2026, вторник» у сотрудника */
+const offDate = r => `<div class="off-date"><span>Дата отгула:</span><b>${pairsSorted(r).map(p => fmtDayLong(parse(p.off))).join('<br>')}</b></div>`;
 const tip = text => `<span class="tipwrap"><button type="button" class="tip-btn" aria-label="Подсказка">i</button><span class="tip-pop" role="tooltip">${text}</span></span>`;
 const tipLink = (label, html) => `<span class="tipwrap"><button type="button" class="tip-link">${label}</button><span class="tip-pop wide" role="tooltip">${html}</span></span>`;
 
@@ -779,10 +859,10 @@ function employeeRvd(r){
   if (r.stage === 'sign') body = signBlock(r, 'notice', r.viewed, 'signNotice');
   else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
   else if (r.stage === 'done') { rate = true; body = ready('Заявка завершена, посмотри приказ ниже') + pdfRow('order', r); }
-  else if (r.stage === 'declined') { rate = true; body = statusMsg('cancel', 'Заявка отклонена') + (r.declineComment ? bubbleMsg('Твой комментарий:', person(r.employeeId).name, r.declineComment) : ''); }
+  else if (r.stage === 'declined') { rate = true; body = statusMsg('cancel', 'Заявка отклонена'); }
   else if (r.stage === 'expired') { rate = true; body = expiredMsg(r, true); }
   else { rate = true; body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, r.hrComment || '—') + `<p class="qnote">Q08: что откатывается в 1С/КЭДО и что с подписанными документами — не описано.</p>`; }
-  const det = ['declined','cancelled'].includes(r.stage) ? '' : detailsBlock(rvdFields(r, true));
+  const det = detailsBlock(rvdFields(r, true));
   return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${det}${steps('rvd', r)}`;
 }
 /* Просрочки РВД: по БТ (R14) заявка отменяется, на бумагу не переходит */
@@ -790,33 +870,33 @@ function expiredMsg(r, mine){
   const who = mine ? '' : person(r.employeeId).first + ': ';
   const t = {confirm: who + 'истёк срок выбора компенсации и формирования уведомления',
     sign: (who ? who + 'и' : 'И') + 'стёк срок ознакомления и электронного подписания документа',
-    hr: 'Истёк срок оформления приказа'}[r.stopStage] || '';
+    hr: 'Завершился срок ее согласования'}[r.stopStage] || '';
   return statusMsg('cancel', 'Заявка отменена', t + (mine && r.stopStage !== 'hr' ? `<br>Остались вопросы — пиши <a class="link" href="mailto:${HR_MAIL}">${HR_MAIL}</a>` : '')) + `<p class="qnote">Q15: в письмах — «отменена», в шагах БТ — «завершается». Нужен единый термин.</p>`;
 }
 function confirmForm(r, head){
-  const multi = r.dates.length > 1;
   const block = (s, i) => {
     const d = parse(s), v = r.comp[s] || '', rest = r.rest[s] || '', max = iso(addDays(d, 364));
-    const longMax = parse(max).toLocaleDateString('ru-RU', {day:'numeric', month:'long', year:'numeric'});
-    return `<fieldset class="comp-block" data-date="${s}" style="border:0;padding:0;min-width:0"><legend class="comp-q">Выбери, как получить компенсацию за работу ${multi ? fmtD(d) : 'в выходной'}</legend>
+    return `<fieldset class="comp-block" data-date="${s}"><legend class="comp-day">${fmtDayLong(d)}</legend>
       <div class="choices" role="radiogroup" aria-label="Компенсация за ${fmtD(d)}">
         <label><input type="radio" name="comp-${i}" value="double" ${v==='double'?'checked':''}>Оплата в двойном размере</label>
         <label><input type="radio" name="comp-${i}" value="rest" ${v==='rest'?'checked':''}>Одинарная оплата с предоставлением дня отдыха (выбери дни отгула)</label></div>
       <p class="err" data-err="comp-${i}" hidden>Выбери компенсацию за этот день</p>
-      <div class="field rest-field" data-rest="${s}" ${v==='rest'?'':'hidden'}><span class="label">${multi ? 'Дата отгула' : 'Дата отгула за ' + fmtD(d)} ${tip(`Можно не выбирать сейчас — день останется в банке отгулов. Доступен рабочий день до ${longMax}`)}</span>
-        <div class="date-line"><input type="date" id="rest-${i}" value="${rest}" min="${iso(addDays(d,1))}" max="${max}" aria-label="Дата отгула за ${fmtD(d)}"></div><p class="err" data-err="rest-${i}" hidden></p></div></fieldset>`;
+      <div class="field rest-field" data-rest="${s}" ${v==='rest'?'':'hidden'}><span class="label">Дата отгула</span>
+        <div class="date-line"><input type="date" id="rest-${i}" value="${rest}" min="${iso(addDays(d,1))}" max="${max}" aria-label="Дата отгула за ${fmtD(d)}"></div><p class="err" data-err="rest-${i}" hidden></p>
+        <p class="help">Можно не выбирать сейчас — день останется в банке отгулов.<br>Для выбора доступен рабочий день до ${fmtD(parse(max))}</p></div></fieldset>`;
   };
   const cats = `<ol>${REFUSE_CATS.map(c => '<li>' + c + '</li>').join('')}</ol>`;
-  /* Два варианта отказа (решено держать оба): «модалка» — отказ доступен всем, с комментарием; «чекбокс» — по БТ (R11), только для категорий */
+  /* В макетах отказ доступен всем, с комментарием. «Чекбокс категории» — вариант по БТ (R11), включается в «⚙ События» */
   const consent = S.refuseMode === 'checkbox'
     ? `<label class="checkline consent"><input type="checkbox" id="catCheck"><span>Я отношусь к ${tipLink('категории граждан, которые могут отказаться от привлечения к работе в выходной/праздничный день', cats)}</span></label>`
     : `<div class="consent">Формируя уведомление, я подтверждаю, что ознакомлен<br>с правом ${tipLink('отказаться от привлечения к работе в выходной/праздничный день', cats)}</div>`;
   return `<section class="panel">${head}
-    <dl class="pairs-read" style="margin-bottom:24px"><div><dt>Дата работы в выходной день</dt><dd>${r.dates.map(s => fmtD(parse(s))).join(', ')}</dd></div><div><dt>Цель работы в выходной день</dt><dd>${esc(r.goal)}</dd></div></dl>
+    <dl class="pairs-read conf-read"><div><dt>Дата работы в выходной день</dt><dd>${r.dates.map(s => fmtD(parse(s))).join(', ')}</dd></div><div><dt>Цель работы в выходной день</dt><dd>${esc(r.goal)}</dd></div></dl>
     <form id="confirmForm" novalidate>
+      <p class="comp-q">Выбери, как получить компенсацию<br>за работу в выходной день</p>
       ${r.dates.map(block).join('')}
       ${consent}
-      <p class="qnote">${S.refuseMode === 'checkbox' ? 'Вариант по БТ (R11, стр. 11): «Отклонить» активна только после отметки категории. Q05: кто подтверждает категорию — открыт.' : 'Вариант команды: «Отклонить» доступна любому сотруднику, с комментарием. В БТ — только по чекбоксу категории (Q20).'}</p>
+      <p class="qnote">${S.refuseMode === 'checkbox' ? 'Вариант по БТ (R11, стр. 11): «Отклонить» активна только после отметки категории. Q05: кто подтверждает категорию — открыт.' : 'По макетам: «Отклонить» доступна любому сотруднику, с комментарием. В БТ — только по чекбоксу категории (Q20).'}</p>
       <p class="form-error" id="confirmErr" role="alert" hidden></p>
       <div class="form-actions"><button type="submit" class="btn">Сформировать уведомление</button><button type="button" class="btn outline-dark" id="declineBtn" ${S.refuseMode === 'checkbox' ? 'disabled' : ''}>Отклонить</button></div>
     </form></section>${steps('rvd', r)}`;
@@ -862,99 +942,82 @@ function checkRest(blk, r){
 }
 
 /* ================= РВД · руководитель ================= */
-function managerRvd(r, single){
-  const g = grp(r.group), p = person(r.employeeId), multi = !single && branches(g).length > 1;
-  const head = cardHead(multi ? `${TITLES.rvd} | ${esc(p.name)}` : TITLES.rvd, g || r, stageDeadline(r), dlPin(r));
-  let body, rate = false;
-  if (['confirm','sign'].includes(r.stage)) body = statusMsg('clock', 'Заявка обрабатывается', resp(p.first)) + (p.state === 'refuse' ? `<p class="emp-note"><span class="tag refuse" style="margin:0">Может отказаться</span></p>` : '');
-  else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
-  else if (r.stage === 'done') { rate = true; body = ready('Сотрудник подписал уведомление') + pdfRow('order', r); }
-  else if (r.stage === 'declined') { rate = true; body = statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (r.declineComment ? bubbleMsg('Комментарий сотрудника:', p.name, r.declineComment) : ''); }
-  else if (r.stage === 'expired') { rate = true; body = expiredMsg(r, false); }
-  else { rate = true; body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, r.hrComment || '—'); }
-  const up = `<button type="button" class="back-link" data-open="${g.id}">← К заявке (${plural(branches(g).length, 'сотрудник', 'сотрудника', 'сотрудников')})</button>`;
-  return `${up}<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${detailsBlock(rvdFields(r, r.signed))}${steps('rvd', r)}`;
+/* Что раскрыто в таблице сотрудников: строки с датами и список шагов под статусом */
+let U = {rows:{}, chip:null};
+const EST = {done:['ok','Заявка завершена'], declined:['no','Отклонено сотрудником'], expired:['exp','Отменено по дедлайну'], cancelled:['no','Отменено отделом кадров']};
+const EIC = {ok:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#7fb800"/><path d="m4.8 8.2 2.2 2.2 4.2-4.4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  wait:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#1480d8"/><path d="M8 4.2V8l2.4 1.6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  next:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#a3a3a3"/><path d="M8 4.2V8l2.4 1.6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  no:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#c51e37"/><path d="m5.6 5.6 4.8 4.8m0-4.8-4.8 4.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  exp:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#c15217"/><path d="m5.6 5.6 4.8 4.8m0-4.8-4.8 4.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>'};
+const CHEV = '<svg class="cv" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="m3 5.5 5 5 5-5"/></svg>';
+function empChip(r){
+  const st = STEPS.rvd.slice(1), keys = st.map(s => s[0]), stopped = ['declined','expired','cancelled'].includes(r.stage);
+  const cur = r.stage === 'done' ? st.length : keys.indexOf(stopped ? r.stopStage : r.stage);
+  const [cls, label] = EST[r.stage] || ['wait', st[cur][1]];
+  const at = r.at || {}, dt = v => v ? `<small>${fmtD(new Date(v))}</small>` : '';
+  const list = (stopped ? st.slice(0, cur) : st).map(([k, l, ld], i) => i < cur ? [EIC.ok, ld, dt(at[k])] : i === cur ? [EIC.wait, l, ''] : [EIC.next, l, '']);
+  if (stopped) list.push([EIC[cls], label, dt(at.stop)]);
+  const open = U.chip === r.id;
+  return `<span class="chip-wrap"><button type="button" class="echip ${cls}" data-echip="${r.id}" aria-expanded="${open}">${EIC[cls]}<span>${label}</span>${CHEV}</button>${open ? `<span class="echip-pop">${list.map(([ic, l, d]) => `<span class="ep">${ic}<span>${l}${d}</span></span>`).join('')}</span>` : ''}</span>`;
 }
-/* Сводка руководителя по макету: «Статусы по сотрудникам» и детали по каждому */
-const ST_GROUPS = [['wait','На подписании', r => ['confirm','sign'].includes(r.stage)], ['ok','Подписано', r => ['hr','done'].includes(r.stage)], ['exp','Отменено по дедлайну', r => r.stage === 'expired'], ['no','Отклонено', r => r.stage === 'declined'], ['no','Отменено отделом кадров', r => r.stage === 'cancelled']];
-function statusList(bs){
-  return `<p class="st-cap">Статусы по сотрудникам:</p>` + ST_GROUPS.map(([cls, label, f]) => { const l = bs.filter(f); return l.length ? `<div class="st-grp"><p class="st-lbl ${cls}">${label}<span>${l.length}</span></p>${l.map(r => `<button type="button" class="st-name" data-open="${r.id}">${esc(person(r.employeeId).full)}</button>`).join('')}</div>` : ''; }).join('');
-}
-function empDetails(bs, terminal){
-  return bs.map(r => { const g = ST_GROUPS.find(x => x[2](r)), signed = ['hr','done'].includes(r.stage);
-    return `<div class="emp-det">${terminal ? `<p class="st-lbl ${signed ? 'ok' : 'exp'}">${signed ? 'Подписано' : 'Не подписано'}</p>` : ''}<dl class="pairs-read">
-      <div><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div><div><dt>Дата работы</dt><dd class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</dd></div>
-      <div><dt>Цель работы</dt><dd>${esc(r.goal)}</dd></div>${r.declineComment ? `<div><dt>Комментарий</dt><dd>${esc(r.declineComment)}</dd></div>` : ''}</dl></div>`; }).join('');
+function empTable(bs, withDl){
+  return `<div class="et ${withDl ? '' : 'nodl'}"><div class="et-h"><span>Сотрудник</span><span>Статус</span>${withDl ? '<span>Срок до</span>' : ''}</div>` + bs.map(r => {
+    const open = !!U.rows[r.id], dl = stageDeadline(r), p = person(r.employeeId);
+    return `<div class="et-row"><div class="et-line"><button type="button" class="et-name" data-erow="${r.id}">${esc(p.full)}</button>${empChip(r)}${withDl ? `<span class="et-dl">${dl ? fmtD(dl) : ''}</span>` : ''}<button type="button" class="et-chev" data-erow="${r.id}" aria-expanded="${open}" aria-label="${open ? 'Свернуть' : 'Показать'} даты: ${esc(p.short)}">${CHEV}</button></div>
+      ${open ? `<div class="et-body"><b>Дата работы</b><span class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</span>${r.declineComment ? `<b>Комментарий сотрудника</b><span>${esc(r.declineComment)}</span>` : ''}${r.hrComment ? `<b>Комментарий отдела кадров</b><span>${esc(r.hrComment)}</span>` : ''}</div>` : ''}</div>`;
+  }).join('') + '</div>';
 }
 function groupView(g){
   const X = gInfo(g), n = X.bs.length, one = n === 1 ? X.bs[0] : null;
-  let body, rate = X.terminal;
-  if (!X.terminal) body = X.atEmp ? statusMsg('clock', 'Заявка обрабатывается', one ? resp(person(one.employeeId).first) : '') + (one ? '' : statusList(X.bs))
-    : statusMsg('clock', 'Приказ формируется', resp(HR)) + (one ? '' : statusList(X.bs));
-  else if (X.done === n) body = ready(n === 1 ? 'Сотрудник подписал уведомление' : 'Сотрудники подписали уведомление') + (one ? pdfRow('order', one) : '');
-  else if (X.done) body = ready('Заявка завершена') + `<p class="qnote">Q06: отказ или просрочка одного сотрудника не отменяет заявку для остальных — допущение, сверить с БТ.</p>`;
-  else if (one) body = one.stage === 'declined' ? statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (one.declineComment ? bubbleMsg('Комментарий сотрудника:', person(one.employeeId).name, one.declineComment) : '')
-    : one.stage === 'expired' ? expiredMsg(one, false) : statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, one.hrComment || '—');
-  else body = statusMsg('cancel', 'Заявка отменена', 'Ни один сотрудник не подписал уведомление') + statusList(X.bs);
+  const by = g.by ? `<p class="emp-note">Инициатор: ${authorLine(g)}</p>` : '';
+  if (one) {
+    let body;
+    if (['confirm','sign'].includes(one.stage)) body = statusMsg('clock', 'Заявка обрабатывается', resp(person(one.employeeId).first));
+    else if (one.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
+    else if (one.stage === 'done') body = ready('Сотрудник подписал уведомление');
+    else if (one.stage === 'declined') body = statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (one.declineComment ? bubbleMsg('Комментарий сотрудника:', person(one.employeeId).name, one.declineComment) : '');
+    else if (one.stage === 'expired') body = expiredMsg(one, false);
+    else body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, one.hrComment || '—');
+    const det = ['declined','cancelled'].includes(one.stage) ? '' : detailsBlock(rvdFields(one, false) + by, ['confirm','sign'].includes(one.stage));
+    return `<section class="panel">${X.terminal ? rateBox() : ''}${cardHead(TITLES.rvd, g, X.dl, dlPin(one))}${body}</section>${det}${steps('rvd', one, {}, true)}`;
+  }
+  const goal = `<dl class="pairs-read goal-read"><div><dt>Цель работы</dt><dd>${esc(X.bs[0].goal)}</dd></div></dl>`;
+  const top = !X.terminal ? statusMsg('clock', 'Заявка на исполнении') : X.done ? ready('Заявка завершена') : statusMsg('cancel', 'Заявка отменена', 'Ни один сотрудник не подписал уведомление');
+  const note = `<p class="qnote">Q06: отказ или просрочка одного сотрудника не отменяет заявку для остальных — допущение, сверить с БТ. Q25: срок — свой у каждого сотрудника.</p>`;
   const keys = STEPS.rvd.map(s => s[0]), gat = {};
-  keys.forEach(k => { const v = X.bs.map(r => r.at && r.at[k]).filter(Boolean); if (v.length) gat[k] = Math.min(...v); });
-  const gs = one ? one : !X.terminal ? {stage: X.atEmp ? (X.bs.some(r => r.stage === 'confirm') ? 'confirm' : 'sign') : 'hr', created:g.created, at:gat}
-    : X.done ? {stage:'done', created:g.created, at:Object.assign(gat, {done: gat.hr})} : {stage:'cancelled', stopStage:'confirm', created:g.created, at:gat};
-  const showDet = !(one && ['declined','cancelled'].includes(one.stage));
-  return `<section class="panel">${rate ? rateBox() : ''}${cardHead(TITLES.rvd, g, X.dl, qpin('Q25','Срок в заявке на нескольких: от самой ранней даты или своей у каждого? Здесь — у каждого свой'))}${body}</section>${showDet ? detailsBlock(empDetails(X.bs, X.terminal) + (g.by ? `<p class="emp-note">Инициатор: ${authorLine(g)}</p>` : '')) : ''}${steps('rvd', gs)}`;
-}
-const SDOT = {confirm:'wait', sign:'wait', hr:'hr', done:'ok', paper:'hr'};
-function groupViewOld(g){
-  const X = gInfo(g), n = X.bs.length;
-  let body, rate = false;
-  if (!X.terminal) body = X.atEmp ? statusMsg('clock', 'Ждём ответа сотрудников', `Ответили ${n - X.atEmp} из ${n} · ${resp('Сотрудники')}${qpin('Q06','Отказ или просрочка одного — закрывает всю заявку или только его часть? Здесь — только его часть')}`)
-    : statusMsg('clock', 'Приказ формируется', resp(HR) + qpin('Q24','Один приказ на всех или отдельный на каждого — не описано. Здесь — по каждому'));
-  else if (X.cls === 'done') { rate = true; body = ready(`Отдел кадров оформил приказы по всем сотрудникам (${n}).`); }
-  else if (X.cls === 'partial') { rate = true; body = statusMsg('partial', 'Заявка оформлена частично', `Оформлено ${X.done} из ${n}. По остальным — отказ, истёк срок или отмена кадрами.`); }
-  else { rate = true; body = statusMsg('cancel', 'Заявка не оформлена', 'Ни по одному сотруднику заявка не дошла до приказа.'); }
-  const pr = [['Всего', n], ['Ждём ответа', X.atEmp], ['В отделе кадров', X.atHr], ['Оформлено', X.done], ['Не оформлено', X.off]].filter(([,v], i) => i === 0 || v).map(([l,v]) => `<span><b>${v}</b>${l}</span>`).join('');
-  const goals = [...new Set(X.bs.map(r => r.goal))], one = goals.length === 1 ? goals[0] : null;
-  const rows = X.bs.map(r => { const p = person(r.employeeId), dl = stageDeadline(r);
-    return `<button type="button" class="emp-row" data-open="${r.id}"><span><b>${esc(p.full)}</b><small>${esc(p.pos)}</small></span><span>${r.dates.map(s => fmtD(parse(s)).slice(0,5)).join(', ')}<small>${plural(r.dates.length, 'дата', 'даты', 'дат')}</small></span>
-      <span class="st"><i class="sdot ${SDOT[r.stage] || 'no'}"></i>${SHORT[r.stage] || statusText(r)}</span><span>${dl ? fmtD(dl) : '—'}</span>${one ? '' : `<span class="emp-goal">Цель: ${esc(r.goal)}</span>`}</button>`; }).join('');
-  const dq = qpin('Q25','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого? Здесь — у каждого свой');
-  const det = `<dl class="general-fields">${one ? `<div class="pair"><dt>Цель работы в выходной день</dt><dd>${esc(one)}</dd></div>` : ''}<div class="pair"><dt>Бюджет</dt><dd>Согласован с владельцем бюджета</dd></div><div class="pair"><dt>Инициатор</dt><dd>${authorLine(g)}${g.by ? qpin('Q09','Права ИО/ассистента/делегата и как это видно сотруднику — не раскрыто') : ''}</dd></div>${historyHtml(g)}</dl>`;
-  const gs = !X.terminal ? {stage: X.atEmp ? (X.bs.some(r => r.stage === 'confirm') ? 'confirm' : 'sign') : 'hr', created:g.created, at:{}} : X.done ? {stage:'done', created:g.created, at:{}} : {stage:'cancelled', stopStage:'confirm', created:g.created, at:{}};
-  return `<section class="panel">${rate ? rateBox() : ''}${cardHead(TITLES.rvd, g, X.dl, dq)}${body}<div class="progress">${pr}</div>
-    <div class="emp-th"><span>Сотрудник</span><span>Даты работы</span><span>Статус</span><span>Срок до</span></div>${rows}
-    <p class="qnote">Сводный статус и таблица — предложение для полной версии (в макетах MVP их нет). Q06: что с заявкой при отказе одного сотрудника.</p></section>${detailsBlock(det)}${steps('rvd', gs)}`;
+  keys.forEach(k => { const v = X.bs.map(r => r.at && r.at[k]).filter(Boolean); if (v.length) gat[k] = Math.max(...v); });
+  let st;
+  if (!X.terminal) st = steps('rvdMulti', {stage: X.bs.every(r => r.stage === 'confirm') ? 'confirm' : 'exec', created:g.created, at:gat});
+  else if (X.done) st = steps('rvd', {stage:'done', created:g.created, at:Object.assign(gat, {done:gat.hr})}, {}, true);
+  else st = steps('rvd', {stage:'cancelled', stopStage:'confirm', created:g.created, at:Object.assign(gat, {stop:Math.max(...X.bs.map(r => (r.at || {}).stop || 0))})}, {}, true);
+  return `<section class="panel">${cardHead(TITLES.rvd, g, null)}${top}${goal}${empTable(X.bs, !X.terminal)}${by}${note}</section>${st}`;
 }
 
 /* ================= РВД · форма руководителя ================= */
 let F;
-const blankEmp = () => ({id:null, q:'', goal:'', dates:[''], open:false, col:false});
+const blankEmp = () => ({id:null, q:'', dates:[''], open:false, col:false});
 const nmShort = j => F.emps[j].id ? person(F.emps[j].id).short : 'Сотрудник ' + (j + 1);
 const datesOk = j => F.emps[j].dates.some(Boolean) && !F.emps[j].dates.some((v,i) => dateError(j,i));
-const canCopyAll = k => F.emps.length > 1 && !goalError(k) && datesOk(k);
+const canCopyAll = k => F.emps.length > 1 && datesOk(k);
 const COPY_IC = '<img class="asset" src="assets/copy.svg" alt="" width="16" height="16">';
 const TRASH_IC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#33363c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8V7M6 7l.9 12.2c.1 1 .9 1.8 1.9 1.8h6.4c1 0 1.8-.8 1.9-1.8L18 7M10 11v6M14 11v6"/></svg>';
-/* «Как у… ▾» под пустым полем: забрать цель или даты у другого сотрудника */
-function likeChip(k, what){
-  const isGoal = what === 'goal', src = F.emps.map((x,j) => j).filter(j => j !== k && (isGoal ? !goalError(j) : datesOk(j)));
-  if (!src.length) return '';
-  const e = F.emps[k], empty = isGoal ? !e.goal.trim() : !e.dates.some(Boolean);
-  const open = F.menu === what + ':' + k;
-  const opts = src.map(j => { const x = F.emps[j], sub = isGoal ? x.goal.trim() : x.dates.filter(Boolean).slice().sort().map(v => fmtD(parse(v))).join(', ');
-    return `<button type="button" role="menuitem" data-likepick="${what}:${k}:${j}"><b style="font-weight:600">${esc(nmShort(j))}</b><small>${esc(sub)}</small></button>`; }).join('');
-  return `<span class="like-wrap" id="like${isGoal ? 'G' : 'D'}${k}" ${empty ? '' : 'hidden'}><button type="button" class="like-btn" data-like="${what}:${k}" aria-haspopup="menu" aria-expanded="${open}">${COPY_IC}${isGoal ? 'Цель как у…' : 'Даты как у…'}<img class="asset chev" src="assets/chevron.svg" alt=""></button>
-    <div class="like-menu" role="menu" ${open ? '' : 'hidden'}><p class="cap">${isGoal ? 'Взять цель у сотрудника' : 'Взять даты у сотрудника'}</p>${opts}</div></span>`;
-}
-function newForm(){ F = {emps:[blankEmp()], budget:false, tried:false, menu:null}; }
+function newForm(){ F = {goal:'', emps:[blankEmp()], budget:false, tried:false}; }
 function createForm(){
   const today = {num:String(S.seq), created:Date.now()};
   return `<section class="panel"><div class="panel-head"><button type="button" class="expand" data-expand>${I.expand}${S.expanded ? 'Свернуть' : 'Развернуть'}</button><h1>${TITLES.rvd}</h1>
     <p class="meta"><span>№ ${numStr(today)}</span><span>Дата создания: ${fmtD(new Date())}</span></p>
     ${S.persona === 'd1' ? `<p class="meta" style="margin-top:6px"><span class="by">Заполняет ${DELEGATE.name} (ИО) за ${MANAGER.acc}</span>${qpin('Q09','Права ИО/делегата не раскрыты: здесь ИО создаёт заявку как руководитель')}</p>` : ''}</div>
-    <form id="createForm" novalidate><div id="emps"></div>
+    <form id="createForm" novalidate>
+      <div class="hint-card"><span class="status-icon idea" aria-hidden="true">${I.bulb}</span><div><b>Заполни цель работы и выбери сотрудников</b><p>Ты можешь выбрать до 20 человек в одной заявке,<br>каждому добавить до 10 дат в рамках ближайшего месяца (30 дней)</p></div></div>
+      <div class="field goal-field"><label class="label" for="goal">Цель работы в выходной день</label>
+        <textarea id="goal" placeholder="Опиши цель привлечения сотрудника для работы в выходной день" class="long" maxlength="512">${esc(F.goal)}</textarea>
+        <div class="under"><span class="bad" id="errGoal" hidden></span><span class="under-r"><span id="goalCnt"></span></span></div></div>
+      <div id="emps"></div>
       <div class="field" style="margin-top:8px"><label class="checkline"><input type="checkbox" id="budget" ${F.budget?'checked':''}>Я подтверждаю согласование с владельцем бюджета привлечения работников к работе в выходной/праздничный день</label>
         <p class="err" id="errBudget" hidden style="margin-left:36px">Без подтверждения согласования бюджета заявку отправить нельзя</p></div>
       <div class="notice" id="dlNotice" hidden></div>
-      <p class="form-error" id="createErr" role="alert" hidden></p>
+      <p class="sr" id="createErr" role="alert"></p>
       <div class="form-actions"><button type="submit" class="btn">Отправить</button><button type="button" class="btn outline-dark" id="delBtn">Удалить</button></div>
     </form></section>${steps('rvd', {stage:'created', created:Date.now(), at:{}})}`;
 }
@@ -963,7 +1026,6 @@ const allDates = () => F.emps.flatMap(e => e.dates).filter(Boolean);
 function empStatus(k){
   const e = F.emps[k];
   if (!e.id) return {ok:false, text:'Не выбран сотрудник'};
-  const g = goalError(k); if (g) return {ok:false, text: e.goal.trim() ? 'Цель короче 20 символов' : 'Нет цели'};
   if (!e.dates.some(Boolean)) return {ok:false, text:'Нет дат'};
   if (e.dates.some((v,i) => dateError(k,i))) return {ok:false, text:'Ошибка в датах'};
   return {ok:true, text:'Заполнено'};
@@ -974,69 +1036,68 @@ function collapseDone(except){ F.emps.forEach((e,k) => { if (k !== except && emp
 function renderEmps(){
   const k1 = F.emps.length, sts = F.emps.map((e,k) => empStatus(k));
   const anyOpen = F.emps.some(e => !e.col);
-  const bar = `<div class="emp-bar"><b>Сотрудники</b><span class="cnt">${k1}/${MAX_EMPS}</span>${tip('Можешь выбрать до 20 сотрудников в одной заявке. У каждого — своя цель и даты работы.')}${k1 > 1 ? `<button type="button" class="tog-all" id="togAll">${anyOpen ? 'Свернуть все' : 'Развернуть все'}</button>` : ''}</div>`;
+  const bar = `<div class="emp-bar"><b>Сотрудники</b><span class="cnt">${k1}/${MAX_EMPS}</span>${tip('Можешь выбрать до 20 сотрудников в одной заявке')}${k1 > 1 ? `<button type="button" class="tog-all" id="togAll">${anyOpen ? 'Свернуть все' : 'Развернуть все'}</button>` : ''}</div>`;
   $('#emps').innerHTML = bar + F.emps.map((e,k) => {
-    const p = e.id && person(e.id), gl = e.goal.trim().length, gErr = F.tried ? goalError(k) : '', st = sts[k], showBad = !st.ok && (e.col || F.tried);
-    const dates = e.dates.map((v,i) => `<div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}">${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errD${k}_${i}" hidden></p>`).join('');
+    const p = e.id && person(e.id), st = sts[k], showBad = !st.ok && (e.col || F.tried);
+    const dates = e.dates.map((v,i) => `<div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" max="${iso(addDays(new Date(),30))}" aria-label="Дата работы ${i+1}">${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errD${k}_${i}" hidden></p>`).join('');
     const dept = p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение';
     /* По макету: ФИО и подразделение в шапке — только у свёрнутой карточки; у развёрнутой шапка — поле «Выбери сотрудника» */
     const left = e.col ? `<button type="button" class="emp-toggle" data-tog="${k}" aria-expanded="false" aria-controls="empb${k}">
         <span class="emp-title"><b>${p ? esc(p.full) : 'Сотрудник'}${p && p.state === 'refuse' ? '<span class="tag refuse">Может отказаться</span>' : ''}</b>${showBad ? `<small class="bad" id="est${k}">${st.text}</small>` : `<small id="est${k}">${esc(dept)}</small>`}</span>
-        </button>` : `<span class="emp-open-lbl label">Выбери сотрудника <span class="required">*</span></span>`;
-    const head = `<div class="emp-head ${e.col ? '' : 'open'}">${left}<span class="emp-acts">${k1 > 1 ? `<button type="button" class="copy-all" id="copyAll${k}" data-apply="both:${k}" ${canCopyAll(k) ? '' : 'hidden'} title="Скопировать цель и даты всем сотрудникам">${COPY_IC}<span>Скопировать даты и цель всем</span></button><button type="button" class="ic del" data-rmemp="${k}" aria-label="Убрать сотрудника из заявки" title="Убрать из заявки">${TRASH_IC}</button>` : ''}<button type="button" class="ic" data-tog="${k}" aria-label="${e.col ? 'Развернуть' : 'Свернуть'}"><img class="asset emp-chev" src="assets/chevron.svg" alt="" width="18" height="18"></button></span></div>`;
+        </button>` : `<span class="emp-open-lbl label">Выбери сотрудника</span>`;
+    const head = `<div class="emp-head ${e.col ? '' : 'open'}">${left}<span class="emp-acts">${k1 > 1 ? `<button type="button" class="copy-all" id="copyAll${k}" data-apply="${k}" ${canCopyAll(k) ? '' : 'hidden'} title="Скопировать даты всем сотрудникам">${COPY_IC}<span>Скопировать даты всем</span></button><button type="button" class="ic del" data-rmemp="${k}" aria-label="Убрать сотрудника из заявки" title="Убрать из заявки">${TRASH_IC}</button>` : ''}<button type="button" class="ic" data-tog="${k}" aria-label="${e.col ? 'Развернуть' : 'Свернуть'}"><img class="asset emp-chev" src="assets/chevron.svg" alt="" width="18" height="18"></button></span></div>`;
     return `<div class="emp-card ${e.col ? 'col' : ''}" id="emp${k}">${head}${e.col ? '' : `<div class="emp-body" id="empb${k}">
       <div class="field">
         <div class="emp-line"><div class="picker"><div class="search-input"><input type="text" id="q${k}" data-q="${k}" value="${esc(p ? p.full : e.q)}" placeholder="Введи ФИО или выбери из списка" autocomplete="off" ${p ? 'readonly' : ''} aria-label="Сотрудник ${k+1}"><img class="asset" src="assets/search.svg" alt="" width="22" height="22"></div>
           <div class="picker-dropdown" id="dd${k}" ${e.open ? '' : 'hidden'} role="listbox"></div></div>${p ? `<button type="button" class="x-btn" data-clremp="${k}" aria-label="Выбрать другого сотрудника">×</button>` : ''}</div>
         <p class="err" id="errEmp${k}" hidden>Выбери сотрудника</p></div>
-      <div class="field"><label class="label" for="goal${k}">Цель работы в выходной день <span class="required">*</span></label>
-        <textarea id="goal${k}" data-goal="${k}" placeholder="Опиши цель привлечения сотрудника для работы в выходной день" class="long ${gErr ? 'invalid' : ''}" style="height:120px" maxlength="512">${esc(e.goal)}</textarea>
-        <div class="under"><span class="under-l"><span class="bad" id="errGoal${k}" ${gErr ? '' : 'hidden'}>${gErr}</span>${likeChip(k,'goal')}</span><span class="under-r"><span id="goalCnt${k}" class="${gErr ? 'bad' : gl >= 20 ? 'ok' : ''}">${e.goal.length}/512</span></span></div></div>
-      <div class="field"><span class="label">Дата работы в выходной день <span class="required">*</span> ${tip('Только выходные и праздничные дни, до 10 дат. Все даты заявки — в одном календарном месяце.')}</span>${dates}${(() => { const c = likeChip(k,'dates'); return c ? `<div class="dates-like">${c}</div>` : ''; })()}
+      <div class="field"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках ближайшего месяца (30 дней)')}</span>${dates}
         <div class="dates-act"><button type="button" class="add-link" data-addd="${k}" ${e.dates.length >= 10 ? 'disabled' : ''}>${I.plus}Добавить дату</button></div></div></div>`}</div>`;
   }).join('') + (k1 < MAX_EMPS ? `<button type="button" class="add-emp-btn" id="addEmp">${I.plus}Добавить сотрудника</button>` : '')
     + `
     ${k1 >= MAX_EMPS ? `<p class="limit">Выбрано 20 сотрудников, больше выбрать нельзя.<br>Если нужно добавить еще — создай новую заявку</p>` : ''}
-    <p class="qnote">Карточка на каждого сотрудника: своя цель и даты (решение команды, Q23). Копирование по наброску дизайнера: в шапке заполненной карточки — «Скопировать цель и даты всем» (видна и в свёрнутой; заполненные у других заменяет только после подтверждения), под пустыми полями — «Цель как у… / Даты как у…» со списком сотрудников-образцов. Заполненные карточки сворачиваются в строку-сводку, карточки с ошибками остаются открытыми. Отказ или просрочка одного не отменяет заявку для остальных (Q06). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
+    <p class="qnote">Цель одна на всех, даты у каждого свои (решение команды, Q23). Отказ или просрочка одного не отменяет заявку для остальных (Q06). Даты — в пределах 30 дней, как в макете; в БТ (R03) — один календарный месяц (Q26). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
   F.emps.forEach((e,k) => { if (e.open && $('#dd'+k)) renderPicker(k); });
   validateDates(F.tried); updateDeadline();
 }
-/* «Скопировать цель и даты всем»: источник — карточка, где нажали. Заполненные у других не перезаписываем без вопроса. */
-async function applyToAll(what, k){
-  const src = F.emps[k], goal = src.goal.trim(), dates = src.dates.filter(Boolean).slice().sort();
-  const has = x => !!x.goal.trim() || x.dates.some(Boolean);
-  const same = x => x.goal.trim() === goal && JSON.stringify(x.dates.filter(Boolean).slice().sort()) === JSON.stringify(dates);
+/* «Скопировать даты всем»: источник — карточка, где нажали. Заполненные у других не перезаписываем без вопроса. */
+async function applyToAll(k){
+  const dates = F.emps[k].dates.filter(Boolean).slice().sort(), has = x => x.dates.some(Boolean);
+  const same = x => JSON.stringify(x.dates.filter(Boolean).slice().sort()) === JSON.stringify(dates);
   const others = F.emps.map((x,j) => ({x, j})).filter(o => o.j !== k && !same(o.x));
-  if (!others.length) { toast('У всех сотрудников уже такие цель и даты'); return; }
+  if (!others.length) { toast('У всех сотрудников уже такие даты'); return; }
   const empty = others.filter(o => !has(o.x)), filled = others.filter(o => has(o.x));
   let targets = empty;
   if (filled.length) {
     const name = o => o.x.id ? person(o.x.id).full : 'Сотрудник ' + (o.j + 1);
-    const ch = await choiceDlg('Заменить цель и даты?',
-      `У ${plural(filled.length, 'сотрудника', 'сотрудников', 'сотрудников')} уже есть своя цель или даты:`, filled.map(name),
+    const ch = await choiceDlg('Заменить даты?', `У ${plural(filled.length, 'сотрудника', 'сотрудников', 'сотрудников')} уже есть свои даты:`, filled.map(name),
       [['all', 'Заменить у всех'], ...(empty.length ? [['empty', `Только пустые (${empty.length})`]] : [])]);
     if (!ch) return;
     targets = ch === 'all' ? others : empty;
   }
-  targets.forEach(o => { o.x.goal = goal; o.x.dates = dates.slice(); });
+  targets.forEach(o => { o.x.dates = dates.slice(); });
   collapseDone(k); renderEmps();
-  toast(`Цель и даты скопированы: ${plural(targets.length, 'сотрудник', 'сотрудника', 'сотрудников')}. У каждого можно поправить`);
+  toast(`Даты скопированы: ${plural(targets.length, 'сотрудник', 'сотрудника', 'сотрудников')}. У каждого можно поправить`);
 }
-function goalError(k){ const n = F.emps[k].goal.trim().length; return !n ? 'Укажи цель работы' : n < 20 ? 'Введи минимум 20 символов' : ''; }
+function goalError(){ const n = F.goal.trim().length; return !n ? 'Укажи цель работы' : n < 20 ? 'Введи минимум 20 символов' : ''; }
+function refreshGoal(){
+  const n = F.goal.trim().length, m = F.tried ? goalError() : '', c = $('#goalCnt'), er = $('#errGoal');
+  c.textContent = F.goal.length + '/512'; c.className = m ? 'bad' : n >= 20 ? 'ok' : ''; er.hidden = !m; er.textContent = m;
+  $('#goal').setAttribute('aria-invalid', !!m);
+}
 function dateError(k, i){
   const ds = F.emps[k].dates, v = ds[i]; if (!v) return '';
   const d = parse(v);
   if (!isOffDay(d)) return 'Это рабочий день — выбери выходной или праздник';
   if (ds.indexOf(v) !== i) return 'Эта дата уже есть у сотрудника';
-  const first = allDates()[0];
-  if (first && first.slice(0,7) !== v.slice(0,7)) return 'Все даты заявки — в одном месяце (' + parse(first).toLocaleDateString('ru-RU',{month:'long'}) + ')';
+  if (v > iso(addDays(new Date(), 30))) return 'Можно выбрать дату не позже ' + fmtD(addDays(new Date(), 30));
   if (Date.now() > deadlines(v).manager.getTime()) return 'Срок подачи на эту дату истёк (' + fmtDTfull(deadlines(v).manager) + ')';
   return '';
 }
 function validateDates(show){
   let bad = 0;
   F.emps.forEach((e,k) => {
-    let b = !e.id || !e.dates.some(Boolean) || !!goalError(k);
+    let b = !e.id || !e.dates.some(Boolean);
     e.dates.forEach((v,i) => {
       const m = dateError(k,i) || (show && i === 0 && !e.dates.some(Boolean) ? 'Укажи хотя бы одну дату' : ''), el = $('#errD'+k+'_'+i);
       if (m) b = true;
@@ -1066,45 +1127,40 @@ function openPicker(k, open){
   const dd = $('#dd'+k); F.emps[k].open = open && !!dd; if (dd) { dd.hidden = !open; if (open) renderPicker(k); }
 }
 function bindCreate(){
-  renderEmps();
+  renderEmps(); refreshGoal();
   const f = $('#createForm');
   f.addEventListener('focusin', e => { const k = e.target.dataset.q; if (k != null && !F.emps[+k].id) openPicker(+k, true); });
   f.addEventListener('input', e => {
     const t = e.target;
     if (t.dataset.q != null) { const k = +t.dataset.q; F.emps[k].q = t.value; openPicker(k, true); }
-    if (t.dataset.goal != null) { const k = +t.dataset.goal; F.emps[k].goal = t.value; const n = t.value.trim().length, c = $('#goalCnt'+k); c.textContent = t.value.length + '/512'; const m = F.tried ? goalError(k) : ''; c.className = m ? 'bad' : n >= 20 ? 'ok' : ''; const er = $('#errGoal'+k); er.hidden = !m; er.textContent = m; t.classList.toggle('invalid', !!m); refreshChip(k); const ca = $('#copyAll'+k); if (ca) ca.hidden = !canCopyAll(k); const lg = $('#likeG'+k); if (lg) lg.hidden = !!t.value.trim(); }
+    if (t.id === 'goal') { F.goal = t.value; refreshGoal(); }
   });
   f.addEventListener('change', e => { const t = e.target; if (t.dataset.k != null) { F.emps[+t.dataset.k].dates[+t.dataset.i] = t.value; renderEmps(); } if (t.id === 'budget') { F.budget = t.checked; if (F.budget) $('#errBudget').hidden = true; } });
-  f.addEventListener('keydown', e => { if (e.key === 'Escape' && e.target.dataset.q != null) openPicker(+e.target.dataset.q, false); if (e.key === 'Escape' && F.menu) { const m = F.menu; F.menu = null; renderEmps(); $(`[data-like="${m}"]`)?.focus(); } });
+  f.addEventListener('keydown', e => { if (e.key === 'Escape' && e.target.dataset.q != null) openPicker(+e.target.dataset.q, false); });
   f.addEventListener('click', e => {
     if (e.target.dataset.q != null) { const k = +e.target.dataset.q; if (!F.emps[k].id && !F.emps[k].open) openPicker(k, true); return; }
     const pk = e.target.closest('[data-pick]');
-    if (pk) { if (pk.getAttribute('aria-disabled')) return; const [k, id] = pk.dataset.pick.split(':'); F.emps[+k].id = id; F.emps[+k].open = false; F.emps[+k].q = ''; renderEmps(); $('#goal'+k).focus(); return; }
+    if (pk) { if (pk.getAttribute('aria-disabled')) return; const [k, id] = pk.dataset.pick.split(':'); F.emps[+k].id = id; F.emps[+k].open = false; F.emps[+k].q = ''; renderEmps(); $('#d'+k+'_0')?.focus(); return; }
     const rd = e.target.closest('[data-rmd]'); if (rd) { const [k,i] = rd.dataset.rmd.split('_').map(Number); F.emps[k].dates.splice(i,1); renderEmps(); return; }
-    const re = e.target.closest('[data-rmemp]'); if (re) { const k = +re.dataset.rmemp; if (F.emps.length > 1) F.emps.splice(k,1); else F.emps[0] = Object.assign(blankEmp(), {goal:F.emps[0].goal, dates:F.emps[0].dates}); renderEmps(); return; }
+    const re = e.target.closest('[data-rmemp]'); if (re) { const k = +re.dataset.rmemp; if (F.emps.length > 1) F.emps.splice(k,1); else F.emps[0] = Object.assign(blankEmp(), {dates:F.emps[0].dates}); renderEmps(); return; }
     const ad = e.target.closest('[data-addd]'); if (ad) { const k = +ad.dataset.addd; F.emps[k].dates.push(''); renderEmps(); $('#d'+k+'_'+(F.emps[k].dates.length-1)).focus(); return; }
-    const lk = e.target.closest('[data-like]'); if (lk) { F.menu = F.menu === lk.dataset.like ? null : lk.dataset.like; renderEmps(); return; }
-    const lp = e.target.closest('[data-likepick]'); if (lp) { const [what, k, j] = lp.dataset.likepick.split(':'), x = F.emps[+k], src = F.emps[+j];
-      if (what === 'goal') x.goal = src.goal.trim(); else x.dates = src.dates.filter(Boolean).slice().sort();
-      F.menu = null; renderEmps(); toast(`${what === 'goal' ? 'Цель взята' : 'Даты взяты'} у ${nmShort(+j)} — можно поправить`); return; }
     const cl = e.target.closest('[data-clremp]'); if (cl) { const k = +cl.dataset.clremp; F.emps[k].id = null; F.emps[k].q = ''; renderEmps(); $('#q'+k)?.focus(); return; }
-    if (e.target.closest('#addEmp')) { collapseDone(-1); F.menu = null; F.emps.push(blankEmp()); renderEmps(); $('#q'+(F.emps.length-1))?.focus(); $('#emp'+(F.emps.length-1)).scrollIntoView({block:'nearest', behavior:'smooth'}); return; }
+    if (e.target.closest('#addEmp')) { collapseDone(-1); F.emps.push(blankEmp()); renderEmps(); $('#q'+(F.emps.length-1))?.focus(); $('#emp'+(F.emps.length-1)).scrollIntoView({block:'nearest', behavior:'smooth'}); return; }
     const tg = e.target.closest('[data-tog]'); if (tg) { const x = F.emps[+tg.dataset.tog]; x.col = !x.col; x.open = false; renderEmps(); return; }
     if (e.target.closest('#togAll')) { const close = F.emps.some(x => !x.col); F.emps.forEach(x => { x.col = close; x.open = false; }); renderEmps(); return; }
-    const ap = e.target.closest('[data-apply]'); if (ap) { const [what, k] = ap.dataset.apply.split(':'); applyToAll(what, +k); return; }
-    if (F.menu && !e.target.closest('.like-wrap')) { F.menu = null; document.querySelectorAll('.like-menu').forEach(m => m.hidden = true); document.querySelectorAll('.like-btn').forEach(b => b.setAttribute('aria-expanded','false')); }
+    const ap = e.target.closest('[data-apply]'); if (ap) { applyToAll(+ap.dataset.apply); return; }
     if (!e.target.closest('.picker')) F.emps.forEach((x,k) => { if (x.open) openPicker(k, false); });
   });
   $('#delBtn').onclick = async () => { if (!await confirmDlg('Удалить заявку?', 'Введённые данные не сохранятся.', 'Удалить')) return; S.selected = null; F = null; render(); toast('Заявка удалена'); };
   f.addEventListener('submit', async e => {
     e.preventDefault();
-    F.tried = true; F.emps.forEach((x,k) => { x.col = empStatus(k).ok && F.emps.length > 1; x.open = false; }); renderEmps();
+    F.tried = true; F.emps.forEach((x,k) => { x.col = empStatus(k).ok && F.emps.length > 1; x.open = false; }); renderEmps(); refreshGoal();
     const bad = validateDates(true), errs = [];
+    if (goalError()) errs.push('цель работы');
     if (bad) errs.push('данные у ' + plural(bad, 'сотрудника', 'сотрудников', 'сотрудников'));
     $('#errBudget').hidden = F.budget; if (!F.budget) errs.push('согласование бюджета');
     const ce = $('#createErr');
-    if (errs.length) { ce.hidden = false; ce.textContent = 'Проверь ' + errs.join(' и ') + '.'; document.querySelector('#emps .invalid, #emps .err:not([hidden])')?.scrollIntoView({block:'center', behavior:'smooth'}); return; }
-    ce.hidden = true;
+    if (errs.length) { ce.textContent = 'Проверь: ' + errs.join(', ') + '.'; document.querySelector('#errGoal:not([hidden]), #emps .err:not([hidden]), #errBudget:not([hidden])')?.scrollIntoView({block:'center', behavior:'smooth'}); return; }
     const names = F.emps.map(x => person(x.id).full);
     if (!await confirmDlg(F.emps.length === 1 ? 'Отправить заявку сотруднику?' : 'Отправить заявку ' + plural(F.emps.length, 'сотруднику', 'сотрудникам', 'сотрудникам') + '?', 'Каждый получит уведомление и сам выберет компенсацию. Изменить заявку после отправки нельзя.', 'Отправить', names)) return;
     const by = S.persona === 'd1' ? DELEGATE : null, now = Date.now();
@@ -1113,7 +1169,7 @@ function bindCreate(){
     S.groups.push(g);
     F.emps.forEach((x,k) => {
       const dates = [...new Set(x.dates.filter(Boolean))].sort();
-      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:x.goal.trim(), dates, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
+      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:F.goal.trim(), dates, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
       log(r, actorName() + ' отправил(а) заявку сотруднику'); S.requests.push(r);
       notify(r.employeeId, 'Подтверждение работы в выходной или праздничный день', 'Пожалуйста, подтверди работу в выходной или праздничный день до ' + fmtDT(deadlines(dates[0]).employee) + '.', r.id);
     });
@@ -1127,28 +1183,30 @@ function otgulEmployee(r){
   if (r.stage === 'draft') return otgulForm(r);
   const head = cardHead(TITLES.otgul, r, stageDeadline(r), dlPin(r));
   let body, rate = false;
-  if (r.stage === 'sign') body = signBlock(r, 'application', r.viewedApp, 'signApp') + `<p class="qnote">Q13: тип подписи сотрудника и ошибки подписи не заданы. Q12: вернуться к выбору дат после «Сформировать заявление» — не описано.</p>`;
-  else if (r.stage === 'approve') body = statusMsg('clock', 'Согласование руководителем', resp(MANAGER.name));
-  else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
-  else if (r.stage === 'orderSign') body = signBlock(r, 'otgulOrder', r.viewedOrder, 'signOrder', `Подпиши до ${fmtDTfull(orderDeadline(r.orderAt))}, иначе подписывать придётся на бумаге`) + `<p class="qnote">Q04: на стр. 25 после подписи кадров стоит «Done», а на стр. 26 идёт этот шаг. Здесь отгул оформлен только после подписи сотрудника.</p>`;
+  if (r.stage === 'sign') body = signBlock(r, 'application', r.viewedApp, 'signApp', offDate(r)) + `<p class="qnote">Q13: тип подписи сотрудника и ошибки подписи не заданы. Q12: вернуться к выбору дат после «Сформировать заявление» — не описано.</p>`;
+  else if (r.stage === 'approve') body = offDate(r) + statusMsg('clock', 'Согласование руководителем', resp(MANAGER.name));
+  else if (r.stage === 'hr') body = offDate(r) + statusMsg('clock', 'Приказ формируется', resp(HR));
+  else if (r.stage === 'orderSign') body = signBlock(r, 'otgulOrder', r.viewedOrder, 'signOrder', offDate(r)) + `<p class="qnote">Q04: на стр. 25 после подписи кадров стоит «Done», а на стр. 26 идёт этот шаг. Здесь отгул оформлен только после подписи сотрудника.</p>`;
   else ({body, rate} = otgulEnd(r, true));
-  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${detailsBlock(otgulFields(r))}${steps('otgul', r, {approve: r.approvedBy})}`;
+  const det = r.stage === 'cancelled' ? '' : detailsBlock(otgulFields(r));
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${det}${steps('otgul', r, {approve: ['cancelled','expired'].includes(r.stage) ? '' : r.approvedBy})}`;
 }
 function otgulEnd(r, mine){
-  if (r.stage === 'done') return {rate:true, body: mine ? ready('Заявка завершена, посмотри приказ ниже') + pdfRow('otgulOrder', r) : ready('Заявка завершена')};
-  /* R32: приказ не подписан за 3 р. д. — электронная заявка завершается, подписание на бумаге */
-  if (r.stage === 'paper') return {rate:true, body: statusMsg('paper', 'Подписание на бумаге', `Истек срок ознакомления и электронного подписания документа. ${mine ? 'Для подписания документа на бумаге обратись' : 'Сотруднику нужно подписать приказ на бумаге, обращение'} в <a class="link" href="mailto:${HR_MAIL}">${HR_MAIL}</a>`) + pdfRow('otgulOrder', r) + `<p class="qnote">Q04: как учитывается бумажная подпись и когда отгул считается оформленным — не описано.</p>`};
+  const isOrder = r.type === 'order';
+  if (r.stage === 'done') return {rate:true, body: !mine ? ready('Дата отгула сотрудника - ' + pairsSorted(r).map(p => fmtDayLong(parse(p.off))).join(', '), 'Заявка завершена')
+    : isOrder ? ready('Заявка завершена, посмотри приказ ниже') + pdfRow('otgulOrder', r) : ready('Заявка завершена') + '<div style="height:32px"></div>' + offDate(r) + pdfRow('otgulOrder', r)};
+  /* R32: приказ не подписан за 3 р. д. — электронная заявка завершается, подписание на бумаге. Заголовок — как в макете */
+  if (r.stage === 'paper') return {rate:true, body: statusMsg('cancel', 'Заявка отменена', `Истек срок ознакомления и электронного подписания документа. ${mine ? 'Для подписания документа на бумаге обратись' : 'Сотруднику нужно подписать приказ на бумаге, обращение'} в <a class="link" href="mailto:${HR_MAIL}">${HR_MAIL}</a>`) + (isOrder ? '' : '<div style="height:24px"></div>' + offDate(r)) + pdfRow('otgulOrder', r) + `<p class="qnote">Q04: по БТ это отдельный итог «переход на бумагу», а в макете — «Заявка отменена». Как учитывается бумажная подпись — не описано.</p>`};
   if (r.stage === 'expired') {
-    const why = {draft:'Истёк срок формирования заявления', sign:'Истёк срок подписания заявления', approve:'Завершился срок её согласования', hr:'Отдел кадров не оформил приказ в срок'}[r.stopStage] || 'Истёк срок';
-    return {rate:true, body: statusMsg('cancel', 'Заявка отменена', why + '. Дни остались в банке отгулов' + qpin('Q07','Возвращается ли выходной в банк после отмены — не описано, здесь возвращается'))};
+    const why = {draft:'Истёк срок формирования заявления', sign:'Истёк срок подписания заявления', approve:'Завершился срок её согласования'}[r.stopStage];
+    const txt = !mine ? (why || 'Отдел кадров не оформил приказ в срок') : (why ? why + '. ' : '') + 'Дни остались в банке отгулов';
+    return {rate:true, body: statusMsg('cancel', 'Заявка отменена', txt + qpin('Q07','Возвращается ли выходной в банк после отмены — не описано, здесь возвращается'))};
   }
   return {rate:true, body: statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, r.hrComment || '—') + `<p class="qnote">R16: отдел кадров может отменить заявку с комментарием. Дни возвращаются в банк отгулов (допущение, Q07).</p>`};
 }
 function otgulFields(r){
-  const files = [];
-  if (r.submitted) files.push(pdfRow('application', r));
-  if (['orderSign','done','paper'].includes(r.stage)) files.push(pdfRow('otgulOrder', r));
-  return `<dl class="general-fields"><div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div><div class="pair"><dt>Даты</dt><dd>${pairsRead(r)}</dd></div>${files.length ? `<div class="pair"><dt>Документы</dt><dd>${files.join('')}</dd></div>` : ''}${historyHtml(r)}</dl>`;
+  const p = r.pairs[0];
+  return `<dl class="general-fields"><div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div><div class="pair"><dt>Дата работы</dt><dd>${fmtDayLong(parse(p.rvd))}</dd></div><div class="pair"><dt>Дата отгула</dt><dd>${fmtDayLong(parse(p.off))}</dd></div></dl>`;
 }
 function otgulManager(r){
   const p = person(r.employeeId), head = cardHead(`${TITLES.otgul} | ${esc(p.name)}`, r, stageDeadline(r), dlPin(r));
@@ -1159,72 +1217,77 @@ function otgulManager(r){
   else if (r.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
   else if (r.stage === 'orderSign') body = statusMsg('clock', 'Подписание приказа сотрудником', resp(p.first));
   else ({body, rate} = otgulEnd(r, false));
-  const det = r.stage === 'approve' || r.stage === 'draft' ? '' : detailsBlock(otgulFields(r));
-  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${det}${steps('otgul', r, {approve: r.approvedBy}, true)}`;
+  const det = r.stage === 'approve' ? '' : detailsBlock(otgulFields(r));
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${det}${steps('otgul', r, {approve: r.stage === 'hr' ? r.approvedBy : ''}, true)}`;
 }
 function orderView(r){
   const head = cardHead(TITLES.order, r, stageDeadline(r), dlPin(r));
   let body, rate = false;
-  if (r.stage === 'orderSign') body = `<p style="font-size:16px;margin-bottom:20px">Отдел кадров оформил тебе день отдыха и подписал приказ — заявление не нужно.</p>` + signBlock(r, 'otgulOrder', r.viewedOrder, 'signOrder', `Подпиши до ${fmtDTfull(orderDeadline(r.orderAt))}, иначе подписывать придётся на бумаге`) + `<p class="qnote">Q07: в каком случае кадры отправляют отдельный приказ вместо заявки сотрудника — не описано.</p>`;
+  if (r.stage === 'orderSign') body = signBlock(r, 'otgulOrder', r.viewedOrder, 'signOrder') + `<p class="qnote">Q07: в каком случае кадры отправляют отдельный приказ вместо заявки сотрудника — не описано.</p>`;
   else ({body, rate} = otgulEnd(r, true));
-  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${detailsBlock(otgulFields(r))}${steps('order', r)}`;
+  return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${steps('order', r)}`;
 }
 let O;
+const BANK_RULE = 'Если работа в выходной/ праздничный день состоялась до 01.03.2025 года, то выбрать отгул можно на любой рабочий день.<br><br>Если работа в выходной/ праздничный день состоялась после 01.03.2025 года, то выбрать отгул можно на любой рабочий день в течение 1 года после даты работы в выходной/ праздничный день';
 function otgulForm(r){
-  if (!O || O.reqId !== (r ? r.id : null)) O = {reqId: r ? r.id : null, sel: Object.fromEntries((r ? r.pairs : []).map(p => [p.rvd, p.off]))};
-  const items = bank(S.persona, r && r.id);
-  const rows = items.map((b,i) => { const on = b.rvd in O.sel, d = parse(b.rvd);
-    return `<div class="off-card ${on ? 'on' : ''}"><label class="off-top"><span><b>${fmtDayLong(d)}</b><small>${b.expires ? 'Можно взять до ' + fmtD(parse(b.expires)) : 'Без ограничения срока'}</small></span><input type="checkbox" class="lime-check" data-rvd="${b.rvd}" ${on?'checked':''} aria-label="Отгул за ${fmtD(d)}"></label>
-      <div class="field" data-offbox="${b.rvd}" ${on?'':'hidden'}><span class="label">Дата отгула</span>
-      <div class="date-line"><input type="date" id="off-${i}" data-off="${b.rvd}" value="${O.sel[b.rvd] || ''}" min="${iso(addDays(new Date(),1))}" ${b.expires ? `max="${b.expires}"` : ''} aria-label="Дата отгула за ${fmtD(d)}"></div><p class="help">Можно выбрать только рабочий день</p><p class="err" data-offerr="${b.rvd}" hidden></p></div></div>`; }).join('');
+  if (!O || O.reqId !== (r ? r.id : null)) O = {reqId: r ? r.id : null, rvd: r ? r.pairs[0].rvd : '', off: r ? r.pairs[0].off : '', open:false, tried:false};
+  const ex = r && r.id, live = bank(S.persona, ex), lost = bankLost(S.persona, ex), cur = live.find(b => b.rvd === O.rvd);
+  if (!cur) O.rvd = '';
+  const till = b => b.expires ? 'Взять до ' + fmtD(parse(b.expires)) : '';
+  const opts = live.map(b => `<button type="button" role="option" class="sel-opt" data-day="${b.rvd}" aria-selected="${b.rvd === O.rvd}"><span>${fmtDayLong(parse(b.rvd))}</span><small>${till(b)}</small></button>`).join('')
+    + lost.map(b => `<span role="option" class="sel-opt off" aria-disabled="true"><span>${fmtDayLong(parse(b.rvd))}<small>Дату нельзя выбрать</small></span><small>При увольнении</small></span>`).join('');
   const x = r || {num:String(S.seq), created:Date.now()};
-  const ret = r && r.returnComment ? bubbleMsg('Комментарий от руководителя:', r.returnBy || MANAGER.name, r.returnComment) + '<div style="height:24px"></div>' : '';
-  return `<section class="panel">${cardHead(TITLES.otgul, x, r ? stageDeadline(r) : null, r ? qpin('Q12','Пересчитывается ли срок после возврата на доработку — не описано') : '')}${ret}
-  <form id="otgulForm" novalidate><p class="bank-line">В банке отгулов — ${plural(items.length, 'день', 'дня', 'дней')}</p><fieldset class="field" style="max-width:none;border:0;padding:0"><legend>За какие выходные берёшь отгул? ${tip('Можешь выбрать до 10 дат')}${qpin('Q21','В БТ поля «Дата работы в выходной день 1–10» — «только просмотр». Как сотрудник выбирает выходные, не описано: здесь — из банка отгулов')}</legend>
-      ${rows || '<div class="notice"><b>В банке нет отгулов</b>Отгул появляется за работу в выходной с одинарной оплатой и днём отдыха, если дату отдыха не выбрали сразу.</div>'}
-      <p class="err" id="errPairs" hidden>Отметь хотя бы один выходной и выбери дату отгула</p></fieldset>
-    <div class="notice" id="otgulDl" hidden></div><p class="form-error" id="otgulErr" role="alert" hidden></p>
-    <p class="qnote">Q17: в таблице БТ нет поля «Отгул за РВД 8» — здесь список до 10 выходных. Q07: выбранный выходной резервируется за заявкой, пока она не отменена (допущение).</p>
-    <div class="form-actions"><button type="submit" class="btn" ${items.length ? '' : 'disabled'}>Сформировать заявление</button><button type="button" class="btn outline-dark" data-act="delOtgul">Удалить</button></div>
+  const ret = r && r.returnComment ? bubbleMsg('Комментарий от руководителя:', r.returnBy || MANAGER.name, r.returnComment) + '<div style="height:40px"></div>' : '';
+  return `<section class="panel">${cardHead(TITLES.otgul, x, null)}${ret}
+  <form id="otgulForm" novalidate>${bankSummary(S.persona, ex)}
+    <div class="field day-field"><span class="label" id="dayLbl">За какую работу в выходной/праздничный день берёшь отгул? ${tip(BANK_RULE)}${qpin('Q21','В БТ поля «Дата работы в выходной день 1–10» — «только просмотр». Как сотрудник выбирает выходной, не описано: здесь — из банка отгулов')}</span>
+      <div class="sel ${O.open ? 'open' : ''}"><button type="button" class="sel-btn" id="dayBtn" aria-haspopup="listbox" aria-expanded="${O.open}" aria-labelledby="dayLbl"><span class="${cur ? '' : 'ph'}">${cur ? fmtD(parse(cur.rvd)) : 'Выбери день'}</span><small>${cur ? till(cur) : ''}</small>${CHEV}</button>
+        <div class="sel-list" role="listbox" aria-labelledby="dayLbl" ${O.open ? '' : 'hidden'}>${opts || '<span class="sel-opt off">В банке нет отгулов</span>'}</div></div>
+      <p class="err" id="errDay" hidden>Выбери день</p></div>
+    ${cur ? `<div class="field off-field"><label class="label" for="off">Выбери дату отгула</label>
+      <div class="date-line"><input type="date" id="off" value="${O.off}" min="${iso(addDays(new Date(),1))}" ${cur.expires ? `max="${cur.expires}"` : ''}></div><p class="help" id="offHelp">Можно выбрать только рабочий день</p><p class="err" id="errOff" hidden></p></div>` : ''}
+    <p class="qnote">По макету в заявке один отгул; в БТ (R24) — до 10 пар «день работы — день отгула» (Q27). Q07: выбранный день резервируется за заявкой, пока она не отменена (допущение).</p>
+    <div class="form-actions"><button type="submit" class="btn">Сформировать заявление</button><button type="button" class="btn outline-dark" data-act="delOtgul">Удалить</button></div>
   </form></section>${steps('otgul', r || {stage:'draft', at:{}})}`;
 }
-function offError(rvd){
-  const v = O.sel[rvd]; if (!v) return 'Выбери дату отгула';
-  const d = parse(v), exp = expiresOf(rvd);
-  if (isOffDay(d)) return 'Выбери рабочий день — это выходной или праздник';
+function offError(r){
+  const v = O.off; if (!v) return 'Выбери дату отгула';
+  const d = parse(v), exp = expiresOf(O.rvd);
+  if (r && r.rejected === v) return 'Укажи другой день';
+  if (isOffDay(d)) return 'Можно выбрать только рабочий день';
   if (d <= new Date()) return 'Выбери дату в будущем';
-  if (exp && v > exp) return 'Отгул за этот выходной можно взять до ' + fmtD(parse(exp));
-  if (Object.entries(O.sel).some(([k,x]) => k !== rvd && x === v)) return 'Этот день уже выбран для другого выходного';
+  if (exp && v > exp) return 'Отгул за этот день можно взять до ' + fmtD(parse(exp));
+  if (S.requests.some(x => x.type !== 'rvd' && x.employeeId === S.persona && x !== r && !['expired','cancelled'].includes(x.stage) && x.pairs.some(p => p.off === v))) return 'На этот день у тебя уже есть отгул';
   if (Date.now() > otgulDeadlines(v).employee.getTime()) return 'Слишком близко: заявление на эту дату нужно было подписать до ' + fmtDTfull(otgulDeadlines(v).employee);
   return '';
 }
-function checkOtgul(show){
-  let ok = Object.keys(O.sel).length > 0;
-  Object.keys(O.sel).forEach(rvd => { const m = offError(rvd), e = document.querySelector(`[data-offerr="${rvd}"]`), vis = !!m && (show || !!O.sel[rvd]); if (m) ok = false; if (e) { e.hidden = !vis; e.textContent = m; document.querySelector(`[data-off="${rvd}"]`).classList.toggle('invalid', vis); } });
-  const offs = Object.keys(O.sel).filter(k => O.sel[k] && !offError(k)).map(k => O.sel[k]).sort(), n = $('#otgulDl');
-  if (offs.length) { const d = otgulDeadlines(offs[0]); n.hidden = false; n.innerHTML = `<b>Сроки по заявке${qpin('Q03','«−3 р.д.» и пример «пятница → понедельник» не сходятся. Здесь — по примеру')}</b>Подписать заявление до ${fmtDTfull(d.employee)} · руководитель согласует до ${fmtDTfull(d.manager)} · кадры оформляют приказ до ${fmtDTfull(d.hr)}`; }
-  else n.hidden = true;
-  return ok;
+function checkOtgul(r){
+  $('#errDay').hidden = !(O.tried && !O.rvd);
+  if (!O.rvd) return false;
+  const m = offError(r), show = !!m && (O.tried || !!O.off);
+  $('#errOff').hidden = !show; $('#errOff').textContent = m; $('#offHelp').hidden = show;
+  return !m;
 }
 function bindOtgul(r){
   const f = $('#otgulForm'); if (!f) return;
-  checkOtgul(false);
-  f.addEventListener('change', e => {
-    const t = e.target;
-    if (t.dataset.rvd) { if (t.checked && Object.keys(O.sel).length >= 10) { t.checked = false; toast('В одной заявке — не больше 10 дней'); return; }
-      if (t.checked) O.sel[t.dataset.rvd] = ''; else delete O.sel[t.dataset.rvd];
-      document.querySelector(`[data-offbox="${t.dataset.rvd}"]`).hidden = !t.checked; t.closest('.off-card').classList.toggle('on', t.checked); $('#errPairs').hidden = true; }
-    if (t.dataset.off && t.dataset.off in O.sel) O.sel[t.dataset.off] = t.value;
-    checkOtgul(false);
+  checkOtgul(r);
+  const toggle = on => { O.open = on; f.querySelector('.sel').classList.toggle('open', on); f.querySelector('.sel-list').hidden = !on; $('#dayBtn').setAttribute('aria-expanded', on); };
+  f.addEventListener('click', e => {
+    if (e.target.closest('#dayBtn')) { toggle(!O.open); return; }
+    const o = e.target.closest('[data-day]');
+    if (o) { if (O.rvd !== o.dataset.day) O.off = ''; O.rvd = o.dataset.day; O.open = false; renderDetail(); $('#off')?.focus(); return; }
+    if (O.open && !e.target.closest('.sel')) toggle(false);
   });
+  f.addEventListener('keydown', e => { if (e.key === 'Escape' && O.open) { toggle(false); $('#dayBtn').focus(); } });
+  f.addEventListener('change', e => { if (e.target.id === 'off') { O.off = e.target.value; checkOtgul(r); } });
   f.addEventListener('submit', e => {
     e.preventDefault();
-    const ok = checkOtgul(true); $('#errPairs').hidden = Object.keys(O.sel).length > 0;
-    if (!ok) { $('#otgulErr').hidden = false; $('#otgulErr').textContent = 'Проверь выбранные выходные и даты отгула.'; return; }
-    const pairs = Object.entries(O.sel).map(([rvd, off]) => ({rvd, off}));
+    O.tried = true; if (O.open) toggle(false);
+    if (!checkOtgul(r)) return;
+    const pairs = [{rvd:O.rvd, off:O.off}];
     let x = r;
     if (!x) { x = {id:'r' + S.seq, num:String(S.seq++), type:'otgul', employeeId:S.persona, pairs, stage:'draft', created:Date.now(), at:{}, history:[]}; S.requests.push(x); log(x, person(S.persona).name + ' сформировал(а) заявление на отгул'); }
-    else { x.pairs = pairs; x.returnComment = ''; log(x, 'Сотрудник исправил даты и заново сформировал заявление'); }
+    else { x.pairs = pairs; x.returnComment = ''; x.rejected = null; log(x, 'Сотрудник исправил дату и заново сформировал заявление'); }
     go(x, 'sign'); x.viewedApp = false; O = null; S.selected = x.id; S.tab = 'mine'; toast('Заявление сформировано — ознакомься и подпиши'); render();
   });
 }
@@ -1252,7 +1315,7 @@ function approveOtgul(r){
 async function returnOtgul(r){
   const c = await commentDlg({title:'Отправить на доработку', text:'Оставь комментарий', ok:'Отправить', min:2, max:256, placeholder:'Например: в этот день у нас релиз, выбери другую дату'});
   if (c == null) return;
-  r.at = r.at || {}; r.at.approve = Date.now(); r.stage = 'draft'; r.returnComment = c; r.returnBy = S.persona === 'd1' ? DELEGATE.name : MANAGER.name;
+  r.at = r.at || {}; r.at.approve = Date.now(); r.stage = 'draft'; r.rejected = r.pairs[0].off; r.returnComment = c; r.returnBy = S.persona === 'd1' ? DELEGATE.name : MANAGER.name;
   log(r, actorName() + ' вернул(а) заявление на доработку: «' + c + '»');
   notify(r.employeeId, 'Заявка «Отгул за работу в выходной день» возвращена на доработку', 'Комментарий руководителя: ' + c, r.id);
   toast('Заявление отправлено на доработку'); render();
@@ -1345,6 +1408,7 @@ function openDemo(){
   let acts = '';
   if (g) { const X = gInfo(g);
     if (X.atHr) acts += `<button type="button" class="btn lime" data-ev="hrAll">Кадры подписали приказы по всем, кто подписал уведомление (${X.atHr})</button>`;
+    if (X.bs.length > 1 && X.live.length) acts += `<label class="field" style="margin:8px 0 0;max-width:none"><span class="label" style="font-size:14px">Событие для одного сотрудника</span><select id="evEmp" style="width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px">${X.live.map(x => `<option value="${x.id}">${esc(person(x.employeeId).name)} · ${statusText(x)}</option>`).join('')}</select></label><button type="button" class="btn secondary" data-ev="one:hrDone">Кадры подписали приказ (если сотрудник уже подписал)</button><button type="button" class="btn secondary" data-ev="one:expire">Истёк срок</button><button type="button" class="btn secondary" data-ev="one:hrCancel">Кадры отменили</button>`;
     if (X.atEmp) acts += `<button type="button" class="btn secondary" data-ev="expireAll">Истёк срок у всех, кто не ответил (${X.atEmp})</button>`; }
   if (r && !TERMINAL.includes(r.stage)) {
     if (r.type === 'rvd' && r.stage === 'hr') acts += `<button type="button" class="btn lime" data-ev="hrDone">Кадры подписали приказ о РВД (УКЭП в 1С → КЭДО)</button>`;
@@ -1354,7 +1418,7 @@ function openDemo(){
   }
   const withBank = PEOPLE.filter(p => p.state !== 'ban' && bank(p.id).length);
   const send = withBank.length ? `<label class="field" style="margin:0;max-width:none"><span class="label" style="font-size:14px">Сотрудник</span><select id="ordEmp" style="width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px">${withBank.map(p => `<option value="${p.id}">${esc(p.name)} · в банке ${bank(p.id).length}</option>`).join('')}</select></label><button type="button" class="btn secondary" data-ev="sendOrder">Кадры отправили отдельный приказ на отгул</button>` : '<p class="muted">Ни у кого нет отгулов в банке.</p>';
-  const cur = g ? `<p style="margin-top:16px"><b>Работа в выходной день · № ${numStr(g)}</b> · ${gInfo(g).status}</p><div class="demo-actions">${acts || '<p class="muted">Заявка уже завершена.</p>'}</div><p class="demo-note">Чтобы имитировать событие для одного сотрудника, открой его строку в заявке.</p>`
+  const cur = g ? `<p style="margin-top:16px"><b>Работа в выходной день · № ${numStr(g)}</b> · ${gInfo(g).status}</p><div class="demo-actions">${acts || '<p class="muted">Заявка уже завершена.</p>'}</div>`
     : r ? `<p style="margin-top:16px"><b>${procName(r)} · № ${numStr(r)}</b>${isMgr() ? ' · ' + esc(person(r.employeeId).name) : ''} · ${statusText(r)}</p><div class="demo-actions">${acts || '<p class="muted">Заявка уже завершена.</p>'}</div>` : '<p style="margin:16px 0" class="muted">Открой заявку, чтобы имитировать для неё событие.</p>';
   dlg.innerHTML = `<div class="modal-head"><h2>Демо: события вне Space</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
     <div class="modal-body"><p class="demo-note">Отдел кадров работает в 1С HR и КЭДО, а таймауты срабатывают по времени. Эта панель имитирует такие события — в продукте её нет.</p>${cur}
@@ -1369,12 +1433,14 @@ function demoEvent(ev){
   if (ev === 'sendOrder') {
     const emp = $('#ordEmp').value, b = bank(emp)[0];
     let off = addDays(new Date(), 7); while (isOffDay(off)) off = addDays(off,1);
-    const x = {id:'r' + S.seq, num:String(S.seq++), type:'order', employeeId:emp, pairs:[{rvd:b.rvd, off:iso(off)}], stage:'orderSign', orderAt:Date.now(), created:Date.now(), at:{hr:Date.now()}, history:[]};
+    const x = {id:'r' + S.seq, num:String(S.seq++), type:'order', employeeId:emp, viewedOrder:false, pairs:[{rvd:b.rvd, off:iso(off)}], stage:'orderSign', orderAt:Date.now(), created:Date.now(), at:{hr:Date.now()}, history:[]};
     log(x, 'Отдел кадров сформировал приказ на отгул в 1С и подписал УКЭП'); S.requests.push(x);
     notify(emp, 'Подпиши приказ на отгул за работу в выходной день', 'Пожалуйста, подпиши приказ до ' + fmtDT(orderDeadline(x.orderAt)) + '.', x.id);
     $('#dlg').close(); toast('Приказ отправлен: ' + person(emp).name + '. Переключись на этого сотрудника'); return;
   }
   const g = S.selected && grp(S.selected);
+  if (g && ev.startsWith('one:')) { const r = req($('#evEmp').value), e1 = ev.slice(4); if (e1 === 'hrDone' && r.stage !== 'hr') { toast('Сотрудник ещё не подписал уведомление'); return; } applyEv(r, e1); $('#dlg').close(); toast('Событие применено'); return; }
+  if (g && branches(g).length === 1 && ['hrDone','expire','hrCancel'].includes(ev)) { applyEv(branches(g)[0], ev); $('#dlg').close(); toast('Событие применено'); return; }
   if (g) { branches(g).forEach(r => { if (ev === 'hrAll' && r.stage === 'hr') applyEv(r, 'hrDone'); if (ev === 'expireAll' && ['confirm','sign'].includes(r.stage)) applyEv(r, 'expire'); }); $('#dlg').close(); toast('Событие применено'); return; }
   const r = S.selected && req(S.selected); if (!r) return;
   applyEv(r, ev); $('#dlg').close(); toast('Событие применено');
@@ -1386,20 +1452,10 @@ function applyEv(r, ev){
     if (r.stage === 'orderSign') { stop(r, 'paper'); log(r, 'Срок подписи приказа истёк — переход на бумажное подписание'); notify(r.employeeId, 'Приказ по заявке «' + procName(r) + '» перешёл на бумажное подписание', 'Срок подписания электронного документа истёк. Необходимо подписать приказ на бумаге.', r.id); }
     else { stop(r, 'expired'); log(r, 'Истёк срок — заявка отменена'); notify(r.employeeId, 'Заявка «' + procName(r) + '» отменена', 'Заявка «' + procName(r) + '» была отменена. Подробности смотри по ссылке.', r.id); }
   }
-  if (ev === 'hrCancel') { stop(r, 'cancelled'); r.hrComment = ($('#hrComment').value || '').trim(); log(r, 'Отдел кадров отменил заявку'); notify(r.employeeId, 'Заявка «' + procName(r) + '» отменена', 'Комментарий отдела кадров: ' + (r.hrComment || '—'), r.id); }
+  if (ev === 'hrCancel') { stop(r, 'cancelled'); r.hrComment = ($('#hrComment')?.value || 'Сотрудник в эти даты в командировке.').trim(); log(r, 'Отдел кадров отменил заявку'); notify(r.employeeId, 'Заявка «' + procName(r) + '» отменена', 'Комментарий отдела кадров: ' + (r.hrComment || '—'), r.id); }
 }
 
 /* ================= Отпуск: банк отгулов ================= */
-function bankAll(empId){
-  const today = iso(new Date()), soon = iso(addDays(new Date(), 30));
-  const own = S.requests.filter(r => r.type === 'rvd' && r.stage === 'done' && r.employeeId === empId).flatMap(r => r.dates.filter(s => r.comp[s] === 'rest' && !r.rest[s]).map(s => ({rvd:s, src:'Заявка № ' + numStr(r)})));
-  const legacy = (S.legacy || []).filter(l => l.employeeId === empId).map(l => ({rvd:l.rvd, src:'Работа до 01.03.2025'}));
-  return legacy.concat(own).map(b => {
-    const expires = expiresOf(b.rvd), use = S.requests.find(r => r.type !== 'rvd' && r.employeeId === empId && !['expired','cancelled'].includes(r.stage) && r.pairs.some(p => p.rvd === b.rvd));
-    let st = 'av'; if (use) st = ['done','paper'].includes(use.stage) ? 'used' : 'res'; else if (expires && expires < today) st = 'exp'; else if (expires && expires <= soon) st = 'soon';
-    return {...b, expires, st, use, off: use ? use.pairs.find(p => p.rvd === b.rvd).off : null};
-  }).sort((a,b) => a.rvd < b.rvd ? -1 : 1);
-}
 const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 function monthGrid(y, m, marks){
   const first = new Date(y, m, 1), shift = (first.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
@@ -1410,7 +1466,7 @@ function monthGrid(y, m, marks){
 }
 function vacationPage(){
   if (isMgr()) return `<section class="panel"><div class="empty-detail"><img src="assets/beach.svg" alt="" width="40" height="40"><b>Банк отгулов виден сотруднику в его модуле «Отпуск»</b><span>Переключись на сотрудника в панели прототипа.${qpin('Q14','Нужен ли руководителю обзор остатков команды — в БТ не описано')}</span></div></section>`;
-  const all = bankAll(S.persona), av = all.filter(b => b.st === 'av' || b.st === 'soon');
+  const av = bank(S.persona);
   const marks = {};
   S.requests.filter(r => r.employeeId === S.persona && r.type === 'rvd' && r.stage === 'done').forEach(r => r.dates.forEach(d => marks[d] = 'rvd'));
   S.requests.filter(r => r.employeeId === S.persona && r.type !== 'rvd' && !['expired','cancelled'].includes(r.stage)).forEach(r => r.pairs.forEach(p => marks[p.off] = 'off'));
@@ -1420,7 +1476,7 @@ function vacationPage(){
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.6"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>График команды</button></div>
   <div class="vac-row"><section class="bal"><b>Баланс отпусков</b><small>Данные обновляются раз в сутки</small>
       <p>Дней отпуска на 31.12.26 — 32 дня</p><small class="sub">28 ежегодного оплачиваемого</small><p>Заработано на текущую дату — 3 дня</p>
-      <p>В банке отгулов — ${plural(av.length, 'день', 'дня', 'дней')} ${tip('Дни, заработанные за работу в выходной день')}${qpin('Q07','Когда день попадает в банк, резервируется и возвращается — не описано')}</p>
+      <hr class="bal-hr">${bankSummary(S.persona)}
       <div class="vac-create"><button type="button" class="btn" id="vacCreate" aria-haspopup="menu" aria-expanded="false">Создать заявку на отпуск <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.6"><path d="m4 6 4 4 4-4"/></svg></button>
       <div class="create-menu vac-menu" id="vacMenu" role="menu" hidden><button type="button" role="menuitem" data-stub>Ежегодный оплачиваемый отпуск</button><button type="button" role="menuitem" data-stub>Отпуск без сохранения зарплаты</button><button type="button" role="menuitem" data-gootgul ${av.length ? '' : 'disabled'}>Отгул за работу в выходной день</button></div></div></section>
     <div class="donut"><b>0</b><span>дней доступно</span></div>
@@ -1436,7 +1492,7 @@ const QS = [
   ['Q03','b','Сроки отгула: «−3 р.д.» иллюстрируется понедельником для пятницы, «−1 р.д.» — средой. От какой даты считать 3 р.д. на подпись приказа?','Прототип: по примерам; 3 р.д. от подписи кадров'],
   ['Q04','b','Когда отгул завершён: после подписи кадров (стр. 25, Done) или после подписи приказа сотрудником (шаг 5, стр. 26)? Что значит переход на бумагу?','Прототип: оформлен после подписи сотрудника'],
   ['Q05','b','Категории «нельзя привлечь» и «может отказаться»: из данных HR или со слов сотрудника?','Прототип: признаки в справочнике, отказ — без проверки категории'],
-  ['Q06','b','Заявка на нескольких: отказ или просрочка одного завершает всю заявку или его часть? Какой сводный статус?','Прототип: закрывается только часть сотрудника; «Завершена / оформлена частично / не оформлена»'],
+  ['Q06','b','Заявка на нескольких: отказ или просрочка одного завершает всю заявку или его часть? Какой сводный статус?','Прототип: закрывается только часть сотрудника; в таблице свой статус у каждого, общий шаг — «Заявка на исполнении»'],
   ['Q07','b','Когда отгул начисляется, резервируется и списывается в банке? Что с датой отдыха, выбранной сразу в РВД? Когда кадры шлют отдельный приказ?','Прототип: дата из РВД в банк не попадает; выходной резервируется за активной заявкой'],
   ['Q08','i','Что значит «HR может отменить в любой момент» после подписи; что откатывается в 1С/КЭДО и в банке?','Прототип: отмена с комментарием'],
   ['Q09','b','Права ИО/ассистента/делегата, срок полномочий, что видит сотрудник.','Прототип: ИО делает всё как руководитель, в заявке видно «за кого»'],
@@ -1444,25 +1500,27 @@ const QS = [
   ['Q11','i','Граница «1 год со следующего дня» для отгула; старые РВД до 01.03.2025.','Прототип: до РВД + 364 дня; старые — без срока'],
   ['Q12','i','Можно ли изменить выбор после «Сформировать уведомление/заявление»? Пересчёт срока после доработки?','Прототип: возврата к форме нет; срок не пересчитывается'],
   ['Q13','i','Финальные шаблоны и коды документов (12.999 у заявления и приказа), тип ЭП сотрудника.','Прототип: условный текст документов'],
-  ['Q14','i','Банк отгулов в «Отпуске»: что показываем; нужен ли обзор руководителю.','Прототип: остаток и списки у сотрудника'],
+  ['Q14','i','Банк отгулов в «Отпуске»: что показываем; нужен ли обзор руководителю.','Макеты: всего дней, сколько можно взять, сколько — к компенсации при увольнении'],
   ['Q15','i','Единые названия терминальных статусов («завершается» vs «отменена») и кому слать уведомления.','Прототип: «Заявка отменена» + причина'],
   ['Q16','i','В письме о передаче РВД в кадры стоит «Уведомление о начале оплачиваемого отпуска».','Прототип: текст исправлен'],
-  ['Q17','i','В таблице заявки на отгул нет поля «Отгул за РВД 8» (стр. 19–20).','Прототип: список до 10 пар'],
+  ['Q17','i','В таблице заявки на отгул нет поля «Отгул за РВД 8» (стр. 19–20).','Прототип и макеты: один отгул в заявке'],
   ['Q20','d','Может ли любой сотрудник отказаться от РВД, или только категории из БТ?','Решено по макетам: «Отклонить» доступна всем, с комментарием. Сверить с БТ/юристами'],
-  ['Q21','i','В заявке на отгул поля «Дата работы в выходной день 1–10» — «только просмотр». Как сотрудник выбирает выходные?','Прототип и макеты: чекбоксы из банка отгулов'],
+  ['Q21','i','В заявке на отгул поля «Дата работы в выходной день 1–10» — «только просмотр». Как сотрудник выбирает выходные?','Прототип и макеты: выпадающий список из банка отгулов, один день на заявку'],
   ['Q22','i','Письмо HR «загрузить документы в OTP Space» (стр. 23): кадры что-то делают в Space?','Прототип: экраны кадров не рисуем'],
-  ['Q23','d','Заявка на нескольких: цель и даты общие или свои у каждого?','Решено: блок на каждого сотрудника — своя цель и даты; «Цель/Даты первого — всем»'],
+  ['Q23','d','Заявка на нескольких: цель и даты общие или свои у каждого?','Решено: цель одна на всех, даты у каждого свои; «Скопировать даты всем»'],
   ['Q24','b','Кадры оформляют один приказ на всех или отдельный на каждого?','Прототип: приказ на каждого сотрудника'],
   ['Q25','i','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого?','Прототип: отправить — по самой ранней; сотрудник и кадры — от его первой даты'],
+  ['Q26','i','Даты РВД: в БТ (R03) — один календарный месяц, в макете — ближайшие 30 дней. Что верно?','Прототип: 30 дней, как в макете'],
+  ['Q27','i','Отгул: в БТ (R24) — до 10 пар «день работы — день отгула», в макете — один день на заявку. Что верно?','Прототип: один день, как в макете'],
 ];
 function openAnalytics(focusQ){
   const dlg = $('#dlg'); dlg.className = 'wide';
   dlg.innerHTML = `<div class="modal-head"><h2>Аналитика · РВД и отгул, полная версия</h2><button type="button" class="close" data-close aria-label="Закрыть">×</button></div>
   <div class="modal-body an">
     <h3>Источник и охват</h3><ul><li>БТ «Работа в выходной или праздничный день», страницы 4–28 из 28. </li>
-    <li>Визуал, тексты и данные — по макетам в Figma, страница «Работа в выходной день» (версия от 19.11.2026): № 3 432 и № 3 518, даты октября 2026. Любой экран макета открывается из списка «Экран из макета».</li>
+    <li>Визуал, тексты и данные — по макетам в Figma, страница «Работа в выходной день» (версия от 23.11.2026): № 3 432 и № 3 518, даты октября 2026. Любой экран макета открывается из списка «Экран из макета».</li>
     </ul>
-    <h3>Что сверх макетов</h3><ul><li>Экраны, которых нет в Figma, собраны в том же стиле и помечены в «Экран из макета» как «нет в макетах»: просрочки РВД у руководителя, просрочки и отмена кадрами в отгуле, отдельный приказ на отгул (процесс В).</li><li>Единое боковое меню на всех экранах (в части итоговых макетов — старая версия меню).</li><li>Календарь в «Отпуске» — за 2026 год, с отметками РВД и отгулов.</li><li>Оба варианта отказа сотрудника переключаются в «⚙ События».</li></ul>
+    <h3>Что сверх макетов</h3><ul><li>Экраны, которых нет в Figma, собраны в том же стиле и помечены в «Экран из макета» как «нет в макетах»: создание на 20 сотрудников, у руководителя — «У отдела кадров», отказ и просрочки по одному сотруднику, отказ через чекбокс.</li><li>Исправлены данные, которые в макете противоречат сами себе: дни в списке банка (даты, дни недели, истёкшие сроки), одинаковая дата отгула за два дня, 16/512 у пустого поля цели.</li><li>Комментарии сотрудника и отдела кадров видны руководителю в раскрытой строке таблицы.</li><li>Единое боковое меню на всех экранах (в части итоговых макетов — старая версия меню).</li><li>Календарь в «Отпуске» — за 2026 год, с отметками РВД и отгулов.</li><li>Оба варианта отказа сотрудника переключаются в «⚙ События».</li></ul>
     <h3>Открытые вопросы</h3><div class="tablewrap"><table><thead><tr><th>ID</th><th>Статус*</th><th>Вопрос</th><th>Как сделано сейчас</th></tr></thead><tbody>
     ${QS.map(([id,p,q,a]) => `<tr id="an-${id}" class="${id===focusQ?'hl':''}"><td><b>${id}</b></td><td><span class="pri ${p}">${p==='b'?'Блокер':p==='d'?'Решено':'Важно'}</span></td><td>${q}</td><td>${a}</td></tr>`).join('')}
     </tbody></table></div><p class="demo-note">*Приоритет — рекомендация аналитика, не решение бизнеса.</p></div>`;
@@ -1480,34 +1538,42 @@ function setG(s, list, gOpts = {}){
   g.history = [{t:g.created, text:'Елена Когут создала заявку на ' + plural(list.length, 'сотрудника', 'сотрудников', 'сотрудников') + ' и отправила её'}];
 }
 function setO(s, stage, o){ s.requests = s.requests.filter(r => r.id !== 'r3518'); if (stage) s.requests.push(otgulReq(stage, Object.assign({}, o))); }
-const formEmp = (id, o = {}) => Object.assign({id, q:'', goal:GOAL, dates:['2026-10-31'], open:false, col:true}, o);
+const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], open:false, col:true}, o);
+const mkF = (emps, o = {}) => { F = Object.assign({goal:GOAL, emps, budget:true, tried:false}, o); return 'new'; };
+function setOrder(s, stage, o = {}){ setO(s, null); s.requests.push(Object.assign({id:'r3601', num:'3601', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-12'}], stage, orderAt:D('02.11',15), created:D('02.11',15), at:{hr:D('02.11',15)}, viewedOrder:false, history:[]}, o)); return 'r3601'; }
 const TWO = {dates:['2026-10-31','2026-11-01']};
 /* [группа, подпись, кто смотрит, часы, настройка → что открыть] */
 const SCEN = [
-  ['Руководитель · РВД', 'Создание, 1 сотрудник', 'm1', '21.10', s => { freshG(s); F = {emps:[formEmp('e1', {col:false})], budget:true, tried:false, menu:null}; return 'new'; }],
-  ['Руководитель · РВД', 'Создание, 3 сотрудника', 'm1', '21.10', s => { freshG(s); F = {emps:['e1','e2','e5'].map(id => formEmp(id)), budget:true, tried:false, menu:null}; return 'new'; }],
-  ['Руководитель · РВД', 'Создание, 20 сотрудников', 'm1', '21.10', s => { freshG(s); F = {emps:['e1','e2','e5'].concat([...Array(17)].map((_, i) => 'x' + i)).map(id => formEmp(id)), budget:true, tried:false, menu:null}; return 'new'; }],
-  ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); F = {emps:[formEmp('e1', {col:false, goal:'Перенос инте', dates:['']})], budget:false, tried:true, menu:null}; return 'new'; }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
+  ['Руководитель · РВД', 'Создание, пустая форма', 'm1', '21.10', s => { freshG(s); newForm(); return 'new'; }],
+  ['Руководитель · РВД', 'Создание, цель заполнена', 'm1', '21.10', s => { freshG(s); return mkF([blankEmp()]); }],
+  ['Руководитель · РВД', 'Создание, 2 сотрудника, один развёрнут', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1'), formEmp('e2', {col:false})]); }],
+  ['Руководитель · РВД', 'Создание, 3 сотрудника', 'm1', '21.10', s => { freshG(s); return mkF(['e1','e2','e5'].map(id => formEmp(id))); }],
+  ['Руководитель · РВД', 'Создание, 20 сотрудников (нет в макетах)', 'm1', '21.10', s => { freshG(s); return mkF(['e1','e2','e5'].concat([...Array(17)].map((_, i) => 'x' + i)).map(id => formEmp(id))); }],
+  ['Руководитель · РВД', 'Ошибка: цель короче 20 символов', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false})], {goal:'Перенос сервиса', tried:true}); }],
+  ['Руководитель · РВД', 'Ошибки: цель и дата', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', tried:true}); }],
+  ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', budget:false, tried:true}); }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
   ['Руководитель · РВД', 'На подписании, 1 сотрудник', 'm1', '22.10', s => { setG(s, [['e1','sign']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'На подписании у сотрудников, статусы', 'm1', '22.10', s => { setG(s, [['e1','sign', TWO.dates.length && {dates:['2026-10-31']}],['e2','hr'],['e5','sign'],['e9','expired',{stopStage:'sign'}],['x10','declined',{declineComment:'Ребёнок на больничном.'}]]); return 'g3432'; }],
-  ['Руководитель · РВД', 'У отдела кадров', 'm1', '22.10', s => { setG(s, [['e1','hr']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'Завершена, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','done']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'Завершена, один отказ', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','declined',{declineComment:'Отклонил по причине соответствия списку кто может отклонить'}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-10-31','2026-11-01','2026-11-07','2026-11-08']}],['e1','hr'],['e2','done']]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-10-31','2026-11-01','2026-11-07','2026-11-08']}],['e1','hr'],['e2','done']]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
+  ['Руководитель · РВД', 'У отдела кадров (нет в макетах)', 'm1', '22.10', s => { setG(s, [['e1','hr']]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '30.10', s => { setG(s, [['e5','declined',{dates:['2026-10-31','2026-11-01','2026-11-07','2026-11-08']}],['e1','expired',{stopStage:'sign', stopAt:D('29.10',23)}],['e2','done']]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена, все 3 (нет в макетах)', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, 1 сотрудник', 'm1', '23.10', s => { setG(s, [['e1','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Отменена отделом кадров', 'm1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'g3432'; }],
-  ['Руководитель · РВД', 'Сотрудник отказался', 'm1', '22.10', s => { setG(s, [['e1','declined',{declineComment:'Ребёнок на больничном.'}]]); return 'g3432'; }],
+  ['Руководитель · РВД', 'Сотрудник отказался (нет в макетах)', 'm1', '22.10', s => { setG(s, [['e1','declined',{declineComment:'Ребёнок на больничном.'}]]); return 'g3432'; }],
   ['Руководитель · РВД', 'Просрочка подписи сотрудником (нет в макетах)', 'm1', '30.10', s => { setG(s, [['e1','expired',{stopStage:'sign', stopAt:D('29.10',23)}]]); return 'g3432'; }],
   ['Руководитель · РВД', 'Просрочка отдела кадров (нет в макетах)', 'm1', '31.10', s => { setG(s, [['e1','expired',{stopStage:'hr', stopAt:D('30.10',23)}]]); return 'g3432'; }],
   ['Руководитель · отгул', 'На согласовании', 'm1', '26.10', s => { setO(s, 'approve'); s.tab = 'approve'; return 'r3518'; }],
   ['Руководитель · отгул', 'Доработка: окно комментария', 'm1', '26.10', s => { setO(s, 'approve'); s.tab = 'approve'; return 'r3518'; }, () => { returnOtgul(req('r3518')); setTimeout(() => { const t = $('#cmt'); if (t) { t.value = 'в этот день у нас релиз, выбери другую дату'; t.dispatchEvent(new Event('input')); } }, 30); }],
-  ['Руководитель · отгул', 'Возвращено на доработку', 'm1', '26.10', s => { setO(s, 'draft', {returnComment:'в этот день у нас релиз, выбери другую дату', returnBy:'Елена Когут', submitted:true}); s.tab = 'approve'; return 'r3518'; }],
+  ['Руководитель · отгул', 'Возвращено на доработку', 'm1', '26.10', s => { setO(s, 'draft', {returnComment:'в этот день у нас релиз, выбери другую дату', returnBy:'Елена Когут', rejected:'2026-11-03', submitted:true}); s.tab = 'approve'; return 'r3518'; }],
   ['Руководитель · отгул', 'У отдела кадров', 'm1', '26.10', s => { setO(s, 'hr'); s.tab = 'approve'; return 'r3518'; }],
   ['Руководитель · отгул', 'Завершена', 'm1', '28.10', s => { setO(s, 'done'); s.tab = 'approve'; return 'r3518'; }],
-  ['Сотрудник · РВД', 'Компенсация, двойная оплата', 'e1', '22.10', s => { setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }],
-  ['Сотрудник · РВД', 'Компенсация, отгул', 'e1', '22.10', s => { setG(s, [['e1','confirm',{comp:{'2026-10-31':'rest'}, rest:{'2026-10-31':'2026-11-03'}}]]); return 'r3432'; }],
+  ['Руководитель · отгул', 'Истёк срок согласования', 'm1', '31.10', s => { setO(s, 'expired', {stopStage:'approve', stopAt:D('30.10',23)}); s.tab = 'approve'; return 'r3518'; }],
+  ['Сотрудник · РВД', 'Компенсация, двойная оплата', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'double','2026-11-01':'double'}}]]); return 'r3432'; }],
   ['Сотрудник · РВД', 'Компенсация, отгул за 2 даты', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'rest','2026-11-01':'rest'}, rest:{'2026-10-31':'2026-11-03','2026-11-01':'2026-11-05'}}]]); return 'r3432'; }],
-  ['Сотрудник · РВД', 'Отказ через модалку', 'e1', '22.10', s => { s.refuseMode = 'modal'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }, () => $('#declineBtn')?.click()],
-  ['Сотрудник · РВД', 'Отказ через чекбокс (по БТ)', 'e1', '22.10', s => { s.refuseMode = 'checkbox'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Право на отказ, подсказка', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'double','2026-11-01':'double'}}]]); return 'r3432'; }, () => $('.tip-link')?.focus()],
+  ['Сотрудник · РВД', 'Отказ, модалка', 'e1', '22.10', s => { s.refuseMode = 'modal'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }, () => $('#declineBtn')?.click()],
+  ['Сотрудник · РВД', 'Отказ через чекбокс (по БТ, нет в макетах)', 'e1', '22.10', s => { s.refuseMode = 'checkbox'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }],
   ['Сотрудник · РВД', 'Подписание, не просмотрено', 'e1', '22.10', s => { setG(s, [['e1','sign',{viewed:false}]]); return 'r3432'; }],
   ['Сотрудник · РВД', 'Подписание, просмотрено', 'e1', '22.10', s => { setG(s, [['e1','sign',{viewed:true}]]); return 'r3432'; }],
   ['Сотрудник · РВД', 'У отдела кадров', 'e1', '22.10', s => { setG(s, [['e1','hr']]); return 'r3432'; }],
@@ -1517,28 +1583,31 @@ const SCEN = [
   ['Сотрудник · РВД', 'Отклонена сотрудником', 'e1', '22.10', s => { setG(s, [['e1','declined']]); return 'r3432'; }],
   ['Сотрудник · РВД', 'Отменена отделом кадров', 'e1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'r3432'; }],
   ['Сотрудник · отгул', 'Отпуск: банк отгулов', 'e4', '23.10', s => { setO(s, null); s.view = 'vacation'; return null; }],
-  ['Сотрудник · отгул', 'Заявление: выбор выходных', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = null; return 'newOtgul'; }],
-  ['Сотрудник · отгул', 'Заявление: 1 дата', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = {reqId:null, sel:{'2026-10-31':'2026-11-03'}}; return 'newOtgul'; }],
-  ['Сотрудник · отгул', 'Заявление: 2 даты', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = {reqId:null, sel:{'2026-10-31':'2026-11-03','2026-11-01':'2026-11-05'}}; return 'newOtgul'; }],
+  ['Сотрудник · отгул', 'Отпуск: подсказка про банк', 'e4', '23.10', s => { setO(s, null); s.view = 'vacation'; return null; }, () => $('.bal .tip-btn')?.focus()],
+  ['Сотрудник · отгул', 'Заявление: день не выбран, подсказка', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = null; return 'newOtgul'; }, () => $('.day-field .tip-btn')?.focus()],
+  ['Сотрудник · отгул', 'Заявление: список дней', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = {reqId:null, rvd:'', off:'', open:true, tried:false}; return 'newOtgul'; }],
+  ['Сотрудник · отгул', 'Заявление: дата выбрана', 'e4', '23.10', s => { setO(s, null); s.seq = 3518; O = {reqId:null, rvd:'2026-10-31', off:'2026-11-03', open:false, tried:false}; return 'newOtgul'; }],
   ['Сотрудник · отгул', 'Подписание заявления, не просмотрено', 'e4', '23.10', s => { setO(s, 'sign', {viewedApp:false}); return 'r3518'; }],
   ['Сотрудник · отгул', 'Подписание заявления, просмотрено', 'e4', '23.10', s => { setO(s, 'sign', {viewedApp:true}); return 'r3518'; }],
   ['Сотрудник · отгул', 'На согласовании у руководителя', 'e4', '23.10', s => { setO(s, 'approve'); return 'r3518'; }],
-  ['Сотрудник · отгул', 'Возвращено на доработку', 'e4', '26.10', s => { setO(s, 'draft', {returnComment:'в этот день у нас релиз, выбери другую дату', returnBy:'Елена Когут', submitted:true}); O = null; return 'r3518'; }],
+  ['Сотрудник · отгул', 'Возвращено на доработку', 'e4', '26.10', s => { setO(s, 'draft', {returnComment:'в этот день у нас релиз, выбери другую дату', returnBy:'Елена Когут', rejected:'2026-11-03', submitted:true}); O = null; return 'r3518'; }],
   ['Сотрудник · отгул', 'У отдела кадров', 'e4', '26.10', s => { setO(s, 'hr'); return 'r3518'; }],
   ['Сотрудник · отгул', 'Подписание приказа, не просмотрено', 'e4', '27.10', s => { setO(s, 'orderSign', {viewedOrder:false}); return 'r3518'; }],
   ['Сотрудник · отгул', 'Подписание приказа, просмотрено', 'e4', '27.10', s => { setO(s, 'orderSign', {viewedOrder:true}); return 'r3518'; }],
   ['Сотрудник · отгул', 'Завершена', 'e4', '28.10', s => { setO(s, 'done'); return 'r3518'; }],
   ['Сотрудник · отгул', 'Приказ не подписан → бумага', 'e4', '31.10', s => { setO(s, 'paper', {stopStage:'orderSign', stopAt:D('30.10',23)}); return 'r3518'; }],
   ['Сотрудник · отгул', 'Истёк срок согласования', 'e4', '31.10', s => { setO(s, 'expired', {stopStage:'approve', stopAt:D('30.10',23)}); return 'r3518'; }],
-  ['Сотрудник · отгул', 'Истёк срок подписания заявления (нет в макетах)', 'e4', '29.10', s => { setO(s, 'expired', {stopStage:'sign', stopAt:D('28.10',23)}); return 'r3518'; }],
-  ['Сотрудник · отгул', 'Истёк срок у отдела кадров (нет в макетах)', 'e4', '03.11', s => { setO(s, 'expired', {stopStage:'hr', stopAt:D('02.11',23)}); return 'r3518'; }],
-  ['Сотрудник · отгул', 'Отменена отделом кадров (нет в макетах)', 'e4', '27.10', s => { setO(s, 'cancelled', {stopStage:'hr', hrComment:'В эти даты у тебя запланирована командировка.'}); return 'r3518'; }],
-  ['Сотрудник · отгул', 'Отдельный приказ от отдела кадров (нет в макетах)', 'e4', '27.10', s => { setO(s, null); s.requests.push({id:'r3530', num:'3530', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-03'}], stage:'orderSign', orderAt:D('27.10',15), created:D('27.10',15), at:{hr:D('27.10',15)}, viewedOrder:false, history:[{t:D('27.10',15), text:'Отдел кадров сформировал приказ на отгул в 1С и подписал УКЭП'}]}); return 'r3530'; }],
+  ['Сотрудник · отгул', 'Истёк срок подписания заявления', 'e4', '29.10', s => { setO(s, 'expired', {stopStage:'sign', stopAt:D('28.10',23)}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Истёк срок у отдела кадров', 'e4', '03.11', s => { setO(s, 'expired', {stopStage:'hr', stopAt:D('02.11',23)}); return 'r3518'; }],
+  ['Сотрудник · отгул', 'Отменена отделом кадров', 'e4', '27.10', s => { setO(s, 'cancelled', {stopStage:'hr', stopAt:D('27.10'), hrComment:'В эти даты ты в командировке, выбери другие дни. Дни остались в банке отгулов.'}); return 'r3518'; }],
+  ['Отдельный приказ', 'Подписание приказа', 'e4', '02.11', s => setOrder(s, 'orderSign')],
+  ['Отдельный приказ', 'Завершена', 'e4', '05.11', s => setOrder(s, 'done', {at:{hr:D('02.11',15), orderSign:D('05.11')}})],
+  ['Отдельный приказ', 'Приказ не подписан → бумага', 'e4', '07.11', s => setOrder(s, 'paper', {stopStage:'orderSign', at:{hr:D('02.11',15), stop:D('06.11',23)}})],
 ];
 function openScenario(i){
   const [, , persona, day, setup, after] = SCEN[i];
   const s = seed(); CLOCK = D(day, 12); s.clock = CLOCK; s.persona = persona; s.tab = 'mine'; s.view = 'requests'; s.expanded = false;
-  F = null; O = null;
+  F = null; O = null; U = {rows:{}, chip:null};
   S = s; const sel = setup(s); S.selected = sel;
   if ($('#dlg').open) { $('#dlg').onclose = null; $('#dlg').close(); }
   render(); scrollTo(0, 0);
@@ -1554,6 +1623,9 @@ document.addEventListener('click', e => {
   if (t.closest('#createBtn')) { menu.hidden = !menu.hidden; $('#createBtn').setAttribute('aria-expanded', !menu.hidden); return; }
   if (menu && !menu.hidden && !t.closest('#createMenu')) menu.hidden = true;
   const cr = t.closest('[data-create]'); if (cr) { if (cr.dataset.create === 'rvd') { newForm(); S.selected = 'new'; } else { O = null; S.selected = 'newOtgul'; } S.tab = 'mine'; render(); return; }
+  const ec = t.closest('[data-echip]'); if (ec) { U.chip = U.chip === ec.dataset.echip ? null : ec.dataset.echip; renderDetail(); $(`[data-echip="${ec.dataset.echip}"]`)?.focus(); return; }
+  if (U.chip && !t.closest('.echip-pop')) { U.chip = null; if (S.selected && !String(S.selected).startsWith('new')) renderDetail(); }
+  const er = t.closest('[data-erow]'); if (er) { U.rows[er.dataset.erow] = !U.rows[er.dataset.erow]; renderDetail(); $(`.et-chev[data-erow="${er.dataset.erow}"]`)?.focus(); return; }
   const o = t.closest('[data-open]'); if (o) { S.selected = o.dataset.open; render(); if (innerWidth <= 800) scrollTo(0,0); return; }
   const tb = t.closest('[data-tab]'); if (tb) { S.tab = tb.dataset.tab; render(); return; }
   if (t.closest('[data-expand]')) { S.expanded = !S.expanded; render(); return; }
