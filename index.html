@@ -46,8 +46,8 @@
   .status-icon.partial{background:#fff2d6}
   .status-icon.paper{background:#ffe9d6}
   .status-icon.idea{background:#e3edfc;width:32px;height:32px;border-radius:10px}
-  .ready{display:flex;gap:20px;align-items:center}
-  .ready svg{width:76px;height:64px;flex-shrink:0}
+  .ready{display:flex;gap:24px;align-items:center}
+  .ready img{width:112px;height:112px;flex-shrink:0}
   .ready b{display:block;font-size:16px}
   .ready p{font-size:16px;line-height:20px;margin-top:4px}
   .pdf-row{width:100%;display:flex;gap:12px;align-items:center;background:var(--selected);border-radius:12px;padding:14px 16px;text-align:left;margin-top:24px}
@@ -413,7 +413,7 @@
   .off-date{font-size:16px;line-height:24px;margin:0 0 24px;display:flex;flex-direction:column;gap:6px}
   .off-date b{font-weight:600;font-size:17px;margin:0!important}
   .sign-info .off-date{margin:28px 0 0}
-  .goal-read{margin:40px 0 24px!important}.goal-read dd{margin-top:8px}
+  .goal-read{margin:40px 0 24px!important}.goal-read dd{margin-top:8px}.ready+.goal-read{margin-top:40px!important}
   .et-h,.et-line{display:grid;grid-template-columns:minmax(0,1.35fr) 222px 130px 24px;gap:12px;align-items:center}
   .et.nodl .et-h,.et.nodl .et-line{grid-template-columns:minmax(0,1.35fr) minmax(222px,1fr) 24px}
   .et-h{padding:0 16px 8px 0;color:#717171;font-size:16px}
@@ -671,7 +671,7 @@ function gInfo(g){
   let status, cls = '';
   if (live.length) status = atEmp.length ? (bs.length === 1 ? statusText(atEmp[0]) : `Ответили ${bs.length - atEmp.length} из ${bs.length}`) : 'Формирование приказа';
   else if (done === bs.length) { status = 'Завершена'; cls = 'done'; }
-  else if (done) { status = `Оформлена частично · ${done} из ${bs.length}`; cls = 'partial'; }
+  else if (done) { status = `Завершена · оформлено ${done} из ${bs.length}`; cls = 'done'; }
   else { status = bs.length === 1 ? statusText(bs[0]) : 'Не оформлена'; cls = 'cancel'; }
   const dl = live.map(stageDeadline).filter(Boolean).sort((a,b) => a - b)[0] || null;
   const who = !live.length ? '' : !atEmp.length ? HR : bs.length === 1 ? 'Сотрудник' : 'Сотрудники';
@@ -692,7 +692,6 @@ const I = {
   zoom:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="7"/><path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"/></svg>',
   expand:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#53565d" stroke-width="1.3"><rect x="1.5" y="1.5" width="13" height="13" rx="3"/><path d="M5 9v2h2M11 7V5H9"/></svg>',
   plus:'<svg width="16" height="16" viewBox="0 0 16 16" stroke="#222" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>',
-  ready:'<svg viewBox="0 0 76 64"><ellipse cx="30" cy="50" rx="22" ry="9" fill="#eef1f6"/><ellipse cx="18" cy="47" rx="11" ry="8" fill="#f5f7fa"/><ellipse cx="40" cy="46" rx="12" ry="9" fill="#f5f7fa"/><path d="M14 30 28 43 62 8" fill="none" stroke="#6cbf2a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 30 28 43 62 8" fill="none" stroke="#8fdb46" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   face:m => `<svg viewBox="0 0 26 26" fill="none" stroke="#222" stroke-width="1.4"><circle cx="13" cy="13" r="11.5"/><circle cx="9" cy="10.5" r=".9" fill="#222"/><circle cx="17" cy="10.5" r=".9" fill="#222"/><path d="${m}" stroke-linecap="round"/></svg>`,
 };
 const FACES = ['M8.5 18c2.5-2.6 6.5-2.6 9 0','M8.5 17h9','M8.5 16c2.5 2.6 6.5 2.6 9 0'];
@@ -795,7 +794,7 @@ function statusMsg(kind, title, sub){
   return `<div class="status-message"><span class="status-icon ${kind === 'clock' ? '' : kind}" aria-hidden="true">${ic}</span><div><b>${title}</b>${sub ? `<p>${sub}</p>` : ''}</div></div>`;
 }
 const resp = name => `Ответственный — <a href="#" class="link" data-stub>${esc(name)}</a>`;
-const ready = (text, title = 'Готово!') => `<div class="ready">${I.ready}<div><b>${title}</b><p>${text}</p></div></div>`;
+const ready = (text, title = 'Готово!') => `<div class="ready"><img src="assets/ready.png" alt="" width="112" height="112"><div><b>${title}</b><p>${text}</p></div></div>`;
 const rateBox = () => `<div class="rate-box"><div class="faces">${FACES.map((m,i) => `<button type="button" data-rate="${i}" aria-label="Оценка ${i+1}">${I.face(m)}</button>`).join('')}</div>Оцени заявку</div>`;
 function bubbleMsg(label, who, text){
   return `<p class="bubble-label">${label}</p><div class="bubble-wrap"><span class="bub-ava" aria-hidden="true">${I.mark}</span><div class="bubble"><b>${esc(who)}</b>${esc(text)}</div></div>`;
@@ -971,11 +970,11 @@ function empTable(bs, withDl){
 function groupView(g){
   const X = gInfo(g), n = X.bs.length, one = n === 1 ? X.bs[0] : null;
   const by = g.by ? `<p class="emp-note">Инициатор: ${authorLine(g)}</p>` : '';
-  if (one) {
+  /* Финальный экран один: «Готово!», цель, таблица со статусами (макет 25982:32853) — и для одного сотрудника, и для нескольких */
+  if (one && one.stage !== 'done') {
     let body;
     if (['confirm','sign'].includes(one.stage)) body = statusMsg('clock', 'Заявка обрабатывается', resp(person(one.employeeId).first));
     else if (one.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
-    else if (one.stage === 'done') body = ready('Сотрудник подписал уведомление');
     else if (one.stage === 'declined') body = statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (one.declineComment ? bubbleMsg('Комментарий сотрудника:', person(one.employeeId).name, one.declineComment) : '');
     else if (one.stage === 'expired') body = expiredMsg(one, false);
     else body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, one.hrComment || '—');
