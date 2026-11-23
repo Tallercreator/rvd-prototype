@@ -441,6 +441,14 @@
   .ep small{display:block;font-size:12px;line-height:16px;color:#8a8f99}
   @media(max-width:1300px){.et-h{display:none}.et-line,.et.nodl .et-line{grid-template-columns:minmax(0,1fr) 24px}.et-line .chip-wrap{grid-row:2;grid-column:1}.et-line .et-dl{grid-row:3;grid-column:1}.et-line .et-dl:not(:empty):before{content:'Срок до '}.et-line .et-chev{grid-row:1;grid-column:2}}
   @media(max-width:800px){.sel,.off-field input{width:100%!important}.tip-pop,.tip-pop.wide{position:fixed;left:16px;right:16px;bottom:76px;width:auto!important;transform:none;max-height:60vh;overflow:auto;z-index:50}.tip-pop:after{display:none}.vac-row{gap:24px;margin-bottom:24px}.bal{padding-left:0}.cal-ms{grid-template-columns:minmax(0,1fr)!important}.hint-card p br{display:none}}
+  /* ---- Меню «Создать» сотрудника ---- */
+  .create-menu.cats{width:640px;max-width:calc(100vw - 24px)}
+  .create-menu.cats button{font-size:18px;line-height:20px;font-weight:600;color:#53565d;border-radius:12px}
+  .create-menu.cats>button{margin-bottom:2px}
+  .cat-chev{transition:transform .15s}
+  [data-cat][aria-expanded=true] .cat-chev{transform:rotate(180deg)}
+  .cat-sub button{display:block;width:100%;text-align:left;padding:14px 16px 14px 48px;min-height:48px}
+  @media(max-width:800px){.create-menu.cats button{font-size:16px}}
   /* ---- Отступы по макету 25932:487342 ---- */
   .panel-head{margin-bottom:40px}
   .panel-head h1{margin-top:0}
@@ -490,6 +498,62 @@
   #createForm .search-input input{padding-right:48px}
   @media(min-width:1201px){.detail>.panel{padding:31px 39px 39px}.panel-head .deadline{position:absolute;float:none;right:0;top:24px;margin:0}.panel-head:has(.deadline) h1{padding-right:170px}}
   @media(max-width:800px){.panel-head .meta,.expand{font-size:16px}.step b,.step.future b{font-size:11px;line-height:14px}.steps .step small{font-size:10px;line-height:13px;margin-top:2px}#createForm .date-line input{width:240px}}
+  /* ---- Сверка с макетами 23.11: размеры и отступы карточек ---- */
+  input[type=date]{position:relative}
+  input[type=date]::-webkit-calendar-picker-indicator{width:24px;height:24px;padding:0;margin:0;opacity:1;cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2353565d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 5.5h19v15h-19zM2.5 10.5h19M7.5 3v4M16.5 3v4'/%3E%3C/svg%3E") center/24px no-repeat}
+  input[type=date].empty:not(:focus)::-webkit-datetime-edit{color:transparent}
+  input[type=date].empty:not(:focus)::before{content:'ДД.ММ.ГГГГ';position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#53565d}
+  .et-name small{display:block;font-size:14px;line-height:20px;color:#53565d;margin-top:2px}
+  .et-dates{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+  .cal-all{display:inline-flex;gap:24px;align-items:center}.cal-all>span{display:inline-flex;gap:8px;align-items:center}.cal-all button{padding:0;line-height:0}
+  .cal-legend{margin-top:20px;font-size:15px}.cal-legend summary{display:inline-flex;gap:12px;align-items:center;cursor:pointer;list-style:none}.cal-legend summary::-webkit-details-marker{display:none}.cal-legend summary i{width:16px;height:16px;border-radius:50%;background:conic-gradient(#f7e08a 0 30%,#be8ae4 30%)}
+  .cal-legend .cal-leg{margin-top:12px}
+  .vac-float{position:fixed;right:32px;bottom:88px;z-index:20;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
+  body.flow .vac-float{bottom:32px}
+  .vac-rules{width:112px;height:90px;border-radius:8px;background:#d6e4fb;box-shadow:0 6px 16px #263b6420;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:600;color:#53565d}
+  .vac-bot{display:flex;align-items:center;gap:12px;padding:0;font-size:16px;color:#375d0f}.vac-bot span{background:#f0f2f5;border-radius:12px;padding:4px 10px}
+  .vac-bot i{width:56px;height:56px;border-radius:16px;background:radial-gradient(circle at 50% 90%,#b6f03c,#eaf5d6 70%);display:flex;align-items:center;justify-content:center;gap:4px}.vac-bot i b{width:8px;height:14px;border-radius:4px;background:#2a3a10;box-shadow:0 0 0 3px #fff}
+  @media(min-width:801px){
+    .status-message b{font-size:18px;line-height:20px}.status-message p{font-size:18px;line-height:24px}
+    .status-icon{width:40px;height:40px}
+    .ready b,.ready p{font-size:18px;line-height:24px}
+    .details summary h2{font-size:26px;line-height:32px}
+    .details .general-fields{gap:32px;font-size:18px;line-height:24px}.details .pair dt{font-size:18px;line-height:24px}
+    .pairs-read dt,.pairs-read dd,.comp-table{font-size:18px;line-height:24px}.conf-read dd{margin-top:12px}
+    .goal-read dd{margin-top:8px}
+    .comp-q,.comp-day,.choices,.consent,.consent.checkline{font-size:18px}.consent,.consent.checkline{line-height:24px;max-width:640px}
+    .comp-block{max-width:660px}
+    .rest-field .label,.off-field .label,.day-field .label{font-size:18px!important;line-height:24px}
+    .rest-field input,.off-field input{font-size:18px;padding:0 16px}
+    .rest-field .date-line input{width:294px}
+    .rest-field .help,.off-field .help{font-size:14px;line-height:16px}
+    .bank-sum{font-size:18px;margin-bottom:40px}.bank-sum b{font-size:20px;line-height:26px;margin-bottom:8px}
+    .sel-btn{font-size:18px;border-radius:12px}.sel-btn small{font-size:14px}.sel-opt{font-size:16px;line-height:20px;min-height:44px}.sel-opt small{font-size:14px;line-height:18px}
+    .off-date{font-size:18px;margin-bottom:40px;gap:8px}.off-date b{font-size:20px;line-height:26px}
+    .off-date.appr b{font-size:18px;line-height:24px}
+    .bubble{font-size:18px;line-height:24px}.bubble b{font-size:16px;line-height:20px}.bubble-label{font-size:18px;line-height:20px;margin:40px 0 16px}
+    .pdf-row{min-height:78px}.pdf-row b{font-size:18px;line-height:24px}.pdf-row small{font-size:16px;line-height:20px}
+    .sign-layout{grid-template-columns:360px minmax(0,1fr);gap:24px}
+    .thumb-image{height:237px;padding:96px 32px 0}
+    .thumb-caption{font-size:16px;line-height:18px;min-height:64px;align-items:center;padding:12px 16px}
+    .viewed-tag{font-size:18px;line-height:24px;top:22px;right:15px;padding:3px 12px}
+    .zoom{width:46px;height:46px;top:14px;left:14px}
+    .sign-info .ttl{font-size:18px;line-height:20px;gap:8px}.sign-info .status-icon.idea{width:40px;height:40px}
+    .sign-info b{font-size:18px;line-height:20px;margin-top:28px}.sign-info .instruction{font-size:16px;line-height:20px;color:#222;max-width:370px}
+    .sign-info .off-date{margin-top:28px}
+    .form-actions{margin-top:40px;gap:16px}
+    .et-name,.et-dl{font-size:18px;line-height:24px}.et-name small{font-size:16px;line-height:22px}
+    .et-row{padding:16px;border-radius:12px}
+    .et-body{margin-top:20px}
+    .rate-box{font-size:16px!important}
+    .row-copy b{font-size:18px;line-height:20px}.row-copy small{font-size:16px;line-height:20px}.row-meta{font-size:16px}
+    dialog.small{width:560px;border-radius:16px}
+    dialog.small .modal-head{padding:20px 24px 8px;align-items:flex-start}dialog.small .modal-head h2{font-size:26px;line-height:32px}
+    dialog.small .modal-body{padding:8px 32px 28px;font-size:18px;line-height:24px}
+    dialog.small textarea{height:120px;font-size:18px;line-height:24px;padding:12px 16px;border-radius:12px}
+    dialog.small .btn{font-size:16px;min-height:46px;padding:12px 32px;border-radius:12px}
+    dialog.small .under{font-size:16px;line-height:22px}
+  }
 </style>
 </head>
 <body>
@@ -803,19 +867,35 @@ function tabItems(tab){
   if (isMgr()) return tab === 'mine' ? S.groups.map(g => ({g, created:g.created})) : S.requests.filter(r => r.type === 'otgul' && r.submitted).map(it);
   return tab === 'mine' ? S.requests.filter(r => r.employeeId === S.persona).map(it) : [];
 }
+/* Меню «Создать» у сотрудника — по макету 26042:26083. Отгул — в «Отпуске», рядом с остальными отпусками */
+const svg24 = (d, w = 1.5) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+const MI = {
+  doc:svg24('M5.75 6.75H17.75M5.75 11.25H11M14.25 23.115V15.75C14.25 14.9216 14.9216 14.25 15.75 14.25H23.115M13.629 23.25H2.25C1.42157 23.25 0.75 22.5784 0.75 21.75V2.25C0.75 1.42157 1.42157 0.75 2.25 0.75H21.75C22.5784 0.75 23.25 1.42157 23.25 2.25V13.629C23.2499 14.0265 23.092 14.4078 22.811 14.689L14.689 22.811C14.4078 23.092 14.0265 23.2499 13.629 23.25Z'),
+  person:svg24('M7.95814 12H3.04651C1.91625 12 0.999999 12.8954 0.999999 14V21C0.999999 22.1046 1.91625 23 3.04651 23H20.9535C22.0837 23 23 22.1046 23 21V15.3715M17.3721 7.85714C19.9302 7.85714 23 9.15968 23 12H11.7442C11.7442 9.15968 14.814 8 17.3721 7.85714ZM17.3721 7.85714C15.3 7.85714 13.7907 6.32212 13.7907 4.42857C13.7907 2.53502 15.3 1 17.3721 1C19.4442 1 21.0396 2.53502 21.0396 4.42857C21.0396 6.32212 19.4442 7.85714 17.3721 7.85714ZM5.09303 19.5H13.2791M5.09303 16H18.3954'),
+  line:svg24('M8 17H15M8 13H11M12.75 3.01159V7.4C12.75 9.05685 14.0931 10.4 15.75 10.4H19.9918M19.9918 10.4C19.9397 9.69759 19.6417 9.03312 19.1463 8.52583L14.6328 3.90398C14.13 3.38911 13.4611 3.07427 12.75 3.01159C12.6627 3.00389 12.5748 3 12.4865 3H7C5.34315 3 4 4.34315 4 6V18C4 19.6569 5.34315 21 7 21H17C18.6569 21 20 19.6569 20 18V10.6219C20 10.5476 19.9972 10.4736 19.9918 10.4Z', 1.6),
+  money:svg24('M0.75 12.7625C0.75 14.3605 3.32408 15.6556 6.5 15.6556C9.67592 15.6556 12.25 14.3605 12.25 12.7625M12.25 15.5C12.25 17.0632 14.7122 18.3302 17.75 18.3302C20.7878 18.3302 23.25 17.0632 23.25 15.5M23.25 12.0994V19.4199C23.25 20.9831 20.7878 22.2501 17.75 22.2501C14.7122 22.2501 12.25 20.9831 12.25 19.4199V16.3836M12.25 5.55494V16.4165C12.25 17.9816 9.67592 19.25 6.5 19.25C3.32408 19.25 0.75 17.9816 0.75 16.4165V5.55494M0.75 9.19439C0.75 10.7594 3.32408 12.0279 6.5 12.0279C9.67592 12.0279 12.25 10.7594 12.25 9.19439M17.75 14.75C20.7876 14.75 23.25 13.4069 23.25 11.75C23.25 10.0931 20.7876 8.75 17.75 8.75C14.7124 8.75 12.25 10.0931 12.25 11.75C12.25 13.4069 14.7124 14.75 17.75 14.75ZM6.5 8.41692C9.67564 8.41692 12.25 7.14834 12.25 5.58346C12.25 4.01858 9.67564 2.75 6.5 2.75C3.32436 2.75 0.75 4.01858 0.75 5.58346C0.75 7.14834 3.32436 8.41692 6.5 8.41692Z'),
+  down:'<svg class="ico last cat-chev" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4.6 9.4 7.1 7a.5.5 0 0 0 .7 0l7-7"/></svg>'
+};
+function empMenu(){
+  const row = (ic, l) => `<button type="button" role="menuitem" data-stub>${ic}${l}</button>`, cat = (ic, l) => `<button type="button" role="menuitem" data-stub>${ic}${l}${MI.down}</button>`;
+  return `<button type="button" role="menuitem" data-cat aria-expanded="false" aria-controls="catVac">${icoAsset('beach')}Отпуск${MI.down}</button>
+    <div class="cat-sub" id="catVac" hidden><button type="button" role="menuitem" data-stub>Ежегодный оплачиваемый отпуск</button><button type="button" role="menuitem" data-stub>Отпуск без сохранения зарплаты</button><button type="button" role="menuitem" data-create="otgul">Отгул за работу в выходной день</button></div>`
+    + cat(MI.doc, 'Справки и копии документов') + cat(MI.person, 'Персональные и контактные данные') + row(MI.line, 'Формирование профиля роли (Должностная инструкция)') + row(MI.line, 'Формирование типового профиля роли (Должностная инструкция)') + cat(MI.money, 'Компенсации и льготы') + row(icoAsset('income'), 'Расчётный листок');
+}
 function renderToolbar(){
   const cnt = t => tabItems(t).filter(({r}) => r ? needsMe(r) : false).length + (t === 'mine' && ['new','newOtgul'].includes(S.selected) ? 1 : 0);
   const tab = (k, l) => { const n = cnt(k); return `<button type="button" data-tab="${k}" class="${S.tab===k?'active':''}" aria-pressed="${S.tab===k}">${l}${n ? `<span class="badge">${n}</span>` : ''}</button>`; };
-  const menu = isMgr() ? `<button type="button" data-create="rvd" role="menuitem">${icoAsset('requests')}Работа в выходной день</button>` : `<button type="button" data-create="otgul" role="menuitem">${icoAsset('requests')}Отгул за работу в выходной день</button>`;
+  const menu = isMgr() ? `<button type="button" data-create="rvd" role="menuitem">${icoAsset('requests')}Работа в выходной день</button>` : empMenu();
   const bankChip = `<span class="spacer"></span><button type="button" class="view-tog" data-stub aria-label="Вид списка"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/></svg></button>`;
   $('#toolbar').innerHTML = `<div class="tabs" role="group" aria-label="Заявки">${tab('mine','Мои')}${tab('approve','Нужно согласовать')}</div>
     <div class="create-wrap"><button type="button" class="btn lime" id="createBtn" aria-haspopup="menu" aria-expanded="false" style="padding:12px 20px"><img class="asset" src="assets/plus.svg" alt="" width="16" height="16">Создать</button>
-    <div class="create-menu" id="createMenu" role="menu" hidden><p class="grp">Кадровые заявки</p>${menu}</div></div>${bankChip}`;
+    <div class="create-menu ${isMgr() ? '' : 'cats'}" id="createMenu" role="menu" hidden>${isMgr() ? '<p class="grp">Кадровые заявки</p>' : ''}${menu}</div></div>${bankChip}`;
 }
 function bubble(cls, dot){
   const g = cls === 'done' ? I.okc : cls === 'partial' ? I.part : cls === 'paper' ? I.paper : cls ? I.cancel : I.clock;
   return `<span class="status-bubble ${cls}">${g}${dot ? '<span class="dot"></span><span class="sr">Нужно твоё действие</span>' : ''}</span>`;
 }
+const draftDl = () => S.selected === 'newOtgul' && O && O.off && !offError(null) ? fmtD(otgulDeadlines(O.off).employee) : '';
 function renderList(){
   const items = tabItems(S.tab).sort((a,b) => b.created - a.created);
   const selGroup = S.selected && req(S.selected) ? req(S.selected).group : null;
@@ -831,7 +911,7 @@ function renderList(){
   }).join('');
   /* Черновик, который сейчас заполняют */
   const isDraft = S.tab === 'mine' && ['new','newOtgul'].includes(S.selected);
-  const draft = isDraft ? `<button type="button" class="list-row selected" data-open="${S.selected}">${bubble('', true)}<span class="row-copy"><b>${S.selected === 'new' ? TITLES.rvd : TITLES.otgul}</b><small>Иное</small></span><span class="row-meta">${S.selected === 'new' ? 'Руководитель' : 'Сотрудник'}</span><span class="row-meta"></span></button>` : '';
+  const draft = isDraft ? `<button type="button" class="list-row selected" data-open="${S.selected}">${bubble('', true)}<span class="row-copy"><b>${S.selected === 'new' ? TITLES.rvd : TITLES.otgul}</b><small>Иное</small></span><span class="row-meta">${S.selected === 'new' ? 'Руководитель' : 'Сотрудник'}</span><span class="row-meta" id="draftDl">${draftDl()}</span></button>` : '';
   /* Чужие заявки из других процессов — для контекста, как в макетах */
   const other = S.tab === 'mine' ? [['Выпуск УНЭП'], ['Верификация номера телефона']].map(([t]) => `<button type="button" class="list-row" data-stub>${bubble('done', false)}<span class="row-copy"><b>${t}</b><small>Электронная подпись (УНЭП)</small></span><span class="row-meta"></span><span class="row-meta"></span></button>`).join('') : '';
   const empty = S.tab === 'approve' ? 'Здесь появятся заявки, которые нужно согласовать.' : '';
@@ -847,7 +927,7 @@ function renderDetail(){
   const g = S.selected && grp(S.selected);
   if (g) { d.innerHTML = back() + groupView(g); return; }
   const r = S.selected && req(S.selected);
-  if (!r) { S.selected = null; ws.classList.remove('has-detail','expanded'); d.innerHTML = `<section class="panel"><div class="empty-detail"><img src="assets/requests.svg" alt="" width="40" height="40"><b>Выбери заявку в списке</b><span>${isMgr() ? 'или создай новую через «Создать»' : 'или оформи отгул через «Создать»'}</span></div></section>`; return; }
+  if (!r) { S.selected = null; ws.classList.remove('has-detail','expanded'); d.innerHTML = `<section class="panel"><div class="empty-detail"><img src="assets/requests.svg" alt="" width="40" height="40"><b>Выбери заявку в списке</b>${FLOW ? '' : `<span>${isMgr() ? 'или создай новую через «Создать»' : 'или оформи отгул через «Создать»'}</span>`}</div></section>`; return; }
   const mine = r.employeeId === S.persona;
   d.innerHTML = back() + (r.type === 'otgul' ? (mine ? otgulEmployee(r) : otgulManager(r)) : r.type === 'order' ? orderView(r) : mine ? employeeRvd(r) : groupView(grp(r.group)));
   if (r.type === 'rvd' && mine && r.stage === 'confirm') bindConfirm(r);
@@ -881,7 +961,7 @@ function signBlock(r, kind, viewed, act, extra){
       <span class="zoom">${I.zoom}</span><span class="viewed-tag ${viewed ? '' : 'unread'}">${viewed ? 'просмотрено' : 'не просмотрено'}</span>
       <span class="thumb-caption"><span class="pdf-ico">PDF</span><span>${DOCS[kind]}</span></span></button>
     <div class="sign-info"><p class="ttl"><span class="status-icon idea">${I.bulb}</span>Ознакомься и подпиши</p><b>${DOCS[kind]}</b>
-      <p class="instruction">На документе появится отметка «Просмотрено», и станет доступна кнопка «Подписать»</p>${extra || ''}</div></div>
+      <p class="instruction">На документе появится отметка «Просмотрено»,<br>и станет доступна кнопка «Подписать»</p>${extra || ''}</div></div>
     <div class="form-actions"><button type="button" class="btn ${viewed ? '' : 'grey'}" data-act="${act}" ${viewed ? '' : 'disabled'}>Подписать</button></div>`;
 }
 function detailsBlock(inner, open){
@@ -1037,8 +1117,8 @@ function empChip(r){
 function empTable(bs, withDl){
   return `<div class="et ${withDl ? '' : 'nodl'}"><div class="et-h"><span>Сотрудник</span><span>Статус</span>${withDl ? '<span>Срок до</span>' : ''}</div>` + bs.map(r => {
     const open = !!U.rows[r.id], dl = stageDeadline(r), p = person(r.employeeId);
-    return `<div class="et-row"><div class="et-line"><button type="button" class="et-name" data-erow="${r.id}">${esc(p.full)}</button>${empChip(r)}${withDl ? `<span class="et-dl">${dl ? fmtD(dl) : ''}</span>` : ''}<button type="button" class="et-chev" data-erow="${r.id}" aria-expanded="${open}" aria-label="${open ? 'Свернуть' : 'Показать'} даты: ${esc(p.short)}">${CHEV}</button></div>
-      ${open ? `<div class="et-body"><b>Дата работы</b><span class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</span>${r.declineComment ? `<b>Комментарий сотрудника</b><span>${esc(r.declineComment)}</span>` : ''}${r.hrComment ? `<b>Комментарий отдела кадров</b><span>${esc(r.hrComment)}</span>` : ''}</div>` : ''}</div>`;
+    return `<div class="et-row"><div class="et-line"><button type="button" class="et-name" data-erow="${r.id}">${esc(p.full)}<small>${esc(p.pos.split(' · ')[1] || DEPT)}</small></button>${empChip(r)}${withDl ? `<span class="et-dl">${dl ? fmtD(dl) : ''}</span>` : ''}<button type="button" class="et-chev" data-erow="${r.id}" aria-expanded="${open}" aria-label="${open ? 'Свернуть' : 'Показать'} даты: ${esc(p.short)}">${CHEV}</button></div>
+      ${open ? `<div class="et-body"><div class="et-dates"><b>Дата работы</b><span class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</span></div>${r.declineComment ? `<b>Комментарий сотрудника</b><span>${esc(r.declineComment)}</span>` : ''}${r.hrComment ? `<b>Комментарий отдела кадров</b><span>${esc(r.hrComment)}</span>` : ''}</div>` : ''}</div>`;
   }).join('') + '</div>';
 }
 function groupView(g){
@@ -1303,7 +1383,7 @@ function orderView(r){
   return `<section class="panel">${rate ? rateBox() : ''}${head}${body}</section>${steps('order', r)}`;
 }
 let O;
-const BANK_RULE = 'Если работа в выходной/ праздничный день состоялась до 01.03.2025 года, то выбрать отгул можно на любой рабочий день.<br><br>Если работа в выходной/ праздничный день состоялась после 01.03.2025 года, то выбрать отгул можно на любой рабочий день в течение 1 года после даты работы в выходной/ праздничный день';
+const BANK_RULE = 'Если работа в выходной/праздничный день состоялась до 01.03.2025 года, то выбрать отгул можно на любой рабочий день.<br><br>Если работа в выходной/праздничный день состоялась после 01.03.2025 года, то выбрать отгул можно на любой рабочий день в течение 1 года после даты работы в выходной/праздничный день';
 function otgulForm(r){
   if (!O || O.reqId !== (r ? r.id : null)) O = {reqId: r ? r.id : null, rvd: r ? r.pairs[0].rvd : '', off: r ? r.pairs[0].off : '', open:false, tried:false};
   const ex = r && r.id, live = bank(S.persona, ex), lost = bankLost(S.persona, ex), cur = live.find(b => b.rvd === O.rvd);
@@ -1354,7 +1434,7 @@ function bindOtgul(r){
     if (O.open && !e.target.closest('.sel')) toggle(false);
   });
   f.addEventListener('keydown', e => { if (e.key === 'Escape' && O.open) { toggle(false); $('#dayBtn').focus(); } });
-  f.addEventListener('change', e => { if (e.target.id === 'off') { O.off = e.target.value; checkOtgul(r); } });
+  f.addEventListener('change', e => { if (e.target.id === 'off') { O.off = e.target.value; checkOtgul(r); if ($('#draftDl')) $('#draftDl').textContent = draftDl(); } });
   f.addEventListener('submit', e => {
     e.preventDefault();
     O.tried = true; if (O.open) toggle(false);
@@ -1556,9 +1636,9 @@ function vacationPage(){
       <div class="create-menu vac-menu" id="vacMenu" role="menu" hidden><button type="button" role="menuitem" data-stub>Ежегодный оплачиваемый отпуск</button><button type="button" role="menuitem" data-stub>Отпуск без сохранения зарплаты</button><button type="button" role="menuitem" data-gootgul ${av.length ? '' : 'disabled'}>Отгул за работу в выходной день</button></div></div></section>
     <div class="donut"><b>0</b><span>дней доступно</span></div>
     <section class="bb"><p class="bb-logo">◯ BestBenefits</p><b>Планируй отпуск с BestBenefits ›</b><p>Спецпредложения на путешествия и билеты.<br>Для входа введи корп. почту. Если её нет — подробности регистрации в OTP Life</p></section></div>
-  <section class="cal"><div class="cal-head"><span>Весь год</span><span class="cal-y"><button type="button" data-stub aria-label="Назад">‹</button><b>${y}</b><button type="button" data-stub aria-label="Вперёд">›</button></span></div>
+  <section class="cal"><div class="cal-head"><span class="cal-all"><span>${I.expand}Весь год</span><button type="button" data-stub aria-label="Настройки календаря"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></svg></button></span><span class="cal-y"><button type="button" data-stub aria-label="Назад">‹</button><b>${y}</b><button type="button" data-stub aria-label="Вперёд">›</button></span></div>
     <div class="cal-ms">${[0,1,2,3,4,5].map(i => monthGrid(y, start + i, marks)).join('')}</div>
-    <p class="cal-leg"><span class="cd rvd">1</span>Работа в выходной день <span class="cd off">1</span>Отгул <span class="cd hol">1</span>Праздник</p></section>`;
+    <details class="cal-legend"><summary><i></i>Легенда</summary><p class="cal-leg"><span class="cd rvd">1</span>Работа в выходной день <span class="cd off">1</span>Отгул <span class="cd hol">1</span>Праздник</p></details></section><div class="vac-float"><button type="button" class="vac-rules" data-stub><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v18H6.5A1.5 1.5 0 0 1 5 19.5V4.5ZM5 19.5A1.5 1.5 0 0 1 6.5 18H19"/><circle cx="12" cy="10" r="3.600"/><path d="m10.5 10 1.1 1.1 2-2.1"/></svg>Правила</button><button type="button" class="vac-bot" data-stub><span>Я помогу тебе найти нужный ответ</span><i><b></b><b></b></i></button></div>`;
 }
 /* ================= Аналитика ================= */
 const QS = [
@@ -1595,7 +1675,7 @@ function openAnalytics(focusQ){
     <h3>Источник и охват</h3><ul><li>БТ «Работа в выходной или праздничный день», страницы 4–28 из 28. </li>
     <li>Визуал, тексты и данные — по макетам в Figma, страница «Работа в выходной день» (версия от 23.11.2026): № 3 432 и № 3 518, даты октября 2026. Любой экран макета открывается из списка «Экран из макета».</li>
     </ul>
-    <h3>Что сверх макетов</h3><ul><li>Экраны, которых нет в Figma, собраны в том же стиле и помечены в «Экран из макета» как «нет в макетах»: создание на 20 сотрудников, у руководителя — «У отдела кадров», отказ и просрочки по одному сотруднику, отказ через чекбокс.</li><li>Исправлены данные, которые в макете противоречат сами себе: дни в списке банка (даты, дни недели, истёкшие сроки), одинаковая дата отгула за два дня, 16/512 у пустого поля цели.</li><li>Комментарии сотрудника и отдела кадров видны руководителю в раскрытой строке таблицы.</li><li>Единое боковое меню на всех экранах (в части итоговых макетов — старая версия меню).</li><li>Календарь в «Отпуске» — за 2026 год, с отметками РВД и отгулов.</li><li>Флоу для респондентов: ?flow=manager и ?flow=employee. Служебной панели нет, за остальных участников прототип отвечает сам через несколько секунд.</li><li>Оба варианта отказа сотрудника переключаются в «⚙ События».</li></ul>
+    <h3>Что сверх макетов</h3><ul><li>Экраны, которых нет в Figma, собраны в том же стиле и помечены в «Экран из макета» как «нет в макетах»: создание на 20 сотрудников, подменю «Отпуск» в «Создать», у руководителя — «У отдела кадров», отказ и просрочки по одному сотруднику, отказ через чекбокс.</li><li>Исправлены данные, которые в макете противоречат сами себе: дни в списке банка (даты, дни недели, истёкшие сроки), одинаковая дата отгула за два дня, 16/512 у пустого поля цели.</li><li>Комментарии сотрудника и отдела кадров видны руководителю в раскрытой строке таблицы.</li><li>Единое боковое меню на всех экранах (в части итоговых макетов — старая версия меню).</li><li>Календарь в «Отпуске» — за 2026 год, с отметками РВД и отгулов.</li><li>Флоу для респондентов: ?flow=manager и ?flow=employee. Служебной панели нет, за остальных участников прототип отвечает сам через несколько секунд.</li><li>Оба варианта отказа сотрудника переключаются в «⚙ События».</li></ul>
     <h3>Открытые вопросы</h3><div class="tablewrap"><table><thead><tr><th>ID</th><th>Статус*</th><th>Вопрос</th><th>Как сделано сейчас</th></tr></thead><tbody>
     ${QS.map(([id,p,q,a]) => `<tr id="an-${id}" class="${id===focusQ?'hl':''}"><td><b>${id}</b></td><td><span class="pri ${p}">${p==='b'?'Блокер':p==='d'?'Решено':'Важно'}</span></td><td>${q}</td><td>${a}</td></tr>`).join('')}
     </tbody></table></div><p class="demo-note">*Приоритет — рекомендация аналитика, не решение бизнеса.</p></div>`;
@@ -1753,6 +1833,7 @@ document.addEventListener('click', e => {
   const t = e.target;
   const q = t.closest('.qpin'); if (q) { e.preventDefault(); e.stopPropagation(); if ($('#dlg').open) $('#dlg').close(); openAnalytics(q.dataset.q); return; }
   if (t.closest('[data-close]')) { $('#dlg').close(); return; }
+  const ct = t.closest('[data-cat]'); if (ct) { const s = $('#' + ct.getAttribute('aria-controls')); s.hidden = !s.hidden; ct.setAttribute('aria-expanded', !s.hidden); return; }
   const menu = $('#createMenu');
   if (t.closest('#createBtn')) { menu.hidden = !menu.hidden; $('#createBtn').setAttribute('aria-expanded', !menu.hidden); return; }
   if (menu && !menu.hidden && !t.closest('#createMenu')) menu.hidden = true;
@@ -1786,6 +1867,10 @@ $('#demoBtn').onclick = openDemo;
 $('#qToggle').onclick = e => { const on = document.body.classList.toggle('show-q'); e.currentTarget.setAttribute('aria-pressed', on); };
 $('#dlg').addEventListener('click', e => { if (e.target === $('#dlg')) $('#dlg').close(); });
 $('#dlg').addEventListener('change', e => { if (e.target.name === 'rm') { S.refuseMode = e.target.value; save(); toast(e.target.value === 'checkbox' ? 'Отказ: чекбокс категории (по БТ)' : 'Отказ: модалка с комментарием'); } });
+/* Пустая дата показывает «ДД.ММ.ГГГГ», как в макете, на любом языке браузера */
+const markDate = i => i.classList.toggle('empty', !i.value);
+new MutationObserver(() => document.querySelectorAll('input[type=date]').forEach(markDate)).observe($('#detail'), {childList:true, subtree:true});
+['input','change'].forEach(ev => document.addEventListener(ev, e => { if (e.target.type === 'date') markDate(e.target); }));
 if (S.selected === 'new' || S.selected === 'newOtgul') S.selected = null;
 if (FLOW) { document.body.classList.add('flow'); document.title = 'OTP Space'; S.auto = S.auto || {}; setInterval(flowTick, 500); }
 render();
