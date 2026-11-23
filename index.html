@@ -520,7 +520,8 @@
   .dt-g button.on{background:#be8ae4;color:#fff;font-weight:400}
   .dt-g button:disabled,.dt-h button:disabled{cursor:not-allowed;opacity:1}
   .et-name small{display:block;font-size:14px;line-height:20px;color:#53565d;margin-top:2px}
-  .et-dates{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+  .et-dates{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:baseline}
+  .et-dates b{white-space:nowrap}.et-dates .dates-row{gap:8px 12px;line-height:20px}
   .cal-all{display:inline-flex;gap:24px;align-items:center}.cal-all>span{display:inline-flex;gap:8px;align-items:center}.cal-all button{padding:0;line-height:0}
   .cal-legend{margin-top:20px;font-size:15px}.cal-legend summary{display:inline-flex;gap:12px;align-items:center;cursor:pointer;list-style:none}.cal-legend summary::-webkit-details-marker{display:none}.cal-legend summary i{width:16px;height:16px;border-radius:50%;background:conic-gradient(#f7e08a 0 30%,#be8ae4 30%)}
   .cal-legend .cal-leg{margin-top:12px}
@@ -560,7 +561,15 @@
     .form-actions{margin-top:40px;gap:16px}
     .et-name,.et-dl{font-size:18px;line-height:24px}.et-name small{font-size:16px;line-height:22px}
     .et-row{padding:16px;border-radius:12px}
-    .et-body{margin-top:20px}
+    .et-body{margin-top:24px;line-height:20px}
+  }
+  /* Колонки таблицы по макету 25989:62973: 392 / 319 / 113 / 24 */
+  @media(min-width:1301px){
+    .et-h,.et-line,.et.nodl .et-h,.et.nodl .et-line{grid-template-columns:minmax(0,392fr) minmax(222px,319fr) minmax(100px,113px) 24px;gap:0}
+    .et-h{padding:0 16px 8px}.et-h>span:first-child{margin-left:-16px}
+    .et-name{padding-right:16px}.et-chev{padding:0}.et-chev .cv{width:24px;height:24px}
+  }
+  @media(min-width:801px){
     .rate-box{font-size:16px!important}
     .row-copy b{font-size:18px;line-height:20px}.row-copy small{font-size:16px;line-height:20px}.row-meta{font-size:16px}
     dialog.small{width:560px;border-radius:16px}
@@ -1136,9 +1145,9 @@ function empChip(r){
   return `<span class="chip-wrap"><button type="button" class="echip ${cls}" data-echip="${r.id}" aria-expanded="${open}">${EIC[cls]}<span>${label}</span>${CHEV}</button>${open ? `<span class="echip-pop">${list.map(([ic, l, d]) => `<span class="ep">${ic}<span>${l}${d}</span></span>`).join('')}</span>` : ''}</span>`;
 }
 function empTable(bs, withDl){
-  return `<div class="et ${withDl ? '' : 'nodl'}"><div class="et-h"><span>Сотрудник</span><span>Статус</span>${withDl ? '<span>Срок до</span>' : ''}</div>` + bs.map(r => {
+  return `<div class="et ${withDl ? '' : 'nodl'}"><div class="et-h"><span>Сотрудник</span><span>Статус</span><span>${withDl ? 'Срок до' : ''}</span></div>` + bs.map(r => {
     const open = !!U.rows[r.id], dl = stageDeadline(r), p = person(r.employeeId);
-    return `<div class="et-row"><div class="et-line"><button type="button" class="et-name" data-erow="${r.id}">${esc(p.full)}<small>${esc(p.pos.split(' · ')[1] || DEPT)}</small></button>${empChip(r)}${withDl ? `<span class="et-dl">${dl ? fmtD(dl) : ''}</span>` : ''}<button type="button" class="et-chev" data-erow="${r.id}" aria-expanded="${open}" aria-label="${open ? 'Свернуть' : 'Показать'} даты: ${esc(p.short)}">${CHEV}</button></div>
+    return `<div class="et-row"><div class="et-line"><button type="button" class="et-name" data-erow="${r.id}">${esc(p.full)}<small>${esc(p.pos.split(' · ')[1] || DEPT)}</small></button>${empChip(r)}<span class="et-dl">${withDl && dl ? fmtD(dl) : ''}</span><button type="button" class="et-chev" data-erow="${r.id}" aria-expanded="${open}" aria-label="${open ? 'Свернуть' : 'Показать'} даты: ${esc(p.short)}">${CHEV}</button></div>
       ${open ? `<div class="et-body"><div class="et-dates"><b>Дата работы</b><span class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</span></div>${r.declineComment ? `<b>Комментарий сотрудника</b><span>${esc(r.declineComment)}</span>` : ''}${r.hrComment ? `<b>Комментарий отдела кадров</b><span>${esc(r.hrComment)}</span>` : ''}</div>` : ''}</div>`;
   }).join('') + '</div>';
 }
@@ -1719,6 +1728,8 @@ function setO(s, stage, o){ s.requests = s.requests.filter(r => r.id !== 'r3518'
 const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], open:false, col:true}, o);
 const mkF = (emps, o = {}) => { F = Object.assign({goal:GOAL, emps, budget:true, tried:false}, o); return 'new'; };
 function setOrder(s, stage, o = {}){ setO(s, null); s.requests.push(Object.assign({id:'r3601', num:'3601', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-12'}], stage, orderAt:D('02.11',15), created:D('02.11',15), at:{hr:D('02.11',15)}, viewedOrder:false, history:[]}, o)); return 'r3601'; }
+/* Все 10 нерабочих дней ноября — максимум дат на одного сотрудника */
+const NOV = ['2026-11-01','2026-11-04','2026-11-07','2026-11-08','2026-11-14','2026-11-15','2026-11-21','2026-11-22','2026-11-28','2026-11-29'];
 const TWO = {dates:['2026-10-24','2026-10-25']};
 /* [группа, подпись, кто смотрит, часы, настройка → что открыть] */
 const SCEN = [
@@ -1731,10 +1742,10 @@ const SCEN = [
   ['Руководитель · РВД', 'Ошибки: цель и дата', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', tried:true}); }],
   ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', budget:false, tried:true}); }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
   ['Руководитель · РВД', 'На подписании, 1 сотрудник', 'm1', '22.10', s => { setG(s, [['e1','sign']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-11-07','2026-11-08','2026-11-14','2026-11-15']}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
-  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-11-07','2026-11-08','2026-11-14','2026-11-15']}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:NOV.slice(1)}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:NOV.slice(1)}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
   ['Руководитель · РВД', 'У отдела кадров (нет в макетах)', 'm1', '22.10', s => { setG(s, [['e1','hr']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '06.11', s => { setG(s, [['e5','declined',{dates:['2026-11-07','2026-11-08','2026-11-14','2026-11-15']}],['e1','expired',{dates:['2026-11-07'], stopStage:'sign', stopAt:D('05.11',23)}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '06.11', s => { setG(s, [['e5','declined',{dates:NOV}],['e1','expired',{dates:['2026-11-07'], stopStage:'sign', stopAt:D('05.11',23)}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, все 3 (нет в макетах)', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, 1 сотрудник', 'm1', '23.10', s => { setG(s, [['e1','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Отменена отделом кадров', 'm1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'g3432'; }],
