@@ -46,6 +46,8 @@
   .status-icon.partial{background:#fff2d6}
   .status-icon.paper{background:#ffe9d6}
   .status-icon.idea{background:#e3edfc;width:32px;height:32px;border-radius:10px}
+  /* «Оцени заявку» висит над карточкой, как в макете */
+  @media(min-width:801px){.panel .rate-box{top:-55px;right:-1px;width:176px;height:90px;border-radius:8px;padding:14px 0 0;font-size:15px;line-height:20px;z-index:5}.panel .rate-box .faces{gap:8px;margin-bottom:8px}.panel .rate-box svg{width:32px;height:32px}}
   .ready{display:flex;gap:24px;align-items:center}
   .ready img{width:112px;height:112px;flex-shrink:0}
   .ready b{display:block;font-size:16px}
@@ -993,11 +995,12 @@ function empTable(bs, withDl){
 function groupView(g){
   const X = gInfo(g), n = X.bs.length, one = n === 1 ? X.bs[0] : null;
   const by = g.by ? `<p class="emp-note">Инициатор: ${authorLine(g)}</p>` : '';
-  /* Финальный экран один: «Готово!», цель, таблица со статусами (макет 25982:32853) — и для одного сотрудника, и для нескольких */
-  if (one && one.stage !== 'done') {
+  /* Один сотрудник — свой финал (макет 25799:87660), несколько — таблица со статусами (25982:32853) */
+  if (one) {
     let body;
     if (['confirm','sign'].includes(one.stage)) body = statusMsg('clock', 'Заявка обрабатывается', resp(person(one.employeeId).first));
     else if (one.stage === 'hr') body = statusMsg('clock', 'Приказ формируется', resp(HR));
+    else if (one.stage === 'done') body = ready('Сотрудник подписал уведомление');
     else if (one.stage === 'declined') body = statusMsg('cancel', 'Сотрудник отказался от работы в выходной день') + (one.declineComment ? bubbleMsg('Комментарий сотрудника:', person(one.employeeId).name, one.declineComment) : '');
     else if (one.stage === 'expired') body = expiredMsg(one, false);
     else body = statusMsg('cancel', 'Заявка отменена') + bubbleMsg('Комментарий отдела кадров:', HR_PERSON, one.hrComment || '—');
