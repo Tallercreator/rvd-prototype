@@ -764,17 +764,21 @@ function seed(){
   return s;
 }
 function flowSeed(){
-  const s = seed(), day = FLOW === 'manager' ? at(2026,10,23,12) : at(2026,10,22,12);
+  /* В обоих флоу сегодня ср 21.10.2026, ближайшие выходные — 24 и 25.10: руководитель ещё успевает подать заявку, сотрудник — ответить */
+  const s = seed(), day = at(2026,10,21,12);
   CLOCK = day;
   const g = s.groups.find(x => x.id === 'g3432');
   Object.assign(s, {persona: FLOW === 'manager' ? 'm1' : 'e4', clock:day, auto:{}, refuseMode:'modal'});
   if (FLOW === 'manager') {
     /* Список пустой, кроме отгула Дарьи на согласовании */
-    s.groups = []; s.requests = [otgulReq('approve')]; s.notes = s.notes.filter(n => n.to === 'm1' && n.req === 'r3518');
+    const o = otgulReq('approve', {pairs:[{rvd:'2026-10-17', off:'2026-10-30'}], created:at(2026,10,20,10)});
+    o.at = {draft:at(2026,10,20,10), sign:at(2026,10,20,11)}; o.history.forEach((h, i) => h.t = at(2026,10,20,10 + i));
+    s.groups = []; s.requests = [o]; s.notes = s.notes.filter(n => n.to === 'm1' && n.req === 'r3518');
+    s.notes.forEach(n => { n.t = at(2026,10,20,11); n.body = 'Пожалуйста, обработай заявку до ' + fmtD(otgulDeadlines('2026-10-30').manager) + '.'; });
   } else {
-    /* Дарье пришла РВД на 31.10 и 01.11; в банке 5 дней: 2 можно взять, у 3 истёк год */
-    s.groups = [g]; s.requests = [rvdReq(g, 0, 'e4', 'confirm', {dates:['2026-10-31','2026-11-01']})]; s.seq = 3518;
-    s.notes = [{id:1, to:'e4', t:RVD_CREATED, subject:'Подтверждение работы в выходной или праздничный день', body:'Пожалуйста, подтверди работу в выходной или праздничный день до 29.10.2026.', req:'r3432', read:false}];
+    /* Дарье пришла РВД на 24 и 25.10; в банке 5 дней: 2 можно взять, у 3 истёк год */
+    s.groups = [g]; s.requests = [rvdReq(g, 0, 'e4', 'confirm', {dates:['2026-10-24','2026-10-25']})]; s.seq = 3518;
+    s.notes = [{id:1, to:'e4', t:RVD_CREATED, subject:'Подтверждение работы в выходной или праздничный день', body:'Пожалуйста, подтверди работу в выходной или праздничный день до 22.10.2026.', req:'r3432', read:false}];
     s.legacy = s.legacy.concat({employeeId:'e4', rvd:'2026-03-14'});
   }
   return s;
@@ -1715,7 +1719,7 @@ function setO(s, stage, o){ s.requests = s.requests.filter(r => r.id !== 'r3518'
 const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], open:false, col:true}, o);
 const mkF = (emps, o = {}) => { F = Object.assign({goal:GOAL, emps, budget:true, tried:false}, o); return 'new'; };
 function setOrder(s, stage, o = {}){ setO(s, null); s.requests.push(Object.assign({id:'r3601', num:'3601', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-12'}], stage, orderAt:D('02.11',15), created:D('02.11',15), at:{hr:D('02.11',15)}, viewedOrder:false, history:[]}, o)); return 'r3601'; }
-const TWO = {dates:['2026-10-31','2026-11-01']};
+const TWO = {dates:['2026-10-24','2026-10-25']};
 /* [группа, подпись, кто смотрит, часы, настройка → что открыть] */
 const SCEN = [
   ['Руководитель · РВД', 'Создание, пустая форма', 'm1', '21.10', s => { freshG(s); newForm(); return 'new'; }],
@@ -1743,9 +1747,9 @@ const SCEN = [
   ['Руководитель · отгул', 'У отдела кадров', 'm1', '26.10', s => { setO(s, 'hr'); s.tab = 'approve'; return 'r3518'; }],
   ['Руководитель · отгул', 'Завершена', 'm1', '28.10', s => { setO(s, 'done'); s.tab = 'approve'; return 'r3518'; }],
   ['Руководитель · отгул', 'Истёк срок согласования', 'm1', '31.10', s => { setO(s, 'expired', {stopStage:'approve', stopAt:D('30.10',23)}); s.tab = 'approve'; return 'r3518'; }],
-  ['Сотрудник · РВД', 'Компенсация, двойная оплата', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'double','2026-11-01':'double'}}]]); return 'r3432'; }],
-  ['Сотрудник · РВД', 'Компенсация, отгул за 2 даты', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'rest','2026-11-01':'rest'}, rest:{'2026-10-31':'2026-11-03','2026-11-01':'2026-11-05'}}]]); return 'r3432'; }],
-  ['Сотрудник · РВД', 'Право на отказ, подсказка', 'e1', '22.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-31':'double','2026-11-01':'double'}}]]); return 'r3432'; }, () => $('.tip-link')?.focus()],
+  ['Сотрудник · РВД', 'Компенсация, двойная оплата', 'e1', '21.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-24':'double','2026-10-25':'double'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Компенсация, отгул за 2 даты', 'e1', '21.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-24':'rest','2026-10-25':'rest'}, rest:{'2026-10-24':'2026-11-03','2026-10-25':'2026-11-05'}}]]); return 'r3432'; }],
+  ['Сотрудник · РВД', 'Право на отказ, подсказка', 'e1', '21.10', s => { setG(s, [['e1','confirm',{dates:TWO.dates, comp:{'2026-10-24':'double','2026-10-25':'double'}}]]); return 'r3432'; }, () => $('.tip-link')?.focus()],
   ['Сотрудник · РВД', 'Отказ, модалка', 'e1', '22.10', s => { s.refuseMode = 'modal'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }, () => $('#declineBtn')?.click()],
   ['Сотрудник · РВД', 'Отказ через чекбокс (по БТ, нет в макетах)', 'e1', '22.10', s => { s.refuseMode = 'checkbox'; setG(s, [['e1','confirm',{comp:{'2026-10-31':'double'}}]]); return 'r3432'; }],
   ['Сотрудник · РВД', 'Подписание, не просмотрено', 'e1', '22.10', s => { setG(s, [['e1','sign',{viewed:false}]]); return 'r3432'; }],
