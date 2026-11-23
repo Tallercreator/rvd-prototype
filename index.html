@@ -441,6 +441,55 @@
   .ep small{display:block;font-size:12px;line-height:16px;color:#8a8f99}
   @media(max-width:1300px){.et-h{display:none}.et-line,.et.nodl .et-line{grid-template-columns:minmax(0,1fr) 24px}.et-line .chip-wrap{grid-row:2;grid-column:1}.et-line .et-dl{grid-row:3;grid-column:1}.et-line .et-dl:not(:empty):before{content:'Срок до '}.et-line .et-chev{grid-row:1;grid-column:2}}
   @media(max-width:800px){.sel,.off-field input{width:100%!important}.tip-pop,.tip-pop.wide{position:fixed;left:16px;right:16px;bottom:76px;width:auto!important;transform:none;max-height:60vh;overflow:auto;z-index:50}.tip-pop:after{display:none}.vac-row{gap:24px;margin-bottom:24px}.bal{padding-left:0}.cal-ms{grid-template-columns:minmax(0,1fr)!important}.hint-card p br{display:none}}
+  /* ---- Отступы по макету 25932:487342 ---- */
+  .panel-head{margin-bottom:40px}
+  .panel-head h1{margin-top:0}
+  .panel-head .meta{margin-top:0;font-size:18px;line-height:24px}
+  .expand{font-size:18px;line-height:24px}
+  .steps{padding-top:24px}
+  .step b,.step.future b{font-size:16px;line-height:18px;font-weight:600}
+  .step.future b{color:#717171}
+  .step small{font-size:16px;line-height:18px;color:#717171;margin-top:8px}
+  #createForm .hint-card{margin-bottom:40px;padding:12px 24px 12px 12px;vertical-align:top}
+  .hint-card .status-icon.idea{border-radius:8px;background:#d6eafc}
+  .hint-card b{font-size:18px;line-height:20px;color:#222}
+  .hint-card p{font-size:14px;line-height:18px;margin-top:2px}
+  #createForm .label,#createForm .emp-bar,#createForm .emp-open-lbl{font-size:18px;line-height:24px}
+  #createForm .label{margin-bottom:12px}
+  #createForm .goal-field{max-width:456px;margin:0 0 18px}
+  #createForm .goal-field textarea{display:block;height:202px;padding:16px;font-size:18px;line-height:24px;margin:0}
+  #createForm .goal-field .under{margin-top:4px;font-size:14px;line-height:18px}
+  #createForm .emp-bar{margin:0 0 16px;gap:12px}
+  #createForm .emp-bar .tog-all{font-size:18px}
+  #createForm .emp-card{margin-bottom:8px}
+  #createForm .emp-head.open{padding:16px 16px 12px;align-items:center;min-height:52px}
+  #createForm .emp-head.open .emp-acts{padding:0;height:24px}
+  #createForm .emp-head.open .emp-open-lbl{margin:0!important}
+  #createForm .emp-head.open .emp-acts .ic:last-child{margin-right:-6px}
+  #createForm .emp-toggle{padding:16px}
+  #createForm .emp-title b{font-size:18px;line-height:24px}
+  #createForm .emp-title small{font-size:16px;line-height:20px;margin-top:4px}
+  #createForm .emp-body{padding:0 16px 16px}
+  #createForm .emp-body .field{margin:0 0 24px}
+  #createForm .emp-body .field:last-child{margin-bottom:0}
+  #createForm .emp-body .field:nth-of-type(2) .label{margin-bottom:16px;gap:8px}
+  #createForm .search-input,#createForm .picker{max-width:456px}
+  #createForm .search-input input,#createForm .date-line input{font-size:18px;padding:0 16px}
+  #createForm .date-line input{width:300px}
+  #createForm .err{font-size:14px;line-height:18px;margin:0 0 8px}
+  #createForm .dates-act{margin-top:16px}
+  #createForm .add-link{padding:6px 0;line-height:20px}
+  #createForm .add-emp-btn{height:40px;padding:8px;gap:8px;margin:16px 0 0;font-size:16px;line-height:20px;color:#525252;background:#eceff6}
+  #createForm .add-emp-btn svg{width:24px;height:24px;padding:3px}
+  #createForm .budget-field{margin:40px 0 0;max-width:620px}
+  #createForm .budget-field .checkline{font-size:18px;line-height:24px;align-items:center;gap:12px}
+  #createForm .budget-field .err{margin:4px 0 0 36px}
+  #createForm .limit{margin-top:16px}
+  #createForm .form-actions{margin-top:40px;gap:16px}
+  #createForm .form-actions .btn{min-height:46px;height:46px;padding:0 32px}
+  #createForm .search-input input{padding-right:48px}
+  @media(min-width:1201px){.detail>.panel{padding:31px 39px 39px}.panel-head .deadline{position:absolute;float:none;right:0;top:24px;margin:0}.panel-head:has(.deadline) h1{padding-right:170px}}
+  @media(max-width:800px){.panel-head .meta,.expand{font-size:16px}.step b,.step.future b{font-size:11px;line-height:14px}.steps .step small{font-size:10px;line-height:13px;margin-top:2px}#createForm .date-line input{width:240px}}
 </style>
 </head>
 <body>
@@ -1034,13 +1083,13 @@ function createForm(){
     <p class="meta"><span>№ ${numStr(today)}</span><span>Дата создания: ${fmtD(new Date())}</span></p>
     ${S.persona === 'd1' ? `<p class="meta" style="margin-top:6px"><span class="by">Заполняет ${DELEGATE.name} (ИО) за ${MANAGER.acc}</span>${qpin('Q09','Права ИО/делегата не раскрыты: здесь ИО создаёт заявку как руководитель')}</p>` : ''}</div>
     <form id="createForm" novalidate>
-      <div class="hint-card"><span class="status-icon idea" aria-hidden="true">${I.bulb}</span><div><b>Заполни цель работы и выбери сотрудников</b><p>Ты можешь выбрать до 20 человек в одной заявке,<br>каждому добавить до 10 дат в рамках ближайшего месяца (30 дней)</p></div></div>
+      <div class="hint-card"><span class="status-icon idea" aria-hidden="true">${I.bulb}</span><div><b>Заполни цель работы и выбери сотрудников</b><p>Ты можешь выбрать до 20 человек в одной заявке,<br>каждому добавить до 10 дат в рамках одного календарного месяца</p></div></div>
       <div class="field goal-field"><label class="label" for="goal">Цель работы в выходной день</label>
         <textarea id="goal" placeholder="Опиши цель привлечения сотрудника для работы в выходной день" class="long" maxlength="512">${esc(F.goal)}</textarea>
         <div class="under"><span class="bad" id="errGoal" hidden></span><span class="under-r"><span id="goalCnt"></span></span></div></div>
       <div id="emps"></div>
-      <div class="field" style="margin-top:8px"><label class="checkline"><input type="checkbox" id="budget" ${F.budget?'checked':''}>Я подтверждаю согласование с владельцем бюджета привлечения работников к работе в выходной/праздничный день</label>
-        <p class="err" id="errBudget" hidden style="margin-left:36px">Без подтверждения согласования бюджета заявку отправить нельзя</p></div>
+      <div class="field budget-field"><label class="checkline"><input type="checkbox" id="budget" ${F.budget?'checked':''}>Я подтверждаю согласование с владельцем бюджета привлечения работников к работе в выходной/праздничный день</label>
+        <p class="err" id="errBudget" hidden>Без подтверждения согласования бюджета заявку отправить нельзя</p></div>
       <div class="notice" id="dlNotice" hidden></div>
       <p class="sr" id="createErr" role="alert"></p>
       <div class="form-actions"><button type="submit" class="btn">Отправить</button><button type="button" class="btn outline-dark" id="delBtn">Удалить</button></div>
@@ -1064,7 +1113,7 @@ function renderEmps(){
   const bar = `<div class="emp-bar"><b>Сотрудники</b><span class="cnt">${k1}/${MAX_EMPS}</span>${tip('Можешь выбрать до 20 сотрудников в одной заявке')}${k1 > 1 ? `<button type="button" class="tog-all" id="togAll">${anyOpen ? 'Свернуть все' : 'Развернуть все'}</button>` : ''}</div>`;
   $('#emps').innerHTML = bar + F.emps.map((e,k) => {
     const p = e.id && person(e.id), st = sts[k], showBad = !st.ok && (e.col || F.tried);
-    const dates = e.dates.map((v,i) => `<div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" max="${iso(addDays(new Date(),30))}" aria-label="Дата работы ${i+1}">${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errD${k}_${i}" hidden></p>`).join('');
+    const dates = e.dates.map((v,i) => `<div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}">${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errD${k}_${i}" hidden></p>`).join('');
     const dept = p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение';
     /* По макету: ФИО и подразделение в шапке — только у свёрнутой карточки; у развёрнутой шапка — поле «Выбери сотрудника» */
     const left = e.col ? `<button type="button" class="emp-toggle" data-tog="${k}" aria-expanded="false" aria-controls="empb${k}">
@@ -1076,12 +1125,12 @@ function renderEmps(){
         <div class="emp-line"><div class="picker"><div class="search-input"><input type="text" id="q${k}" data-q="${k}" value="${esc(p ? p.full : e.q)}" placeholder="Введи ФИО или выбери из списка" autocomplete="off" ${p ? 'readonly' : ''} aria-label="Сотрудник ${k+1}"><img class="asset" src="assets/search.svg" alt="" width="22" height="22"></div>
           <div class="picker-dropdown" id="dd${k}" ${e.open ? '' : 'hidden'} role="listbox"></div></div>${p ? `<button type="button" class="x-btn" data-clremp="${k}" aria-label="Выбрать другого сотрудника">×</button>` : ''}</div>
         <p class="err" id="errEmp${k}" hidden>Выбери сотрудника</p></div>
-      <div class="field"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках ближайшего месяца (30 дней)')}</span>${dates}
+      <div class="field"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках одного календарного месяца')}</span>${dates}
         <div class="dates-act"><button type="button" class="add-link" data-addd="${k}" ${e.dates.length >= 10 ? 'disabled' : ''}>${I.plus}Добавить дату</button></div></div></div>`}</div>`;
   }).join('') + (k1 < MAX_EMPS ? `<button type="button" class="add-emp-btn" id="addEmp">${I.plus}Добавить сотрудника</button>` : '')
     + `
     ${k1 >= MAX_EMPS ? `<p class="limit">Выбрано 20 сотрудников, больше выбрать нельзя.<br>Если нужно добавить еще — создай новую заявку</p>` : ''}
-    <p class="qnote">Цель одна на всех, даты у каждого свои (решение команды, Q23). Отказ или просрочка одного не отменяет заявку для остальных (Q06). Даты — в пределах 30 дней, как в макете; в БТ (R03) — один календарный месяц (Q26). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
+    <p class="qnote">Цель одна на всех, даты у каждого свои (решение команды, Q23). Отказ или просрочка одного не отменяет заявку для остальных (Q06). Все даты заявки — в одном календарном месяце, как в БТ (R03). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
   F.emps.forEach((e,k) => { if (e.open && $('#dd'+k)) renderPicker(k); });
   validateDates(F.tried); updateDeadline();
 }
@@ -1115,7 +1164,8 @@ function dateError(k, i){
   const d = parse(v);
   if (!isOffDay(d)) return 'Это рабочий день — выбери выходной или праздник';
   if (ds.indexOf(v) !== i) return 'Эта дата уже есть у сотрудника';
-  if (v > iso(addDays(new Date(), 30))) return 'Можно выбрать дату не позже ' + fmtD(addDays(new Date(), 30));
+  const first = allDates()[0];
+  if (first && first.slice(0,7) !== v.slice(0,7)) return 'Все даты заявки — в одном календарном месяце (' + parse(first).toLocaleDateString('ru-RU',{month:'long'}) + ')';
   if (Date.now() > deadlines(v).manager.getTime()) return 'Срок подачи на эту дату истёк (' + fmtDTfull(deadlines(v).manager) + ')';
   return '';
 }
@@ -1535,7 +1585,7 @@ const QS = [
   ['Q23','d','Заявка на нескольких: цель и даты общие или свои у каждого?','Решено: цель одна на всех, даты у каждого свои; «Скопировать даты всем»'],
   ['Q24','b','Кадры оформляют один приказ на всех или отдельный на каждого?','Прототип: приказ на каждого сотрудника'],
   ['Q25','i','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого?','Прототип: отправить — по самой ранней; сотрудник и кадры — от его первой даты'],
-  ['Q26','i','Даты РВД: в БТ (R03) — один календарный месяц, в макете — ближайшие 30 дней. Что верно?','Прототип: 30 дней, как в макете'],
+  ['Q26','d','Даты РВД: один календарный месяц (БТ, R03) или ближайшие 30 дней?','Решено: один календарный месяц, как в БТ'],
   ['Q27','i','Отгул: в БТ (R24) — до 10 пар «день работы — день отгула», в макете — один день на заявку. Что верно?','Прототип: один день, как в макете'],
 ];
 function openAnalytics(focusQ){
@@ -1578,10 +1628,10 @@ const SCEN = [
   ['Руководитель · РВД', 'Ошибки: цель и дата', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', tried:true}); }],
   ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', budget:false, tried:true}); }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
   ['Руководитель · РВД', 'На подписании, 1 сотрудник', 'm1', '22.10', s => { setG(s, [['e1','sign']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-10-31','2026-11-01','2026-11-07','2026-11-08']}],['e1','hr'],['e2','done']]); U.rows['r3432'] = true; return 'g3432'; }],
-  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-10-31','2026-11-01','2026-11-07','2026-11-08']}],['e1','hr'],['e2','done']]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-11-07','2026-11-08','2026-11-14','2026-11-15']}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:['2026-11-07','2026-11-08','2026-11-14','2026-11-15']}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
   ['Руководитель · РВД', 'У отдела кадров (нет в макетах)', 'm1', '22.10', s => { setG(s, [['e1','hr']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '30.10', s => { setG(s, [['e5','declined',{dates:['2026-10-31','2026-11-01','2026-11-07','2026-11-08']}],['e1','expired',{stopStage:'sign', stopAt:D('29.10',23)}],['e2','done']]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '06.11', s => { setG(s, [['e5','declined',{dates:['2026-11-07','2026-11-08','2026-11-14','2026-11-15']}],['e1','expired',{dates:['2026-11-07'], stopStage:'sign', stopAt:D('05.11',23)}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, все 3 (нет в макетах)', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, 1 сотрудник', 'm1', '23.10', s => { setG(s, [['e1','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Отменена отделом кадров', 'm1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'g3432'; }],
