@@ -499,10 +499,26 @@
   @media(min-width:1201px){.detail>.panel{padding:31px 39px 39px}.panel-head .deadline{position:absolute;float:none;right:0;top:24px;margin:0}.panel-head:has(.deadline) h1{padding-right:170px}}
   @media(max-width:800px){.panel-head .meta,.expand{font-size:16px}.step b,.step.future b{font-size:11px;line-height:14px}.steps .step small{font-size:10px;line-height:13px;margin-top:2px}#createForm .date-line input{width:240px}}
   /* ---- Сверка с макетами 23.11: размеры и отступы карточек ---- */
-  input[type=date]{position:relative}
-  input[type=date]::-webkit-calendar-picker-indicator{width:24px;height:24px;padding:0;margin:0;opacity:1;cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2353565d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 5.5h19v15h-19zM2.5 10.5h19M7.5 3v4M16.5 3v4'/%3E%3C/svg%3E") center/24px no-repeat}
-  input[type=date].empty:not(:focus)::-webkit-datetime-edit{color:transparent}
-  input[type=date].empty:not(:focus)::before{content:'ДД.ММ.ГГГГ';position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#53565d}
+  .dt{position:relative;display:inline-block;max-width:100%}
+  .dt .dt-src{display:none!important}
+  .dt .dt-in{display:block;max-width:100%;padding-right:52px!important;background:#fff;color:#222}
+  .dt .dt-in::placeholder{color:#53565d;opacity:1}
+  .dt-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:32px;height:32px;padding:4px;line-height:0;border-radius:8px}
+  .dt-pop{position:absolute;z-index:40;left:0;top:calc(100% + 6px);width:300px;max-width:calc(100vw - 32px);background:#fff;border-radius:12px;box-shadow:0 12px 32px #263b6433;padding:16px 20px 20px;display:block}
+  .dt-pop[hidden]{display:none}
+  .dt-pop.up{top:auto;bottom:calc(100% + 6px)}
+  .dt-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:18px;line-height:24px}
+  .dt-h b{font-weight:600;color:#151617}.dt-h button{width:24px;height:24px;padding:0;line-height:0;color:#222}.dt-h button:hover:not(:disabled){color:var(--purple)}.dt-h button:disabled{color:#b5b5b5;cursor:default}
+  .dt-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 0;text-align:center;justify-items:center}
+  .dt-g i{font-style:normal;font-size:16px;line-height:28px;color:#a6a6a6}
+  .dt-g button{width:32px;height:32px;padding:0;border-radius:16px;font-size:16px;line-height:32px;color:#222}
+  .dt-g button:hover:not(:disabled):not(.on){background:#f3e9fc}
+  .dt-g button.no{color:#a6a6a6}.dt-g button.hol{color:#ec6a2c;font-weight:700}
+  .dt-g button.out{color:#c9ced6}.dt-g button.out.hol{color:#f3b598}
+  .dt-g button.now{background:#e2f3c2}
+  .dt-g button.also{background:#e9d2fd}
+  .dt-g button.on{background:#be8ae4;color:#fff;font-weight:400}
+  .dt-g button:disabled,.dt-h button:disabled{cursor:not-allowed;opacity:1}
   .et-name small{display:block;font-size:14px;line-height:20px;color:#53565d;margin-top:2px}
   .et-dates{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
   .cal-all{display:inline-flex;gap:24px;align-items:center}.cal-all>span{display:inline-flex;gap:8px;align-items:center}.cal-all button{padding:0;line-height:0}
@@ -1213,7 +1229,7 @@ function renderEmps(){
     ${k1 >= MAX_EMPS ? `<p class="limit">Выбрано 20 сотрудников, больше выбрать нельзя.<br>Если нужно добавить еще — создай новую заявку</p>` : ''}
     <p class="qnote">Цель одна на всех, даты у каждого свои (решение команды, Q23). Отказ или просрочка одного не отменяет заявку для остальных (Q06). Все даты заявки — в одном календарном месяце, как в БТ (R03). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
   F.emps.forEach((e,k) => { if (e.open && $('#dd'+k)) renderPicker(k); });
-  validateDates(F.tried); updateDeadline();
+  upgradeDates(); validateDates(F.tried); updateDeadline();
 }
 /* «Скопировать даты всем»: источник — карточка, где нажали. Заполненные у других не перезаписываем без вопроса. */
 async function applyToAll(k){
@@ -1426,6 +1442,7 @@ function checkOtgul(r){
 }
 function bindOtgul(r){
   const f = $('#otgulForm'); if (!f) return;
+  upgradeDates();
   checkOtgul(r);
   const toggle = on => { O.open = on; f.querySelector('.sel').classList.toggle('open', on); f.querySelector('.sel-list').hidden = !on; $('#dayBtn').setAttribute('aria-expanded', on); };
   f.addEventListener('click', e => {
@@ -1868,10 +1885,68 @@ $('#demoBtn').onclick = openDemo;
 $('#qToggle').onclick = e => { const on = document.body.classList.toggle('show-q'); e.currentTarget.setAttribute('aria-pressed', on); };
 $('#dlg').addEventListener('click', e => { if (e.target === $('#dlg')) $('#dlg').close(); });
 $('#dlg').addEventListener('change', e => { if (e.target.name === 'rm') { S.refuseMode = e.target.value; save(); toast(e.target.value === 'checkbox' ? 'Отказ: чекбокс категории (по БТ)' : 'Отказ: модалка с комментарием'); } });
-/* Пустая дата показывает «ДД.ММ.ГГГГ», как в макете, на любом языке браузера */
-const markDate = i => i.classList.toggle('empty', !i.value);
-new MutationObserver(() => document.querySelectorAll('input[type=date]').forEach(markDate)).observe($('#detail'), {childList:true, subtree:true});
-['input','change'].forEach(ev => document.addEventListener(ev, e => { if (e.target.type === 'date') markDate(e.target); }));
+/* Поле даты: свой ввод с маской ДД.ММ.ГГГГ и календарь. Исходный input[type=date] остаётся скрытым хранилищем значения,
+   поэтому проверки и обработчики форм работают как раньше */
+const toIso = s => { const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s); if (!m) return ''; const d = new Date(+m[3], m[2] - 1, +m[1]); return d.getDate() === +m[1] && d.getMonth() === m[2] - 1 ? iso(d) : ''; };
+const CAL_IC = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 5.5h19v15h-19zM2.5 10.5h19M7.5 3v4M16.5 3v4"/></svg>';
+let dtOpen = null;
+function dateField(src){
+  if (src.dataset.dt) return;
+  src.dataset.dt = '1';
+  const wrap = document.createElement('span'), label = src.getAttribute('aria-label') || (src.labels && src.labels[0] ? src.labels[0].textContent.trim() : 'Дата');
+  wrap.className = 'dt';
+  wrap.innerHTML = `<input type="text" class="dt-in" inputmode="numeric" maxlength="10" placeholder="ДД.ММ.ГГГГ" autocomplete="off" aria-label="${esc(label)}"><button type="button" class="dt-btn" aria-label="Открыть календарь" tabindex="-1">${CAL_IC}</button><span class="dt-pop" role="dialog" aria-label="Календарь" hidden></span>`;
+  src.before(wrap); wrap.append(src); src.classList.add('dt-src');
+  const tx = wrap.querySelector('.dt-in'), pop = wrap.querySelector('.dt-pop');
+  const show = () => { tx.value = src.value ? fmtD(parse(src.value)) : ''; };
+  show();
+  src.focus = () => tx.focus();
+  if (src.labels) [...src.labels].forEach(l => l.addEventListener('click', e => { e.preventDefault(); tx.focus(); }));
+  const commit = v => { if (v === src.value) { show(); return; } src.value = v; show(); src.dispatchEvent(new Event('change', {bubbles:true})); };
+  let ym = null;
+  const close = () => { pop.hidden = true; if (dtOpen === close) dtOpen = null; };
+  /* Вид — как календарь в «Отпуске». Серые дни выбрать нельзя: для РВД это рабочие, для отгула — выходные и праздники */
+  const forWork = src.dataset.k != null;
+  const draw = () => {
+    const [y, m] = ym, first = new Date(y, m, 1), shift = (first.getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate(), today = iso(new Date());
+    const also = forWork && F ? F.emps[+src.dataset.k].dates.filter(x => x && x !== src.value) : [];
+    let cells = '<span></span>'.repeat(shift);
+    for (let d = 1; d <= n; d++) { const dt = new Date(y, m, d), k = iso(dt), out = (src.min && k < src.min) || (src.max && k > src.max), rest = isOffDay(dt), off = out || (forWork ? !rest : rest);
+      cells += `<button type="button" data-dd="${k}" class="${isHoliday(dt) ? 'hol' : off ? 'no' : ''} ${out ? 'out' : ''} ${k === src.value ? 'on' : ''} ${also.includes(k) ? 'also' : ''} ${k === today ? 'now' : ''}" ${off ? 'disabled' : ''} aria-label="${fmtDayLong(dt)}" aria-pressed="${k === src.value}">${d}</button>`; }
+    const prevOff = src.min && iso(new Date(y, m, 0)) < src.min, nextOff = src.max && iso(new Date(y, m + 1, 1)) > src.max;
+    const ar = d => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+    pop.innerHTML = `<span class="dt-h"><button type="button" data-mv="-1" ${prevOff ? 'disabled' : ''} aria-label="Предыдущий месяц">${ar('m14.5 5.5-6.5 6.5 6.5 6.5')}</button><b>${MONTHS[m]} ${y}</b><button type="button" data-mv="1" ${nextOff ? 'disabled' : ''} aria-label="Следующий месяц">${ar('m9.5 5.5 6.5 6.5-6.5 6.5')}</button></span><span class="dt-g">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(x => `<i>${x}</i>`).join('')}${cells}</span>`;
+  };
+  const open = () => {
+    if (!pop.hidden) return;
+    if (dtOpen) dtOpen();
+    const b = parse(src.value || (src.min > iso(new Date()) ? src.min : iso(new Date()))); ym = [b.getFullYear(), b.getMonth()];
+    draw(); pop.hidden = false; dtOpen = close;
+    const r = pop.getBoundingClientRect(); if (r.bottom > innerHeight - 8 && tx.getBoundingClientRect().top > r.height + 16) pop.classList.add('up'); else pop.classList.remove('up');
+  };
+  tx.addEventListener('click', open);
+  wrap.querySelector('.dt-btn').addEventListener('click', e => { e.preventDefault(); pop.hidden ? (open(), tx.focus()) : close(); });
+  tx.addEventListener('input', e => {
+    e.stopPropagation();
+    const dg = tx.value.replace(/\D/g, '').slice(0, 8);
+    tx.value = [dg.slice(0,2), dg.slice(2,4), dg.slice(4)].filter(Boolean).join('.');
+    if (!dg) { if (src.value) commit(''); return; }
+    const v = toIso(tx.value); if (v) { close(); commit(v); }
+  });
+  tx.addEventListener('change', e => e.stopPropagation());
+  tx.addEventListener('blur', () => { if (tx.value && !toIso(tx.value)) show(); });
+  tx.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) { e.stopPropagation(); close(); } if (e.key === 'ArrowDown') { e.preventDefault(); open(); pop.querySelector('.on:not(:disabled),.dt-g button:not(:disabled)')?.focus(); } if (e.key === 'Tab') close(); });
+  pop.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); close(); tx.focus(); } });
+  pop.addEventListener('mousedown', e => e.preventDefault());
+  pop.addEventListener('click', e => {
+    const mv = e.target.closest('[data-mv]'), dd = e.target.closest('[data-dd]');
+    if (mv) { const d = new Date(ym[0], ym[1] + +mv.dataset.mv, 1); ym = [d.getFullYear(), d.getMonth()]; draw(); }
+    if (dd && !dd.disabled) { close(); commit(dd.dataset.dd); }
+  });
+}
+document.addEventListener('mousedown', e => { if (dtOpen && !e.target.closest('.dt')) dtOpen(); });
+function upgradeDates(){ document.querySelectorAll('input[type=date]').forEach(dateField); }
+new MutationObserver(upgradeDates).observe($('#detail'), {childList:true, subtree:true});
 if (S.selected === 'new' || S.selected === 'newOtgul') S.selected = null;
 if (FLOW) { document.body.classList.add('flow'); document.title = 'OTP Space'; S.auto = S.auto || {}; setInterval(flowTick, 500); }
 render();
