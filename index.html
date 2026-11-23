@@ -441,7 +441,7 @@
   .ep small{display:block;font-size:12px;line-height:16px;color:#8a8f99}
   @media(max-width:1300px){.et-h{display:none}.et-line,.et.nodl .et-line{grid-template-columns:minmax(0,1fr) 24px}.et-line .chip-wrap{grid-row:2;grid-column:1}.et-line .et-dl{grid-row:3;grid-column:1}.et-line .et-dl:not(:empty):before{content:'Срок до '}.et-line .et-chev{grid-row:1;grid-column:2}}
   @media(max-width:800px){.sel,.off-field input{width:100%!important}.tip-pop,.tip-pop.wide{position:fixed;left:16px;right:16px;bottom:76px;width:auto!important;transform:none;max-height:60vh;overflow:auto;z-index:50}.tip-pop:after{display:none}.vac-row{gap:24px;margin-bottom:24px}.bal{padding-left:0}.cal-ms{grid-template-columns:minmax(0,1fr)!important}.hint-card p br{display:none}}
-  /* ---- Меню «Создать» сотрудника ---- */
+  /* ---- Меню «Создать» ---- */
   .create-menu.cats{width:640px;max-width:calc(100vw - 24px)}
   .create-menu.cats button{font-size:18px;line-height:20px;font-weight:600;color:#53565d;border-radius:12px}
   .create-menu.cats>button{margin-bottom:2px}
@@ -867,7 +867,7 @@ function tabItems(tab){
   if (isMgr()) return tab === 'mine' ? S.groups.map(g => ({g, created:g.created})) : S.requests.filter(r => r.type === 'otgul' && r.submitted).map(it);
   return tab === 'mine' ? S.requests.filter(r => r.employeeId === S.persona).map(it) : [];
 }
-/* Меню «Создать» у сотрудника — по макету 26042:26083. Отгул — в «Отпуске», рядом с остальными отпусками */
+/* Меню «Создать» — по макету 26042:26083. Отгул — в «Отпуске»; у руководителя «Работа в выходной день» — отдельная заявка вне категорий */
 const svg24 = (d, w = 1.5) => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 const MI = {
   doc:svg24('M5.75 6.75H17.75M5.75 11.25H11M14.25 23.115V15.75C14.25 14.9216 14.9216 14.25 15.75 14.25H23.115M13.629 23.25H2.25C1.42157 23.25 0.75 22.5784 0.75 21.75V2.25C0.75 1.42157 1.42157 0.75 2.25 0.75H21.75C22.5784 0.75 23.25 1.42157 23.25 2.25V13.629C23.2499 14.0265 23.092 14.4078 22.811 14.689L14.689 22.811C14.4078 23.092 14.0265 23.2499 13.629 23.25Z'),
@@ -876,20 +876,21 @@ const MI = {
   money:svg24('M0.75 12.7625C0.75 14.3605 3.32408 15.6556 6.5 15.6556C9.67592 15.6556 12.25 14.3605 12.25 12.7625M12.25 15.5C12.25 17.0632 14.7122 18.3302 17.75 18.3302C20.7878 18.3302 23.25 17.0632 23.25 15.5M23.25 12.0994V19.4199C23.25 20.9831 20.7878 22.2501 17.75 22.2501C14.7122 22.2501 12.25 20.9831 12.25 19.4199V16.3836M12.25 5.55494V16.4165C12.25 17.9816 9.67592 19.25 6.5 19.25C3.32408 19.25 0.75 17.9816 0.75 16.4165V5.55494M0.75 9.19439C0.75 10.7594 3.32408 12.0279 6.5 12.0279C9.67592 12.0279 12.25 10.7594 12.25 9.19439M17.75 14.75C20.7876 14.75 23.25 13.4069 23.25 11.75C23.25 10.0931 20.7876 8.75 17.75 8.75C14.7124 8.75 12.25 10.0931 12.25 11.75C12.25 13.4069 14.7124 14.75 17.75 14.75ZM6.5 8.41692C9.67564 8.41692 12.25 7.14834 12.25 5.58346C12.25 4.01858 9.67564 2.75 6.5 2.75C3.32436 2.75 0.75 4.01858 0.75 5.58346C0.75 7.14834 3.32436 8.41692 6.5 8.41692Z'),
   down:'<svg class="ico last cat-chev" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4.6 9.4 7.1 7a.5.5 0 0 0 .7 0l7-7"/></svg>'
 };
-function empMenu(){
+function createMenuHtml(){
   const row = (ic, l) => `<button type="button" role="menuitem" data-stub>${ic}${l}</button>`, cat = (ic, l) => `<button type="button" role="menuitem" data-stub>${ic}${l}${MI.down}</button>`;
   return `<button type="button" role="menuitem" data-cat aria-expanded="false" aria-controls="catVac">${icoAsset('beach')}Отпуск${MI.down}</button>
-    <div class="cat-sub" id="catVac" hidden><button type="button" role="menuitem" data-stub>Ежегодный оплачиваемый отпуск</button><button type="button" role="menuitem" data-stub>Отпуск без сохранения зарплаты</button><button type="button" role="menuitem" data-create="otgul">Отгул за работу в выходной день</button></div>`
-    + cat(MI.doc, 'Справки и копии документов') + cat(MI.person, 'Персональные и контактные данные') + row(MI.line, 'Формирование профиля роли (Должностная инструкция)') + row(MI.line, 'Формирование типового профиля роли (Должностная инструкция)') + cat(MI.money, 'Компенсации и льготы') + row(icoAsset('income'), 'Расчётный листок');
+    <div class="cat-sub" id="catVac" hidden><button type="button" role="menuitem" data-stub>Ежегодный оплачиваемый отпуск</button><button type="button" role="menuitem" data-stub>Отпуск без сохранения зарплаты</button><button type="button" role="menuitem" ${isMgr() ? 'data-stub' : 'data-create="otgul"'}>Отгул за работу в выходной день</button></div>`
+    + cat(MI.doc, 'Справки и копии документов') + cat(MI.person, 'Персональные и контактные данные') + row(MI.line, 'Формирование профиля роли (Должностная инструкция)') + row(MI.line, 'Формирование типового профиля роли (Должностная инструкция)') + cat(MI.money, 'Компенсации и льготы') + row(icoAsset('income'), 'Расчётный листок')
+    + (isMgr() ? `<button type="button" role="menuitem" data-create="rvd">${MI.line}Работа в выходной день</button>` : '');
 }
 function renderToolbar(){
   const cnt = t => tabItems(t).filter(({r}) => r ? needsMe(r) : false).length + (t === 'mine' && ['new','newOtgul'].includes(S.selected) ? 1 : 0);
   const tab = (k, l) => { const n = cnt(k); return `<button type="button" data-tab="${k}" class="${S.tab===k?'active':''}" aria-pressed="${S.tab===k}">${l}${n ? `<span class="badge">${n}</span>` : ''}</button>`; };
-  const menu = isMgr() ? `<button type="button" data-create="rvd" role="menuitem">${icoAsset('requests')}Работа в выходной день</button>` : empMenu();
+  const menu = createMenuHtml();
   const bankChip = `<span class="spacer"></span><button type="button" class="view-tog" data-stub aria-label="Вид списка"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5"><rect x="4" y="4" width="16" height="7" rx="2"/><rect x="4" y="13" width="16" height="7" rx="2"/></svg></button>`;
   $('#toolbar').innerHTML = `<div class="tabs" role="group" aria-label="Заявки">${tab('mine','Мои')}${tab('approve','Нужно согласовать')}</div>
     <div class="create-wrap"><button type="button" class="btn lime" id="createBtn" aria-haspopup="menu" aria-expanded="false" style="padding:12px 20px"><img class="asset" src="assets/plus.svg" alt="" width="16" height="16">Создать</button>
-    <div class="create-menu ${isMgr() ? '' : 'cats'}" id="createMenu" role="menu" hidden>${isMgr() ? '<p class="grp">Кадровые заявки</p>' : ''}${menu}</div></div>${bankChip}`;
+    <div class="create-menu cats" id="createMenu" role="menu" hidden>${menu}</div></div>${bankChip}`;
 }
 function bubble(cls, dot){
   const g = cls === 'done' ? I.okc : cls === 'partial' ? I.part : cls === 'paper' ? I.paper : cls ? I.cancel : I.clock;
