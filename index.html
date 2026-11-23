@@ -1227,7 +1227,7 @@ function renderEmps(){
   }).join('') + (k1 < MAX_EMPS ? `<button type="button" class="add-emp-btn" id="addEmp">${I.plus}Добавить сотрудника</button>` : '')
     + `
     ${k1 >= MAX_EMPS ? `<p class="limit">Выбрано 20 сотрудников, больше выбрать нельзя.<br>Если нужно добавить еще — создай новую заявку</p>` : ''}
-    <p class="qnote">Цель одна на всех, даты у каждого свои (решение команды, Q23). Отказ или просрочка одного не отменяет заявку для остальных (Q06). Все даты заявки — в одном календарном месяце, как в БТ (R03). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
+    <p class="qnote">Цель одна на всех, даты у каждого свои (решение команды, Q23). Отказ или просрочка одного не отменяет заявку для остальных (Q06). Даты одного сотрудника — в одном календарном месяце, у разных сотрудников месяцы могут быть разными (решение команды; в БТ, R03, — «даты работы в заявке», Q26). Региональный календарь, отпуска и «не больше 6 дней подряд» не проверяются (Q10).</p>`;
   F.emps.forEach((e,k) => { if (e.open && $('#dd'+k)) renderPicker(k); });
   upgradeDates(); validateDates(F.tried); updateDeadline();
 }
@@ -1261,8 +1261,9 @@ function dateError(k, i){
   const d = parse(v);
   if (!isOffDay(d)) return 'Это рабочий день — выбери выходной или праздник';
   if (ds.indexOf(v) !== i) return 'Эта дата уже есть у сотрудника';
-  const first = allDates()[0];
-  if (first && first.slice(0,7) !== v.slice(0,7)) return 'Все даты заявки — в одном календарном месяце (' + parse(first).toLocaleDateString('ru-RU',{month:'long'}) + ')';
+  /* Месяц — свой у каждого сотрудника: у одного ноябрь, у другого может быть декабрь */
+  const first = ds.find(Boolean);
+  if (first && first.slice(0,7) !== v.slice(0,7)) return 'Все даты сотрудника — в одном календарном месяце (' + parse(first).toLocaleDateString('ru-RU',{month:'long'}) + ')';
   if (Date.now() > deadlines(v).manager.getTime()) return 'Срок подачи на эту дату истёк (' + fmtDTfull(deadlines(v).manager) + ')';
   return '';
 }
@@ -1683,7 +1684,7 @@ const QS = [
   ['Q23','d','Заявка на нескольких: цель и даты общие или свои у каждого?','Решено: цель одна на всех, даты у каждого свои; «Скопировать даты всем»'],
   ['Q24','b','Кадры оформляют один приказ на всех или отдельный на каждого?','Прототип: приказ на каждого сотрудника'],
   ['Q25','i','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого?','Прототип: отправить — по самой ранней; сотрудник и кадры — от его первой даты'],
-  ['Q26','d','Даты РВД: один календарный месяц (БТ, R03) или ближайшие 30 дней?','Решено: один календарный месяц, как в БТ'],
+  ['Q26','d','Даты РВД: один календарный месяц (БТ, R03) или ближайшие 30 дней?','Решено: один календарный месяц у каждого сотрудника; у разных сотрудников месяцы могут отличаться. В БТ — «даты в заявке», сверить'],
   ['Q27','i','Отгул: в БТ (R24) — до 10 пар «день работы — день отгула», в макете — один день на заявку. Что верно?','Прототип: один день, как в макете'],
 ];
 function openAnalytics(focusQ){
@@ -1909,18 +1910,20 @@ function dateField(src){
   const forWork = src.dataset.k != null;
   const draw = () => {
     const [y, m] = ym, first = new Date(y, m, 1), shift = (first.getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate(), today = iso(new Date());
-    const also = forWork && F ? F.emps[+src.dataset.k].dates.filter(x => x && x !== src.value) : [];
+    const also = forWork && F && F.emps[+src.dataset.k] ? F.emps[+src.dataset.k].dates.filter(x => x && x !== src.value) : [];
     let cells = '<span></span>'.repeat(shift);
-    for (let d = 1; d <= n; d++) { const dt = new Date(y, m, d), k = iso(dt), out = (src.min && k < src.min) || (src.max && k > src.max), rest = isOffDay(dt), off = out || (forWork ? !rest : rest);
+    for (let d = 1; d <= n; d++) { const dt = new Date(y, m, d), k = iso(dt), out = (src.min && k < src.min) || (src.max && k > src.max), rest = isOffDay(dt), off = out || (forWork ? !rest : rest) || (also[0] && also[0].slice(0,7) !== k.slice(0,7));
       cells += `<button type="button" data-dd="${k}" class="${isHoliday(dt) ? 'hol' : off ? 'no' : ''} ${out ? 'out' : ''} ${k === src.value ? 'on' : ''} ${also.includes(k) ? 'also' : ''} ${k === today ? 'now' : ''}" ${off ? 'disabled' : ''} aria-label="${fmtDayLong(dt)}" aria-pressed="${k === src.value}">${d}</button>`; }
-    const prevOff = src.min && iso(new Date(y, m, 0)) < src.min, nextOff = src.max && iso(new Date(y, m + 1, 1)) > src.max;
+    /* Если у сотрудника уже есть дата, другие месяцы закрыты */
+    const prevOff = !!also[0] || (src.min && iso(new Date(y, m, 0)) < src.min), nextOff = !!also[0] || (src.max && iso(new Date(y, m + 1, 1)) > src.max);
     const ar = d => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
     pop.innerHTML = `<span class="dt-h"><button type="button" data-mv="-1" ${prevOff ? 'disabled' : ''} aria-label="Предыдущий месяц">${ar('m14.5 5.5-6.5 6.5 6.5 6.5')}</button><b>${MONTHS[m]} ${y}</b><button type="button" data-mv="1" ${nextOff ? 'disabled' : ''} aria-label="Следующий месяц">${ar('m9.5 5.5 6.5 6.5-6.5 6.5')}</button></span><span class="dt-g">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(x => `<i>${x}</i>`).join('')}${cells}</span>`;
   };
   const open = () => {
     if (!pop.hidden) return;
     if (dtOpen) dtOpen();
-    const b = parse(src.value || (src.min > iso(new Date()) ? src.min : iso(new Date()))); ym = [b.getFullYear(), b.getMonth()];
+    const sib = forWork && F && F.emps[+src.dataset.k] ? F.emps[+src.dataset.k].dates.find(x => x && x !== src.value) : '';
+    const b = parse((sib && sib.slice(0,7) !== (src.value || '').slice(0,7) ? sib : src.value) || (src.min > iso(new Date()) ? src.min : iso(new Date()))); ym = [b.getFullYear(), b.getMonth()];
     draw(); pop.hidden = false; dtOpen = close;
     const r = pop.getBoundingClientRect(); if (r.bottom > innerHeight - 8 && tx.getBoundingClientRect().top > r.height + 16) pop.classList.add('up'); else pop.classList.remove('up');
   };
