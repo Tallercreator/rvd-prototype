@@ -145,6 +145,15 @@
   .emp-note{font-size:14px;color:#53565d;margin-top:6px}
   .date-line{display:flex;gap:12px;align-items:center;margin-bottom:8px}
   .date-line input{height:46px;border:1px solid #a6adba;border-radius:12px;padding:8px 14px;background:#fff;width:240px;max-width:100%;font-size:16px}
+  .dh-row{display:grid;grid-template-columns:minmax(0,300px) minmax(0,340px);gap:0 32px;align-items:start}
+  .dh-cell{min-width:0}
+  .dh-row+.dh-row .label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0!important}
+  .dh-row+.dh-row .tipwrap{display:none}
+  .dh-row+.dh-row{position:relative;margin-top:8px}
+  .hr{position:relative;display:block;flex:0 1 300px;min-width:0}
+  .hr svg{position:absolute;right:16px;top:11px;pointer-events:none}
+  #createForm .date-line .hr input{display:block;width:100%;padding-right:52px!important;color:#222}
+  .hr input::placeholder{color:#53565d;opacity:1}
   .add-link{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600;padding:4px 0;color:#222}
   .add-link:disabled{opacity:.4}
   .fill-hintX{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid #e3d3f2;border-radius:10px;padding:8px 8px 8px 12px;margin:0 0 18px;font-size:14px;line-height:18px;color:#53565d}
@@ -392,6 +401,7 @@
   .comp-block{border:0;padding:0 0 28px;min-width:0;max-width:600px;margin:0 0 28px!important;border-bottom:1px solid var(--line)}
   .comp-block:last-of-type{border-bottom:0;padding-bottom:0}
   .comp-day{font-weight:600;font-size:16px;padding:0;margin-bottom:12px}
+  .comp-day .hrs{margin-left:8px}
   .comp-block .choices{gap:16px}
   .choices input[type=radio]{border-radius:50%!important;appearance:none;-webkit-appearance:none;width:24px;height:24px;border:1.5px solid #a6adba;border-radius:50%;background:#fff;flex-shrink:0;margin:0;cursor:pointer}
   .choices input[type=radio]:checked{border-color:var(--lime);background:radial-gradient(circle,#222 0 5px,var(--lime) 5.5px)}
@@ -485,7 +495,9 @@
   #createForm .search-input input,#createForm .date-line input{font-size:18px;padding:0 16px}
   #createForm .date-line input{width:300px}
   #createForm .err{font-size:14px;line-height:18px;margin:0 0 8px}
-  #createForm .dates-act{margin-top:16px}
+  #createForm .dates-act{margin-top:8px}
+  #createForm .dh-field .label{margin-bottom:16px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+  @media(max-width:800px){.dh-row{grid-template-columns:minmax(0,1fr)}.dh-row+.dh-row .label,#createForm .dh-row+.dh-row .label{position:static;width:auto;height:auto;clip-path:none;overflow:visible;margin:0 0 8px!important}#createForm .emp-body .field.dh-field .label{margin-bottom:8px!important}.dh-row+.dh-row{border-top:1px solid #dfe3eb;padding-top:16px}#createForm .dh-cell+.dh-cell{margin-top:8px}}
   #createForm .add-link{padding:6px 0;line-height:20px}
   #createForm .add-emp-btn{height:40px;padding:8px;gap:8px;margin:16px 0 0;font-size:16px;line-height:20px;color:#525252;background:#eceff6}
   #createForm .add-emp-btn svg{width:24px;height:24px;padding:3px}
@@ -520,8 +532,10 @@
   .dt-g button.on{background:#be8ae4;color:#fff;font-weight:400}
   .dt-g button:disabled,.dt-h button:disabled{cursor:not-allowed;opacity:1}
   .et-name small{display:block;font-size:14px;line-height:20px;color:#53565d;margin-top:2px}
-  .et-dates{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:baseline}
-  .et-dates b{white-space:nowrap}.et-dates .dates-row{gap:8px 12px;line-height:20px}
+  .et-dates{display:grid;gap:12px}
+  .et-dates b{white-space:nowrap}.et-dates .dates-row{gap:8px 24px;line-height:20px}
+  .dh{display:inline-flex;gap:4px;white-space:nowrap}
+  .details .dates-row{gap:8px 24px}
   .cal-all{display:inline-flex;gap:24px;align-items:center}.cal-all>span{display:inline-flex;gap:8px;align-items:center}.cal-all button{padding:0;line-height:0}
   .cal-legend{margin-top:20px;font-size:15px}.cal-legend summary{display:inline-flex;gap:12px;align-items:center;cursor:pointer;list-style:none}.cal-legend summary::-webkit-details-marker{display:none}.cal-legend summary i{width:16px;height:16px;border-radius:50%;background:conic-gradient(#f7e08a 0 30%,#be8ae4 30%)}
   .cal-legend .cal-leg{margin-top:12px}
@@ -678,6 +692,10 @@ const fmtD = d => pad(d.getDate()) + '.' + pad(d.getMonth()+1) + '.' + d.getFull
 const WD = ['вс','пн','вт','ср','чт','пт','сб'];
 const fmtWD = d => WD[d.getDay()] + ' ' + fmtD(d);
 const fmtDayLong = d => fmtD(d) + ', ' + d.toLocaleDateString('ru-RU',{weekday:'long'});
+const fmtDayShort = d => fmtD(d) + ', ' + ['вс','пн','вт','ср','чт','пт','сб'][d.getDay()];
+/* Часы работы — у каждой даты свои; в старых сохранённых заявках поля нет, считаем 8 */
+const hrsOf = (r, s) => (r.hours || {})[s] || 8;
+const hrsLong = n => plural(+n, 'час', 'часа', 'часов');
 const fmtDT = d => fmtD(d) + (d.getHours() === 23 && d.getMinutes() === 59 ? '' : ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes()));
 const fmtDTfull = d => fmtD(d) + ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
 const fmtStamp = t => { const d = new Date(t); return pad(d.getDate()) + '.' + pad(d.getMonth()+1) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); };
@@ -720,7 +738,7 @@ function rvdReq(g, k, emp, stage, o = {}){
   const T = {created:g.created, confirm:g.created + 25*36e5, sign:g.created + 26*36e5, hr:g.created + 30*36e5};
   const stopped = ['declined','expired','cancelled'].includes(stage), cur = stopped ? (o.stopStage || 'confirm') : stage;
   const dates = o.dates || ['2026-10-31'];
-  const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:emp, goal:GOAL, dates, stage, comp:{}, rest:{}, viewed:false, created:g.created, at:{}, history:[{t:g.created, text:'Елена Когут отправила заявку сотруднику'}]};
+  const r = {hours:Object.fromEntries(dates.map(s => [s, 8])), id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:emp, goal:GOAL, dates, stage, comp:{}, rest:{}, viewed:false, created:g.created, at:{}, history:[{t:g.created, text:'Елена Когут отправила заявку сотруднику'}]};
   const ci = stage === 'done' ? keys.length : keys.indexOf(cur);
   keys.slice(0, ci).forEach(x => r.at[x] = T[x]);
   if (ci > 1) { dates.forEach(s => r.comp[s] = 'double'); r.history.push({t:T.confirm, text:'Сотрудник выбрал компенсацию и сформировал уведомление'}); }
@@ -1017,15 +1035,17 @@ function steps(kind, x, extra = {}, mgr = false){
     return `<div class="step ${cls}"><div class="step-circle ${c}" aria-hidden="true">${mark}</div><b>${lbl}</b>${ex}${date ? `<small>${date}</small>` : ''}<span class="sr">: ${i < cur ? 'выполнено' : i === cur ? 'текущий этап' : 'впереди'}</span></div>`;
   }).join('') + `</div>`;
 }
+/* «31.10.2026, сб 8 ч;» — как в таблице статусов (25989:63407) */
+const datesHours = r => r.dates.map((s, i) => `<span class="dh"><span>${fmtDayShort(parse(s))}</span> <span>${hrsOf(r, s)} ч${i < r.dates.length - 1 ? ';' : ''}</span></span>`).join('');
 function rvdFields(r, withComp){
   let comp = '';
   if (withComp && Object.keys(r.comp).length) comp = `<div class="pair"><dt>Компенсация</dt><dd><table class="comp-table">` + r.dates.map(s => {
     const rest = r.comp[s] === 'rest' ? (r.rest[s] ? '<br><small class="muted">Дата отгула: ' + fmtD(parse(r.rest[s])) + '</small>' : '<br><small class="muted">День отдыха — позже, из банка отгулов</small>') : '';
-    return `<tr><td>${fmtDayLong(parse(s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
+    return `<tr><td>${fmtDayLong(parse(s))}, ${hrsLong(hrsOf(r, s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
   }).join('') + `</table></dd></div>`;
   return `<dl class="general-fields"><div class="pair"><dt>Цель работы</dt><dd>${esc(r.goal)}</dd></div>
     <div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div>
-    <div class="pair"><dt>Дата работы</dt><dd class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</dd></div>${comp}</dl>`;
+    <div class="pair"><dt>Дата работы</dt><dd class="dates-row">${datesHours(r)}</dd></div>${comp}</dl>`;
 }
 /* Согласование у руководителя (макет 25804:103746): сначала дата отгула, под ней — за какой день */
 const pairsRead = r => pairsSorted(r).map(p => `<div class="off-date appr"><span>Дата отгула сотрудника:</span><b>${fmtDayLong(parse(p.off))}</b></div><div class="off-date appr"><span>Дата работы в выходной/праздничный день:</span><span>${fmtDayLong(parse(p.rvd))}</span></div>`).join('');
@@ -1059,7 +1079,7 @@ function expiredMsg(r, mine){
 function confirmForm(r, head){
   const block = (s, i) => {
     const d = parse(s), v = r.comp[s] || '', rest = r.rest[s] || '', max = iso(addDays(d, 364));
-    return `<fieldset class="comp-block" data-date="${s}"><legend class="comp-day">${fmtDayLong(d)}</legend>
+    return `<fieldset class="comp-block" data-date="${s}"><legend class="comp-day">${fmtDayLong(d)},<span class="hrs">${hrsLong(hrsOf(r, s))}</span></legend>
       <div class="choices" role="radiogroup" aria-label="Компенсация за ${fmtD(d)}">
         <label><input type="radio" name="comp-${i}" value="double" ${v==='double'?'checked':''}>Оплата в двойном размере</label>
         <label><input type="radio" name="comp-${i}" value="rest" ${v==='rest'?'checked':''}>Одинарная оплата с предоставлением дня отдыха (выбери дни отгула)</label></div>
@@ -1148,7 +1168,7 @@ function empTable(bs, withDl){
   return `<div class="et ${withDl ? '' : 'nodl'}"><div class="et-h"><span>Сотрудник</span><span>Статус</span><span>${withDl ? 'Срок до' : ''}</span></div>` + bs.map(r => {
     const open = !!U.rows[r.id], dl = stageDeadline(r), p = person(r.employeeId);
     return `<div class="et-row"><div class="et-line"><button type="button" class="et-name" data-erow="${r.id}">${esc(p.full)}<small>${esc(p.pos.split(' · ')[1] || DEPT)}</small></button>${empChip(r)}<span class="et-dl">${withDl && dl ? fmtD(dl) : ''}</span><button type="button" class="et-chev" data-erow="${r.id}" aria-expanded="${open}" aria-label="${open ? 'Свернуть' : 'Показать'} даты: ${esc(p.short)}">${CHEV}</button></div>
-      ${open ? `<div class="et-body"><div class="et-dates"><b>Дата работы</b><span class="dates-row">${r.dates.map(s => `<span>${fmtD(parse(s))}</span>`).join('')}</span></div>${r.declineComment ? `<b>Комментарий сотрудника</b><span>${esc(r.declineComment)}</span>` : ''}${r.hrComment ? `<b>Комментарий отдела кадров</b><span>${esc(r.hrComment)}</span>` : ''}</div>` : ''}</div>`;
+      ${open ? `<div class="et-body"><div class="et-dates"><b>Дата работы</b><span class="dates-row">${datesHours(r)}</span></div>${r.declineComment ? `<b>Комментарий сотрудника</b><span>${esc(r.declineComment)}</span>` : ''}${r.hrComment ? `<b>Комментарий отдела кадров</b><span>${esc(r.hrComment)}</span>` : ''}</div>` : ''}</div>`;
   }).join('') + '</div>';
 }
 function groupView(g){
@@ -1180,10 +1200,22 @@ function groupView(g){
 
 /* ================= РВД · форма руководителя ================= */
 let F;
-const blankEmp = () => ({id:null, q:'', dates:[''], open:false, col:false});
+const blankEmp = () => ({id:null, q:'', dates:[''], hours:[''], open:false, col:false});
+const MAX_H = 24;
+const CLOCK_IC = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.8"/><path d="M12 6.5V12l3.2 3.4"/></svg>';
+const hrsShow = v => v === '' || v == null ? '' : hrsLong(v);
+/* Строки без даты и без часов при отправке не считаются */
+function hoursError(k, i, show){
+  const e = F.emps[k], v = e.hours[i];
+  if (v === '' || v == null) return show && (e.dates[i] || !e.dates.some(Boolean) && i === 0) ? 'Укажи количество часов' : '';
+  return +v < 1 || +v > MAX_H ? 'Введи от 1 до ' + MAX_H + ' часов' : '';
+}
+const hoursOk = j => F.emps[j].dates.every((v,i) => !hoursError(j, i, true));
+const dateMissing = (k, i) => !F.emps[k].dates[i] && !!F.emps[k].hours[i];
+const rowKey = x => JSON.stringify(x.dates.map((v,i) => [v, String(x.hours[i])]).filter(y => y[0]).sort());
 const nmShort = j => F.emps[j].id ? person(F.emps[j].id).short : 'Сотрудник ' + (j + 1);
 const datesOk = j => F.emps[j].dates.some(Boolean) && !F.emps[j].dates.some((v,i) => dateError(j,i));
-const canCopyAll = k => F.emps.length > 1 && datesOk(k);
+const canCopyAll = k => F.emps.length > 1 && datesOk(k) && hoursOk(k);
 const COPY_IC = '<img class="asset" src="assets/copy.svg" alt="" width="16" height="16">';
 const TRASH_IC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#33363c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8V7M6 7l.9 12.2c.1 1 .9 1.8 1.9 1.8h6.4c1 0 1.8-.8 1.9-1.8L18 7M10 11v6M14 11v6"/></svg>';
 function newForm(){ F = {goal:'', emps:[blankEmp()], budget:false, tried:false}; }
@@ -1211,7 +1243,8 @@ function empStatus(k){
   const e = F.emps[k];
   if (!e.id) return {ok:false, text:'Не выбран сотрудник'};
   if (!e.dates.some(Boolean)) return {ok:false, text:'Нет дат'};
-  if (e.dates.some((v,i) => dateError(k,i))) return {ok:false, text:'Ошибка в датах'};
+  if (e.dates.some((v,i) => dateError(k,i) || dateMissing(k,i))) return {ok:false, text:'Ошибка в датах'};
+  if (!hoursOk(k)) return {ok:false, text:e.dates.some((v,i) => v && !e.hours[i]) ? 'Нет часов' : 'Ошибка в часах'};
   return {ok:true, text:'Заполнено'};
 }
 function refreshChip(k){ const el = $('#est'+k); if (!el || !F.tried) return; const st = empStatus(k), p = F.emps[k].id && person(F.emps[k].id); el.className = st.ok ? '' : 'bad'; el.textContent = st.ok ? (p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение') : st.text; }
@@ -1223,19 +1256,19 @@ function renderEmps(){
   const bar = `<div class="emp-bar"><b>Сотрудники</b><span class="cnt">${k1}/${MAX_EMPS}</span>${tip('Можешь выбрать до 20 сотрудников в одной заявке')}${k1 > 1 ? `<button type="button" class="tog-all" id="togAll">${anyOpen ? 'Свернуть все' : 'Развернуть все'}</button>` : ''}</div>`;
   $('#emps').innerHTML = bar + F.emps.map((e,k) => {
     const p = e.id && person(e.id), st = sts[k], showBad = !st.ok && (e.col || F.tried);
-    const dates = e.dates.map((v,i) => `<div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}">${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errD${k}_${i}" hidden></p>`).join('');
+    const dates = e.dates.map((v,i) => `<div class="dh-row"><div class="dh-cell"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках одного календарного месяца')}</span><div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}"></div><p class="err" id="errD${k}_${i}" hidden></p></div><div class="dh-cell"><label class="label" for="h${k}_${i}">Количество часов работы</label><div class="date-line"><span class="hr"><input type="text" id="h${k}_${i}" data-hk="${k}" data-hi="${i}" value="${hrsShow(e.hours[i])}" inputmode="numeric" autocomplete="off" placeholder="Введи кол-во часов" aria-label="Количество часов работы, дата ${i+1}">${CLOCK_IC}</span>${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errH${k}_${i}" hidden></p></div></div>`).join('');
     const dept = p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение';
     /* По макету: ФИО и подразделение в шапке — только у свёрнутой карточки; у развёрнутой шапка — поле «Выбери сотрудника» */
     const left = e.col ? `<button type="button" class="emp-toggle" data-tog="${k}" aria-expanded="false" aria-controls="empb${k}">
         <span class="emp-title"><b>${p ? esc(p.full) : 'Сотрудник'}</b>${showBad ? `<small class="bad" id="est${k}">${st.text}</small>` : `<small id="est${k}">${esc(dept)}</small>`}</span>
         </button>` : `<span class="emp-open-lbl label">Выбери сотрудника</span>`;
-    const head = `<div class="emp-head ${e.col ? '' : 'open'}">${left}<span class="emp-acts">${k1 > 1 ? `<button type="button" class="copy-all" id="copyAll${k}" data-apply="${k}" ${canCopyAll(k) ? '' : 'hidden'} title="Скопировать даты всем сотрудникам">${COPY_IC}<span>Скопировать даты всем</span></button><button type="button" class="ic del" data-rmemp="${k}" aria-label="Убрать сотрудника из заявки" title="Убрать из заявки">${TRASH_IC}</button>` : ''}<button type="button" class="ic" data-tog="${k}" aria-label="${e.col ? 'Развернуть' : 'Свернуть'}"><img class="asset emp-chev" src="assets/chevron.svg" alt="" width="18" height="18"></button></span></div>`;
+    const head = `<div class="emp-head ${e.col ? '' : 'open'}">${left}<span class="emp-acts">${k1 > 1 ? `<button type="button" class="copy-all" id="copyAll${k}" data-apply="${k}" ${canCopyAll(k) ? '' : 'hidden'} title="Скопировать даты и часы всем сотрудникам">${COPY_IC}<span>Скопировать даты всем</span></button><button type="button" class="ic del" data-rmemp="${k}" aria-label="Убрать сотрудника из заявки" title="Убрать из заявки">${TRASH_IC}</button>` : ''}<button type="button" class="ic" data-tog="${k}" aria-label="${e.col ? 'Развернуть' : 'Свернуть'}"><img class="asset emp-chev" src="assets/chevron.svg" alt="" width="18" height="18"></button></span></div>`;
     return `<div class="emp-card ${e.col ? 'col' : ''}" id="emp${k}">${head}${e.col ? '' : `<div class="emp-body" id="empb${k}">
       <div class="field">
         <div class="emp-line"><div class="picker"><div class="search-input"><input type="text" id="q${k}" data-q="${k}" value="${esc(p ? p.full : e.q)}" placeholder="Введи ФИО или выбери из списка" autocomplete="off" ${p ? 'readonly' : ''} aria-label="Сотрудник ${k+1}"><img class="asset" src="assets/search.svg" alt="" width="22" height="22"></div>
           <div class="picker-dropdown" id="dd${k}" ${e.open ? '' : 'hidden'} role="listbox"></div></div>${p ? `<button type="button" class="x-btn" data-clremp="${k}" aria-label="Выбрать другого сотрудника">×</button>` : ''}</div>
         <p class="err" id="errEmp${k}" hidden>Выбери сотрудника</p></div>
-      <div class="field"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках одного календарного месяца')}</span>${dates}
+      <div class="field dh-field">${dates}
         <div class="dates-act"><button type="button" class="add-link" data-addd="${k}" ${e.dates.length >= 10 ? 'disabled' : ''}>${I.plus}Добавить дату</button></div></div></div>`}</div>`;
   }).join('') + (k1 < MAX_EMPS ? `<button type="button" class="add-emp-btn" id="addEmp">${I.plus}Добавить сотрудника</button>` : '')
     + `
@@ -1246,10 +1279,10 @@ function renderEmps(){
 }
 /* «Скопировать даты всем»: источник — карточка, где нажали. Заполненные у других не перезаписываем без вопроса. */
 async function applyToAll(k){
-  const dates = F.emps[k].dates.filter(Boolean).slice().sort(), has = x => x.dates.some(Boolean);
-  const same = x => JSON.stringify(x.dates.filter(Boolean).slice().sort()) === JSON.stringify(dates);
+  const src = JSON.parse(rowKey(F.emps[k])), has = x => x.dates.some(Boolean);
+  const same = x => rowKey(x) === rowKey(F.emps[k]);
   const others = F.emps.map((x,j) => ({x, j})).filter(o => o.j !== k && !same(o.x));
-  if (!others.length) { toast('У всех сотрудников уже такие даты'); return; }
+  if (!others.length) { toast('У всех сотрудников уже такие даты и часы'); return; }
   const empty = others.filter(o => !has(o.x)), filled = others.filter(o => has(o.x));
   let targets = empty;
   if (filled.length) {
@@ -1259,9 +1292,9 @@ async function applyToAll(k){
     if (!ch) return;
     targets = ch === 'all' ? others : empty;
   }
-  targets.forEach(o => { o.x.dates = dates.slice(); });
+  targets.forEach(o => { o.x.dates = src.map(y => y[0]); o.x.hours = src.map(y => y[1]); });
   collapseDone(k); renderEmps();
-  toast(`Даты скопированы: ${plural(targets.length, 'сотрудник', 'сотрудника', 'сотрудников')}. У каждого можно поправить`);
+  toast(`Даты и часы скопированы: ${plural(targets.length, 'сотрудник', 'сотрудника', 'сотрудников')}. У каждого можно поправить`);
 }
 function goalError(){ const n = F.goal.trim().length; return !n ? 'Укажи цель работы' : n < 20 ? 'Введи минимум 20 символов' : ''; }
 function refreshGoal(){
@@ -1285,14 +1318,22 @@ function validateDates(show){
   F.emps.forEach((e,k) => {
     let b = !e.id || !e.dates.some(Boolean);
     e.dates.forEach((v,i) => {
-      const m = dateError(k,i) || (show && i === 0 && !e.dates.some(Boolean) ? 'Укажи хотя бы одну дату' : ''), el = $('#errD'+k+'_'+i);
-      if (m) b = true;
+      const m = dateError(k,i) || (show && i === 0 && !e.dates.some(Boolean) ? 'Укажи хотя бы одну дату' : show && dateMissing(k,i) ? 'Укажи дату' : ''), el = $('#errD'+k+'_'+i);
+      if (m || hoursError(k,i,true)) b = true;
+      const hm = hoursError(k,i,show), he = $('#errH'+k+'_'+i);
+      if (he) { he.hidden = !hm; he.textContent = hm; $('#h'+k+'_'+i).classList.toggle('invalid', !!hm); $('#h'+k+'_'+i).setAttribute('aria-invalid', !!hm); }
       if (el) { el.hidden = !m || (!show && !v); el.textContent = m; $('#d'+k+'_'+i).classList.toggle('invalid', !!m && (show || !!v)); }
     });
     const ee = $('#errEmp'+k); if (ee) { ee.hidden = !(show && !e.id); $('#q'+k).classList.toggle('invalid', show && !e.id); }
     if (b) bad++;
   });
   return bad;
+}
+/* Часы меняются без перерисовки формы, чтобы не терять фокус; ошибку диапазона показываем после ухода из поля */
+function hoursTouched(k, i, left){
+  const m = left || F.tried ? hoursError(k, i, F.tried) : '', er = $('#errH'+k+'_'+i);
+  er.hidden = !m; er.textContent = m; $('#h'+k+'_'+i).classList.toggle('invalid', !!m); $('#h'+k+'_'+i).setAttribute('aria-invalid', !!m);
+  F.emps.forEach((x,j) => { const c = $('#copyAll'+j); if (c) c.hidden = !canCopyAll(j); });
 }
 function updateDeadline(){
   const valid = F.emps.flatMap((e,k) => e.dates.filter((v,i) => v && !dateError(k,i))).sort(), n = $('#dlNotice');
@@ -1315,21 +1356,25 @@ function openPicker(k, open){
 function bindCreate(){
   renderEmps(); refreshGoal();
   const f = $('#createForm');
+  /* В фокусе — число, после ввода — «8 часов» */
+  f.addEventListener('focusin', e => { const d = e.target.dataset; if (d.hk != null) { e.target.value = F.emps[+d.hk].hours[+d.hi]; e.target.select(); } });
+  f.addEventListener('focusout', e => { const d = e.target.dataset; if (d.hk != null && F && F.emps[+d.hk] && e.target.isConnected) { e.target.value = hrsShow(F.emps[+d.hk].hours[+d.hi]); hoursTouched(+d.hk, +d.hi, true); } });
   f.addEventListener('focusin', e => { const k = e.target.dataset.q; if (k != null && !F.emps[+k].id) openPicker(+k, true); });
   f.addEventListener('input', e => {
     const t = e.target;
     if (t.dataset.q != null) { const k = +t.dataset.q; F.emps[k].q = t.value; openPicker(k, true); }
     if (t.id === 'goal') { F.goal = t.value; refreshGoal(); }
+    if (t.dataset.hk != null) { const k = +t.dataset.hk, i = +t.dataset.hi; t.value = t.value.replace(/\D/g, '').slice(0, 2); F.emps[k].hours[i] = t.value === '' ? '' : +t.value; hoursTouched(k, i, false); }
   });
-  f.addEventListener('change', e => { const t = e.target; if (t.dataset.k != null) { F.emps[+t.dataset.k].dates[+t.dataset.i] = t.value; renderEmps(); } if (t.id === 'budget') { F.budget = t.checked; if (F.budget) $('#errBudget').hidden = true; } });
+  f.addEventListener('change', e => { const t = e.target; if (t.dataset.k != null) { const k = +t.dataset.k, i = +t.dataset.i; F.emps[k].dates[i] = t.value; renderEmps(); if (t.value && !dateError(k,i) && F.emps[k].hours[i] === '') $('#h'+k+'_'+i)?.focus({preventScroll:true}); } if (t.id === 'budget') { F.budget = t.checked; if (F.budget) $('#errBudget').hidden = true; } });
   f.addEventListener('keydown', e => { if (e.key === 'Escape' && e.target.dataset.q != null) openPicker(+e.target.dataset.q, false); });
   f.addEventListener('click', e => {
     if (e.target.dataset.q != null) { const k = +e.target.dataset.q; if (!F.emps[k].id && !F.emps[k].open) openPicker(k, true); return; }
     const pk = e.target.closest('[data-pick]');
     if (pk) { if (pk.getAttribute('aria-disabled')) return; const [k, id] = pk.dataset.pick.split(':'); F.emps[+k].id = id; F.emps[+k].open = false; F.emps[+k].q = ''; renderEmps(); $('#d'+k+'_0')?.focus(); return; }
-    const rd = e.target.closest('[data-rmd]'); if (rd) { const [k,i] = rd.dataset.rmd.split('_').map(Number); F.emps[k].dates.splice(i,1); renderEmps(); return; }
-    const re = e.target.closest('[data-rmemp]'); if (re) { const k = +re.dataset.rmemp; if (F.emps.length > 1) F.emps.splice(k,1); else F.emps[0] = Object.assign(blankEmp(), {dates:F.emps[0].dates}); renderEmps(); return; }
-    const ad = e.target.closest('[data-addd]'); if (ad) { const k = +ad.dataset.addd; F.emps[k].dates.push(''); renderEmps(); $('#d'+k+'_'+(F.emps[k].dates.length-1)).focus(); return; }
+    const rd = e.target.closest('[data-rmd]'); if (rd) { const [k,i] = rd.dataset.rmd.split('_').map(Number); F.emps[k].dates.splice(i,1); F.emps[k].hours.splice(i,1); renderEmps(); return; }
+    const re = e.target.closest('[data-rmemp]'); if (re) { const k = +re.dataset.rmemp; if (F.emps.length > 1) F.emps.splice(k,1); else F.emps[0] = Object.assign(blankEmp(), {dates:F.emps[0].dates, hours:F.emps[0].hours}); renderEmps(); return; }
+    const ad = e.target.closest('[data-addd]'); if (ad) { const k = +ad.dataset.addd; F.emps[k].dates.push(''); F.emps[k].hours.push(''); renderEmps(); $('#d'+k+'_'+(F.emps[k].dates.length-1)).focus(); return; }
     const cl = e.target.closest('[data-clremp]'); if (cl) { const k = +cl.dataset.clremp; F.emps[k].id = null; F.emps[k].q = ''; renderEmps(); $('#q'+k)?.focus(); return; }
     if (e.target.closest('#addEmp')) { collapseDone(-1); F.emps.push(blankEmp()); renderEmps(); $('#q'+(F.emps.length-1))?.focus(); $('#emp'+(F.emps.length-1)).scrollIntoView({block:'nearest', behavior:'smooth'}); return; }
     const tg = e.target.closest('[data-tog]'); if (tg) { const x = F.emps[+tg.dataset.tog]; x.col = !x.col; x.open = false; renderEmps(); return; }
@@ -1355,7 +1400,8 @@ function bindCreate(){
     S.groups.push(g);
     F.emps.forEach((x,k) => {
       const dates = [...new Set(x.dates.filter(Boolean))].sort();
-      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:F.goal.trim(), dates, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
+      const hours = Object.fromEntries(dates.map(s => [s, +x.hours[x.dates.indexOf(s)]]));
+      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:F.goal.trim(), dates, hours, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
       log(r, actorName() + ' отправил(а) заявку сотруднику'); S.requests.push(r);
       notify(r.employeeId, 'Подтверждение работы в выходной или праздничный день', 'Пожалуйста, подтверди работу в выходной или праздничный день до ' + fmtDT(deadlines(dates[0]).employee) + '.', r.id);
     });
@@ -1523,7 +1569,7 @@ function docHtml(kind, r){
     return `<div class="document-paper"><p class="paper-meta">Код 12.999 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Приказ о предоставлении дня отдыха за работу в выходной день</h2><p>Предоставить <b>${esc(p.full)}</b>, ${esc(p.pos)}, дни отдыха:</p><ul>${list}</ul><p class="paper-meta">${st}</p></div>`;
   }
   const g = grp(r.group);
-  const rows = r.dates.map(s => `<li>${fmtWD(parse(s))} — ${r.comp[s] ? COMP[r.comp[s]].toLowerCase() + (r.comp[s]==='rest' && r.rest[s] ? ' (день отдыха ' + fmtD(parse(r.rest[s])) + ')' : '') : '—'}</li>`).join('');
+  const rows = r.dates.map(s => `<li>${fmtWD(parse(s))}, ${hrsLong(hrsOf(r, s))} — ${r.comp[s] ? COMP[r.comp[s]].toLowerCase() + (r.comp[s]==='rest' && r.rest[s] ? ' (день отдыха ' + fmtD(parse(r.rest[s])) + ')' : '') : '—'}</li>`).join('');
   if (kind === 'notice') return `<div class="document-paper"><p class="paper-meta">Форма 02.010 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Уведомление о необходимости работы в выходные (и (или) нерабочие праздничные дни)</h2>
     <p>Работник: <b>${esc(p.full)}</b>, ${esc(p.pos)}</p><p>Инициатор: ${authorLine(g)}</p><h3>Цель привлечения</h3><p>${esc(r.goal)}</p><h3>Даты и компенсация</h3><ul>${rows}</ul>
     <p>Я согласен(-на) на привлечение к работе в указанные дни на условиях выбранной компенсации.</p><p class="paper-meta">${r.stage === 'sign' ? 'Ожидает подписи работника' : 'Подписано работником электронной подписью'}</p></div>`;
@@ -1699,6 +1745,7 @@ const QS = [
   ['Q25','i','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого?','Прототип: отправить — по самой ранней; сотрудник и кадры — от его первой даты'],
   ['Q26','d','Даты РВД: один календарный месяц (БТ, R03) или ближайшие 30 дней?','Решено: один календарный месяц у каждого сотрудника; у разных сотрудников месяцы могут отличаться. В БТ — «даты в заявке», сверить'],
   ['Q27','i','Отгул: в БТ (R24) — до 10 пар «день работы — день отгула», в макете — один день на заявку. Что верно?','Прототип: один день, как в макете'],
+  ['Q28','b','Часы работы в РВД (новое поле, в БТ его нет): сколько можно указать, только целые или с половиной? Отгул за неполный день — целый день или по часам?','Прототип: целое число от 1 до 24; отгул — целый день'],
 ];
 function openAnalytics(focusQ){
   const dlg = $('#dlg'); dlg.className = 'wide';
@@ -1725,7 +1772,7 @@ function setG(s, list, gOpts = {}){
   g.history = [{t:g.created, text:'Елена Когут создала заявку на ' + plural(list.length, 'сотрудника', 'сотрудников', 'сотрудников') + ' и отправила её'}];
 }
 function setO(s, stage, o){ s.requests = s.requests.filter(r => r.id !== 'r3518'); if (stage) s.requests.push(otgulReq(stage, Object.assign({}, o))); }
-const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], open:false, col:true}, o);
+const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], hours:(o.dates || ['2026-10-31']).map(d => d ? 8 : ''), open:false, col:true}, o);
 const mkF = (emps, o = {}) => { F = Object.assign({goal:GOAL, emps, budget:true, tried:false}, o); return 'new'; };
 function setOrder(s, stage, o = {}){ setO(s, null); s.requests.push(Object.assign({id:'r3601', num:'3601', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-12'}], stage, orderAt:D('02.11',15), created:D('02.11',15), at:{hr:D('02.11',15)}, viewedOrder:false, history:[]}, o)); return 'r3601'; }
 /* Все 10 нерабочих дней ноября — максимум дат на одного сотрудника */
