@@ -150,10 +150,14 @@
   .dh-row+.dh-row .label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);margin:0!important}
   .dh-row+.dh-row .tipwrap{display:none}
   .dh-row+.dh-row{position:relative;margin-top:8px}
-  .hr{position:relative;display:block;flex:0 1 300px;min-width:0}
-  .hr svg{position:absolute;right:16px;top:11px;pointer-events:none}
-  #createForm .date-line .hr input{display:block;width:100%;padding-right:52px!important;color:#222}
-  .hr input::placeholder{color:#53565d;opacity:1}
+  .hr{position:relative;display:flex;align-items:center;flex:0 1 300px;min-width:0;height:46px;border:1px solid #a6adba;border-radius:12px;background:#fff;padding:0 48px 0 14px;font-size:18px;color:#53565d;cursor:text;white-space:nowrap;overflow:hidden}
+  .hr.has{color:#222}
+  .hr:focus-within{outline:2px solid var(--purple);outline-offset:0}
+  .hr i{font-style:normal;margin:0 4px 0 2px}
+  .hr svg{position:absolute;right:15px;top:10px;pointer-events:none}
+  #createForm .date-line .hr input{width:24px;height:30px;padding:0 2px;border:0;border-radius:4px;background:transparent;outline:0;box-shadow:none;color:inherit;font-size:18px;font-variant-numeric:tabular-nums;text-align:left}
+  #createForm .hr input::selection{background:#e9d2fd}
+  #createForm .hr input::placeholder{color:#53565d;opacity:1}
   .add-link{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:600;padding:4px 0;color:#222}
   .add-link:disabled{opacity:.4}
   .fill-hintX{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#fff;border:1px solid #e3d3f2;border-radius:10px;padding:8px 8px 8px 12px;margin:0 0 18px;font-size:14px;line-height:18px;color:#53565d}
@@ -693,9 +697,11 @@ const WD = ['вс','пн','вт','ср','чт','пт','сб'];
 const fmtWD = d => WD[d.getDay()] + ' ' + fmtD(d);
 const fmtDayLong = d => fmtD(d) + ', ' + d.toLocaleDateString('ru-RU',{weekday:'long'});
 const fmtDayShort = d => fmtD(d) + ', ' + ['вс','пн','вт','ср','чт','пт','сб'][d.getDay()];
-/* Часы работы — у каждой даты свои; в старых сохранённых заявках поля нет, считаем 8 */
-const hrsOf = (r, s) => (r.hours || {})[s] || 8;
-const hrsLong = n => plural(+n, 'час', 'часа', 'часов');
+/* Время работы — у каждой даты своё, в минутах; в старых сохранённых заявках — часы или ничего, тогда считаем 8 часов */
+const minsOf = (r, s) => (r.mins || {})[s] || ((r.hours || {})[s] || 8) * 60;
+/* «8 часов 30 минут» — у сотрудника и в документах, «8 ч. 30 мин» — в таблице статусов; нулевые минуты не пишем */
+const hmLong = v => [plural(Math.floor(v / 60), 'час', 'часа', 'часов'), v % 60 ? plural(v % 60, 'минута', 'минуты', 'минут') : ''].filter(Boolean).join(' ');
+const hmShort = v => v % 60 ? Math.floor(v / 60) + ' ч. ' + v % 60 + ' мин' : v / 60 + ' ч';
 const fmtDT = d => fmtD(d) + (d.getHours() === 23 && d.getMinutes() === 59 ? '' : ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes()));
 const fmtDTfull = d => fmtD(d) + ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
 const fmtStamp = t => { const d = new Date(t); return pad(d.getDate()) + '.' + pad(d.getMonth()+1) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()); };
@@ -738,14 +744,14 @@ function rvdReq(g, k, emp, stage, o = {}){
   const T = {created:g.created, confirm:g.created + 25*36e5, sign:g.created + 26*36e5, hr:g.created + 30*36e5};
   const stopped = ['declined','expired','cancelled'].includes(stage), cur = stopped ? (o.stopStage || 'confirm') : stage;
   const dates = o.dates || ['2026-10-31'];
-  const r = {hours:Object.fromEntries(dates.map(s => [s, 8])), id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:emp, goal:GOAL, dates, stage, comp:{}, rest:{}, viewed:false, created:g.created, at:{}, history:[{t:g.created, text:'Елена Когут отправила заявку сотруднику'}]};
+  const r = {mins:Object.fromEntries(dates.map(s => [s, o.min || 480])), id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:emp, goal:GOAL, dates, stage, comp:{}, rest:{}, viewed:false, created:g.created, at:{}, history:[{t:g.created, text:'Елена Когут отправила заявку сотруднику'}]};
   const ci = stage === 'done' ? keys.length : keys.indexOf(cur);
   keys.slice(0, ci).forEach(x => r.at[x] = T[x]);
   if (ci > 1) { dates.forEach(s => r.comp[s] = 'double'); r.history.push({t:T.confirm, text:'Сотрудник выбрал компенсацию и сформировал уведомление'}); }
   if (ci > 2) { r.signed = true; r.viewed = true; r.history.push({t:T.sign, text:'Сотрудник подписал уведомление — заявка передана в отдел кадров'}); }
   if (stage === 'done') { r.at.done = T.hr; r.history.push({t:T.hr, text:'Отдел кадров сформировал приказ и подписал УКЭП'}); }
   if (stopped) { r.stopStage = cur; r.at.stop = o.stopAt || T.confirm; }
-  delete o.stopAt;
+  delete o.stopAt; delete o.min;
   return Object.assign(r, o);
 }
 /* Заявка на отгул Дарьи: № 3 518 от 23.10, отгул 03.11 за 31.10. По макету — один отгул в заявке */
@@ -1035,13 +1041,13 @@ function steps(kind, x, extra = {}, mgr = false){
     return `<div class="step ${cls}"><div class="step-circle ${c}" aria-hidden="true">${mark}</div><b>${lbl}</b>${ex}${date ? `<small>${date}</small>` : ''}<span class="sr">: ${i < cur ? 'выполнено' : i === cur ? 'текущий этап' : 'впереди'}</span></div>`;
   }).join('') + `</div>`;
 }
-/* «31.10.2026, сб 8 ч;» — как в таблице статусов (25989:63407) */
-const datesHours = r => r.dates.map((s, i) => `<span class="dh"><span>${fmtDayShort(parse(s))}</span> <span>${hrsOf(r, s)} ч${i < r.dates.length - 1 ? ';' : ''}</span></span>`).join('');
+/* «31.10.2026, сб 8 ч. 30 мин;» — как в таблице статусов (25989:63407) */
+const datesHours = r => r.dates.map((s, i) => `<span class="dh"><span>${fmtDayShort(parse(s))}</span> <span>${hmShort(minsOf(r, s))}${i < r.dates.length - 1 ? ';' : ''}</span></span>`).join('');
 function rvdFields(r, withComp){
   let comp = '';
   if (withComp && Object.keys(r.comp).length) comp = `<div class="pair"><dt>Компенсация</dt><dd><table class="comp-table">` + r.dates.map(s => {
     const rest = r.comp[s] === 'rest' ? (r.rest[s] ? '<br><small class="muted">Дата отгула: ' + fmtD(parse(r.rest[s])) + '</small>' : '<br><small class="muted">День отдыха — позже, из банка отгулов</small>') : '';
-    return `<tr><td>${fmtDayLong(parse(s))}, ${hrsLong(hrsOf(r, s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
+    return `<tr><td>${fmtDayLong(parse(s))}, ${hmLong(minsOf(r, s))}</td><td>${COMP[r.comp[s]] || '—'}${rest}</td></tr>`;
   }).join('') + `</table></dd></div>`;
   return `<dl class="general-fields"><div class="pair"><dt>Цель работы</dt><dd>${esc(r.goal)}</dd></div>
     <div class="pair"><dt>Сотрудник</dt><dd>${esc(person(r.employeeId).full)}</dd></div>
@@ -1079,7 +1085,7 @@ function expiredMsg(r, mine){
 function confirmForm(r, head){
   const block = (s, i) => {
     const d = parse(s), v = r.comp[s] || '', rest = r.rest[s] || '', max = iso(addDays(d, 364));
-    return `<fieldset class="comp-block" data-date="${s}"><legend class="comp-day">${fmtDayLong(d)},<span class="hrs">${hrsLong(hrsOf(r, s))}</span></legend>
+    return `<fieldset class="comp-block" data-date="${s}"><legend class="comp-day">${fmtDayLong(d)},<span class="hrs">${hmLong(minsOf(r, s))}</span></legend>
       <div class="choices" role="radiogroup" aria-label="Компенсация за ${fmtD(d)}">
         <label><input type="radio" name="comp-${i}" value="double" ${v==='double'?'checked':''}>Оплата в двойном размере</label>
         <label><input type="radio" name="comp-${i}" value="rest" ${v==='rest'?'checked':''}>Одинарная оплата с предоставлением дня отдыха (выбери дни отгула)</label></div>
@@ -1201,18 +1207,22 @@ function groupView(g){
 /* ================= РВД · форма руководителя ================= */
 let F;
 const blankEmp = () => ({id:null, q:'', dates:[''], hours:[''], open:false, col:false});
-const MAX_H = 24;
+const MIN_M = 60, MAX_M = 720;
 const CLOCK_IC = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#53565d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.8"/><path d="M12 6.5V12l3.2 3.4"/></svg>';
-const hrsShow = v => v === '' || v == null ? '' : hrsLong(v);
-/* Строки без даты и без часов при отправке не считаются */
+/* Время в форме — строка «ч:м», пока вводят, любая часть может быть пустой */
+const hmParts = v => { const [h = '', m = ''] = String(v || '').split(':'); return [h, m]; };
+const hmMins = v => { const [h, m] = hmParts(v); return h === '' && m === '' ? null : (+h || 0) * 60 + (+m || 0); };
+const pad2 = v => String(v).padStart(2, '0');
+function hmNorm(v){ const [h, m] = hmParts(v); return h === '' && m === '' ? '' : pad2(h || 0) + ':' + pad2(m || 0); }
+/* Строки без даты и без времени при отправке не считаются */
 function hoursError(k, i, show){
-  const e = F.emps[k], v = e.hours[i];
-  if (v === '' || v == null) return show && (e.dates[i] || !e.dates.some(Boolean) && i === 0) ? 'Укажи количество часов' : '';
-  return +v < 1 || +v > MAX_H ? 'Введи от 1 до ' + MAX_H + ' часов' : '';
+  const e = F.emps[k], v = hmMins(e.hours[i]);
+  if (v == null) return show && (e.dates[i] || !e.dates.some(Boolean) && i === 0) ? 'Укажи количество часов' : '';
+  return v < MIN_M ? 'Введи минимум 1 час' : v > MAX_M ? 'Максимум 12 часов' : '';
 }
 const hoursOk = j => F.emps[j].dates.every((v,i) => !hoursError(j, i, true));
-const dateMissing = (k, i) => !F.emps[k].dates[i] && !!F.emps[k].hours[i];
-const rowKey = x => JSON.stringify(x.dates.map((v,i) => [v, String(x.hours[i])]).filter(y => y[0]).sort());
+const dateMissing = (k, i) => !F.emps[k].dates[i] && hmMins(F.emps[k].hours[i]) != null;
+const rowKey = x => JSON.stringify(x.dates.map((v,i) => [v, hmNorm(x.hours[i])]).filter(y => y[0]).sort());
 const nmShort = j => F.emps[j].id ? person(F.emps[j].id).short : 'Сотрудник ' + (j + 1);
 const datesOk = j => F.emps[j].dates.some(Boolean) && !F.emps[j].dates.some((v,i) => dateError(j,i));
 const canCopyAll = k => F.emps.length > 1 && datesOk(k) && hoursOk(k);
@@ -1244,19 +1254,24 @@ function empStatus(k){
   if (!e.id) return {ok:false, text:'Не выбран сотрудник'};
   if (!e.dates.some(Boolean)) return {ok:false, text:'Нет дат'};
   if (e.dates.some((v,i) => dateError(k,i) || dateMissing(k,i))) return {ok:false, text:'Ошибка в датах'};
-  if (!hoursOk(k)) return {ok:false, text:e.dates.some((v,i) => v && !e.hours[i]) ? 'Нет часов' : 'Ошибка в часах'};
+  if (!hoursOk(k)) return {ok:false, text:e.dates.some((v,i) => v && hmMins(e.hours[i]) == null) ? 'Нет часов' : 'Ошибка в часах'};
   return {ok:true, text:'Заполнено'};
 }
 function refreshChip(k){ const el = $('#est'+k); if (!el || !F.tried) return; const st = empStatus(k), p = F.emps[k].id && person(F.emps[k].id); el.className = st.ok ? '' : 'bad'; el.textContent = st.ok ? (p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение') : st.text; }
 /* Свернуть заполненные карточки; except — индекс, который оставить открытым */
 function collapseDone(except){ F.emps.forEach((e,k) => { if (k !== except && empStatus(k).ok) { e.col = true; e.open = false; } }); }
+/* «08 ч. 30 мин.» — два поля в одной рамке: цифры с клавиатуры, часы сами переводят в минуты */
+function hmField(k, i, v){
+  const [h, m] = hmParts(v), inp = (seg, val, id, lbl) => `<input type="text" id="${id}" data-hk="${k}" data-hi="${i}" data-seg="${seg}" value="${val}" inputmode="numeric" autocomplete="off" placeholder="00" aria-label="${lbl}, дата ${i+1}" aria-describedby="errH${k}_${i}">`;
+  return `<span class="hr ${v ? 'has' : ''}" data-hm="${k}_${i}" role="group" aria-label="Количество часов работы, дата ${i+1}">${inp('h', h, `h${k}_${i}`, 'Часы')}<i>ч.</i>${inp('m', m, `m${k}_${i}`, 'Минуты')}<i>мин.</i>${CLOCK_IC}</span>`;
+}
 function renderEmps(){
   const k1 = F.emps.length, sts = F.emps.map((e,k) => empStatus(k));
   const anyOpen = F.emps.some(e => !e.col);
   const bar = `<div class="emp-bar"><b>Сотрудники</b><span class="cnt">${k1}/${MAX_EMPS}</span>${tip('Можешь выбрать до 20 сотрудников в одной заявке')}${k1 > 1 ? `<button type="button" class="tog-all" id="togAll">${anyOpen ? 'Свернуть все' : 'Развернуть все'}</button>` : ''}</div>`;
   $('#emps').innerHTML = bar + F.emps.map((e,k) => {
     const p = e.id && person(e.id), st = sts[k], showBad = !st.ok && (e.col || F.tried);
-    const dates = e.dates.map((v,i) => `<div class="dh-row"><div class="dh-cell"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках одного календарного месяца')}</span><div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}"></div><p class="err" id="errD${k}_${i}" hidden></p></div><div class="dh-cell"><label class="label" for="h${k}_${i}">Количество часов работы</label><div class="date-line"><span class="hr"><input type="text" id="h${k}_${i}" data-hk="${k}" data-hi="${i}" value="${hrsShow(e.hours[i])}" inputmode="numeric" autocomplete="off" placeholder="Введи кол-во часов" aria-label="Количество часов работы, дата ${i+1}">${CLOCK_IC}</span>${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errH${k}_${i}" hidden></p></div></div>`).join('');
+    const dates = e.dates.map((v,i) => `<div class="dh-row"><div class="dh-cell"><span class="label">Дата работы в выходной день ${tip('Можешь выбрать до 10 дат в рамках одного календарного месяца')}</span><div class="date-line"><input type="date" id="d${k}_${i}" data-k="${k}" data-i="${i}" value="${v}" min="${iso(addDays(new Date(),1))}" aria-label="Дата работы ${i+1}"></div><p class="err" id="errD${k}_${i}" hidden></p></div><div class="dh-cell"><span class="label">Количество часов работы</span><div class="date-line">${hmField(k, i, e.hours[i])}${e.dates.length > 1 ? `<button type="button" class="x-btn" data-rmd="${k}_${i}" aria-label="Удалить дату">×</button>` : ''}</div><p class="err" id="errH${k}_${i}" hidden></p></div></div>`).join('');
     const dept = p ? (p.pos.split(' · ')[1] || p.pos) : 'Подразделение';
     /* По макету: ФИО и подразделение в шапке — только у свёрнутой карточки; у развёрнутой шапка — поле «Выбери сотрудника» */
     const left = e.col ? `<button type="button" class="emp-toggle" data-tog="${k}" aria-expanded="false" aria-controls="empb${k}">
@@ -1321,7 +1336,7 @@ function validateDates(show){
       const m = dateError(k,i) || (show && i === 0 && !e.dates.some(Boolean) ? 'Укажи хотя бы одну дату' : show && dateMissing(k,i) ? 'Укажи дату' : ''), el = $('#errD'+k+'_'+i);
       if (m || hoursError(k,i,true)) b = true;
       const hm = hoursError(k,i,show), he = $('#errH'+k+'_'+i);
-      if (he) { he.hidden = !hm; he.textContent = hm; $('#h'+k+'_'+i).classList.toggle('invalid', !!hm); $('#h'+k+'_'+i).setAttribute('aria-invalid', !!hm); }
+      if (he) { he.hidden = !hm; he.textContent = hm; ['h','m'].forEach(x => $('#'+x+k+'_'+i).setAttribute('aria-invalid', !!hm)); }
       if (el) { el.hidden = !m || (!show && !v); el.textContent = m; $('#d'+k+'_'+i).classList.toggle('invalid', !!m && (show || !!v)); }
     });
     const ee = $('#errEmp'+k); if (ee) { ee.hidden = !(show && !e.id); $('#q'+k).classList.toggle('invalid', show && !e.id); }
@@ -1329,11 +1344,56 @@ function validateDates(show){
   });
   return bad;
 }
-/* Часы меняются без перерисовки формы, чтобы не терять фокус; ошибку диапазона показываем после ухода из поля */
+/* Время меняется без перерисовки формы, чтобы не терять фокус; новую ошибку показываем после ухода из поля, старую убираем сразу */
 function hoursTouched(k, i, left){
-  const m = left || F.tried ? hoursError(k, i, F.tried) : '', er = $('#errH'+k+'_'+i);
-  er.hidden = !m; er.textContent = m; $('#h'+k+'_'+i).classList.toggle('invalid', !!m); $('#h'+k+'_'+i).setAttribute('aria-invalid', !!m);
+  const er = $('#errH'+k+'_'+i), m = hoursError(k, i, F.tried), on = !!m && (left || !er.hidden);
+  er.hidden = !on; er.textContent = on ? m : '';
+  ['h','m'].forEach(x => $('#'+x+k+'_'+i).setAttribute('aria-invalid', on));
   F.emps.forEach((x,j) => { const c = $('#copyAll'+j); if (c) c.hidden = !canCopyAll(j); });
+}
+function hmSet(k, i, v, left){
+  F.emps[k].hours[i] = v === ':' ? '' : v;
+  const [h, m] = hmParts(F.emps[k].hours[i]);
+  $('#h'+k+'_'+i).value = h; $('#m'+k+'_'+i).value = m;
+  $('#h'+k+'_'+i).closest('.hr').classList.toggle('has', h !== '' || m !== '');
+  hoursTouched(k, i, left);
+}
+function hmInput(t, del){
+  const k = +t.dataset.hk, i = +t.dataset.hi, hEl = $('#h'+k+'_'+i), mEl = $('#m'+k+'_'+i);
+  const norm = v => { v = v.slice(0, 2); return v.length === 1 && +v > 5 ? '0' + v : +v > 59 ? '59' : v; };
+  const v = t.value.replace(/\D/g, '');
+  if (del) { t.value = v.slice(0, 2); hmSet(k, i, hEl.value + ':' + mEl.value, false); return; }
+  if (t.dataset.seg === 'm') { t.value = norm(v); hmSet(k, i, hEl.value + ':' + mEl.value, false); return; }
+  /* 2–9 — сразу часы («08»), после 0 и 1 ждём вторую цифру; лишние цифры уходят в минуты */
+  const h = v[0] > 1 ? '0' + v[0] : v.slice(0, 2), rest = v.slice(v[0] > 1 ? 1 : 2);
+  hmSet(k, i, h + ':' + (rest ? norm(rest) : mEl.value), false);
+  if (h.length === 2) { mEl.focus(); if (rest) mEl.setSelectionRange(2, 2); else mEl.select(); }
+}
+function bindHm(f){
+  const seg = e => e.target.dataset && e.target.dataset.hk != null ? e.target : null;
+  const pair = t => [$('#h'+t.dataset.hk+'_'+t.dataset.hi), $('#m'+t.dataset.hk+'_'+t.dataset.hi)];
+  f.addEventListener('focusin', e => { const t = seg(e); if (t) t.select(); });
+  f.addEventListener('focusout', e => { const t = seg(e); if (!t || !F || !t.isConnected || !F.emps[+t.dataset.hk]) return;
+    const wrap = t.closest('.hr'); if (e.relatedTarget && wrap.contains(e.relatedTarget)) return;
+    const k = +t.dataset.hk, i = +t.dataset.hi; hmSet(k, i, hmNorm(F.emps[k].hours[i]), true); });
+  /* Клик мимо цифр, но внутри рамки: правее часов — в минуты */
+  f.addEventListener('mousedown', e => { const w = e.target.closest('.hr'); if (!w || e.target.tagName === 'INPUT') return; e.preventDefault();
+    const [hEl, mEl] = w.querySelectorAll('input'); (hEl.value && e.clientX > hEl.getBoundingClientRect().right + 12 ? mEl : hEl).focus(); });
+  f.addEventListener('paste', e => { const t = seg(e); if (!t) return; e.preventDefault();
+    const s = (e.clipboardData.getData('text') || '').trim(), x = /^(\d{1,2})\D+(\d{1,2})/.exec(s), k = +t.dataset.hk, i = +t.dataset.hi;
+    if (x) hmSet(k, i, pad2(x[1]) + ':' + pad2(Math.min(+x[2], 59)), false);
+    else if (/\d/.test(s)) { t.value = s; hmInput(t); } });
+  f.addEventListener('keydown', e => { const t = seg(e); if (!t) return;
+    const [hEl, mEl] = pair(t), isH = t === hEl, at = t.selectionStart, all = t.selectionEnd - at === t.value.length, to = x => { e.preventDefault(); x.focus(); x.select(); };
+    if (e.key === 'Enter') { e.preventDefault(); if (isH) to(mEl); return; }
+    if ([' ', ':', '.', ','].includes(e.key)) { e.preventDefault(); if (isH && t.value) to(mEl); return; }
+    if (e.key === 'ArrowRight' && isH && (all || at === t.value.length)) return to(mEl);
+    if (e.key === 'ArrowLeft' && !isH && (all || at === 0)) return to(hEl);
+    if (e.key === 'Backspace' && !isH && t.value === '') return to(hEl);
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); const up = e.key === 'ArrowUp' ? 1 : -1, n = t.value === '' ? null : +t.value;
+      if (isH) t.value = pad2(n == null ? (up > 0 ? 1 : 12) : Math.min(12, Math.max(1, n + up)));
+      else t.value = pad2(n == null ? (up > 0 ? 15 : 45) : Math.min(45, Math.max(0, up > 0 ? Math.floor(n / 15) * 15 + 15 : Math.ceil(n / 15) * 15 - 15)));
+      hmSet(+t.dataset.hk, +t.dataset.hi, hEl.value + ':' + mEl.value, false); t.select(); } });
 }
 function updateDeadline(){
   const valid = F.emps.flatMap((e,k) => e.dates.filter((v,i) => v && !dateError(k,i))).sort(), n = $('#dlNotice');
@@ -1356,17 +1416,15 @@ function openPicker(k, open){
 function bindCreate(){
   renderEmps(); refreshGoal();
   const f = $('#createForm');
-  /* В фокусе — число, после ввода — «8 часов» */
-  f.addEventListener('focusin', e => { const d = e.target.dataset; if (d.hk != null) { e.target.value = F.emps[+d.hk].hours[+d.hi]; e.target.select(); } });
-  f.addEventListener('focusout', e => { const d = e.target.dataset; if (d.hk != null && F && F.emps[+d.hk] && e.target.isConnected) { e.target.value = hrsShow(F.emps[+d.hk].hours[+d.hi]); hoursTouched(+d.hk, +d.hi, true); } });
+  bindHm(f);
   f.addEventListener('focusin', e => { const k = e.target.dataset.q; if (k != null && !F.emps[+k].id) openPicker(+k, true); });
   f.addEventListener('input', e => {
     const t = e.target;
     if (t.dataset.q != null) { const k = +t.dataset.q; F.emps[k].q = t.value; openPicker(k, true); }
     if (t.id === 'goal') { F.goal = t.value; refreshGoal(); }
-    if (t.dataset.hk != null) { const k = +t.dataset.hk, i = +t.dataset.hi; t.value = t.value.replace(/\D/g, '').slice(0, 2); F.emps[k].hours[i] = t.value === '' ? '' : +t.value; hoursTouched(k, i, false); }
+    if (t.dataset.hk != null) hmInput(t, /^delete/.test(e.inputType || ''));
   });
-  f.addEventListener('change', e => { const t = e.target; if (t.dataset.k != null) { const k = +t.dataset.k, i = +t.dataset.i; F.emps[k].dates[i] = t.value; renderEmps(); if (t.value && !dateError(k,i) && F.emps[k].hours[i] === '') $('#h'+k+'_'+i)?.focus({preventScroll:true}); } if (t.id === 'budget') { F.budget = t.checked; if (F.budget) $('#errBudget').hidden = true; } });
+  f.addEventListener('change', e => { const t = e.target; if (t.dataset.k != null) { const k = +t.dataset.k, i = +t.dataset.i; F.emps[k].dates[i] = t.value; renderEmps(); if (t.value && !dateError(k,i) && !F.emps[k].hours[i]) $('#h'+k+'_'+i)?.focus({preventScroll:true}); } if (t.id === 'budget') { F.budget = t.checked; if (F.budget) $('#errBudget').hidden = true; } });
   f.addEventListener('keydown', e => { if (e.key === 'Escape' && e.target.dataset.q != null) openPicker(+e.target.dataset.q, false); });
   f.addEventListener('click', e => {
     if (e.target.dataset.q != null) { const k = +e.target.dataset.q; if (!F.emps[k].id && !F.emps[k].open) openPicker(k, true); return; }
@@ -1400,8 +1458,8 @@ function bindCreate(){
     S.groups.push(g);
     F.emps.forEach((x,k) => {
       const dates = [...new Set(x.dates.filter(Boolean))].sort();
-      const hours = Object.fromEntries(dates.map(s => [s, +x.hours[x.dates.indexOf(s)]]));
-      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:F.goal.trim(), dates, hours, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
+      const mins = Object.fromEntries(dates.map(s => [s, hmMins(x.hours[x.dates.indexOf(s)])]));
+      const r = {id:'r' + g.num + (k ? '-' + (k+1) : ''), num:g.num, type:'rvd', group:g.id, employeeId:x.id, goal:F.goal.trim(), dates, mins, stage:'confirm', comp:{}, rest:{}, viewed:false, created:now, at:{created:now}, history:[]};
       log(r, actorName() + ' отправил(а) заявку сотруднику'); S.requests.push(r);
       notify(r.employeeId, 'Подтверждение работы в выходной или праздничный день', 'Пожалуйста, подтверди работу в выходной или праздничный день до ' + fmtDT(deadlines(dates[0]).employee) + '.', r.id);
     });
@@ -1569,7 +1627,7 @@ function docHtml(kind, r){
     return `<div class="document-paper"><p class="paper-meta">Код 12.999 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Приказ о предоставлении дня отдыха за работу в выходной день</h2><p>Предоставить <b>${esc(p.full)}</b>, ${esc(p.pos)}, дни отдыха:</p><ul>${list}</ul><p class="paper-meta">${st}</p></div>`;
   }
   const g = grp(r.group);
-  const rows = r.dates.map(s => `<li>${fmtWD(parse(s))}, ${hrsLong(hrsOf(r, s))} — ${r.comp[s] ? COMP[r.comp[s]].toLowerCase() + (r.comp[s]==='rest' && r.rest[s] ? ' (день отдыха ' + fmtD(parse(r.rest[s])) + ')' : '') : '—'}</li>`).join('');
+  const rows = r.dates.map(s => `<li>${fmtWD(parse(s))}, ${hmLong(minsOf(r, s))} — ${r.comp[s] ? COMP[r.comp[s]].toLowerCase() + (r.comp[s]==='rest' && r.rest[s] ? ' (день отдыха ' + fmtD(parse(r.rest[s])) + ')' : '') : '—'}</li>`).join('');
   if (kind === 'notice') return `<div class="document-paper"><p class="paper-meta">Форма 02.010 · пример содержания, не утверждённый шаблон (Q13)</p><h2>Уведомление о необходимости работы в выходные (и (или) нерабочие праздничные дни)</h2>
     <p>Работник: <b>${esc(p.full)}</b>, ${esc(p.pos)}</p><p>Инициатор: ${authorLine(g)}</p><h3>Цель привлечения</h3><p>${esc(r.goal)}</p><h3>Даты и компенсация</h3><ul>${rows}</ul>
     <p>Я согласен(-на) на привлечение к работе в указанные дни на условиях выбранной компенсации.</p><p class="paper-meta">${r.stage === 'sign' ? 'Ожидает подписи работника' : 'Подписано работником электронной подписью'}</p></div>`;
@@ -1745,7 +1803,7 @@ const QS = [
   ['Q25','i','Срок «день первой РВД − 1» в заявке на нескольких: от самой ранней даты или своей у каждого?','Прототип: отправить — по самой ранней; сотрудник и кадры — от его первой даты'],
   ['Q26','d','Даты РВД: один календарный месяц (БТ, R03) или ближайшие 30 дней?','Решено: один календарный месяц у каждого сотрудника; у разных сотрудников месяцы могут отличаться. В БТ — «даты в заявке», сверить'],
   ['Q27','i','Отгул: в БТ (R24) — до 10 пар «день работы — день отгула», в макете — один день на заявку. Что верно?','Прототип: один день, как в макете'],
-  ['Q28','b','Часы работы в РВД (новое поле, в БТ его нет): сколько можно указать, только целые или с половиной? Отгул за неполный день — целый день или по часам?','Прототип: целое число от 1 до 24; отгул — целый день'],
+  ['Q28','b','Время работы в РВД (новое поле, в БТ его нет): подтвердить границы от 1 до 12 часов и шаг минут. Отгул за неполный день — целый день или по часам?','Прототип: от 1 до 12 часов, минуты любые (по макету); отгул — целый день'],
 ];
 function openAnalytics(focusQ){
   const dlg = $('#dlg'); dlg.className = 'wide';
@@ -1772,7 +1830,7 @@ function setG(s, list, gOpts = {}){
   g.history = [{t:g.created, text:'Елена Когут создала заявку на ' + plural(list.length, 'сотрудника', 'сотрудников', 'сотрудников') + ' и отправила её'}];
 }
 function setO(s, stage, o){ s.requests = s.requests.filter(r => r.id !== 'r3518'); if (stage) s.requests.push(otgulReq(stage, Object.assign({}, o))); }
-const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], hours:(o.dates || ['2026-10-31']).map(d => d ? 8 : ''), open:false, col:true}, o);
+const formEmp = (id, o = {}) => Object.assign({id, q:'', dates:['2026-10-31'], hours:(o.dates || ['2026-10-31']).map(d => d ? '08:30' : ''), open:false, col:true}, o);
 const mkF = (emps, o = {}) => { F = Object.assign({goal:GOAL, emps, budget:true, tried:false}, o); return 'new'; };
 function setOrder(s, stage, o = {}){ setO(s, null); s.requests.push(Object.assign({id:'r3601', num:'3601', type:'order', employeeId:'e4', pairs:[{rvd:'2026-10-31', off:'2026-11-12'}], stage, orderAt:D('02.11',15), created:D('02.11',15), at:{hr:D('02.11',15)}, viewedOrder:false, history:[]}, o)); return 'r3601'; }
 /* Все 10 нерабочих дней ноября — максимум дат на одного сотрудника */
@@ -1786,13 +1844,13 @@ const SCEN = [
   ['Руководитель · РВД', 'Создание, 3 сотрудника', 'm1', '21.10', s => { freshG(s); return mkF(['e1','e2','e5'].map(id => formEmp(id))); }],
   ['Руководитель · РВД', 'Создание, 20 сотрудников (нет в макетах)', 'm1', '21.10', s => { freshG(s); return mkF(['e1','e2','e5'].concat([...Array(17)].map((_, i) => 'x' + i)).map(id => formEmp(id))); }],
   ['Руководитель · РВД', 'Ошибка: цель короче 20 символов', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false})], {goal:'Перенос сервиса', tried:true}); }],
-  ['Руководитель · РВД', 'Ошибки: цель и дата', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', tried:true}); }],
-  ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:['']})], {goal:'Перенос сервиса', budget:false, tried:true}); }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
+  ['Руководитель · РВД', 'Ошибки: цель и дата', 'm1', '21.10', s => { freshG(s); return mkF([formEmp('e1', {col:false, dates:[''], hours:['00:12']})], {goal:'Перенос сервиса', tried:true}); }],
+  ['Руководитель · РВД', 'Ошибки: цель, дата, бюджет', 'm1', '21.10', s => { freshG(s); return mkF([formEmp(null, {col:false, dates:[''], hours:['12:12']})], {goal:'Перенос сервиса', budget:false, tried:true}); }, () => { const e = $('#errBudget'); if (e) e.hidden = false; }],
   ['Руководитель · РВД', 'На подписании, 1 сотрудник', 'm1', '22.10', s => { setG(s, [['e1','sign']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:NOV.slice(1)}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
-  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:NOV.slice(1)}],['e1','hr',{dates:['2026-11-07']}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, 3 сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:NOV.slice(1), min:510}],['e1','hr',{dates:['2026-11-07'], min:510}],['e2','done',{dates:['2026-11-07'], min:510}]]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'На исполнении, шаги сотрудника', 'm1', '23.10', s => { setG(s, [['e5','sign',{dates:NOV.slice(1), min:510}],['e1','hr',{dates:['2026-11-07'], min:510}],['e2','done',{dates:['2026-11-07'], min:510}]]); U.rows['r3432'] = true; U.chip = 'r3432'; return 'g3432'; }],
   ['Руководитель · РВД', 'У отдела кадров (нет в макетах)', 'm1', '22.10', s => { setG(s, [['e1','hr']]); return 'g3432'; }],
-  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '06.11', s => { setG(s, [['e5','declined',{dates:NOV}],['e1','expired',{dates:['2026-11-07'], stopStage:'sign', stopAt:D('05.11',23)}],['e2','done',{dates:['2026-11-07']}]]); U.rows['r3432'] = true; return 'g3432'; }],
+  ['Руководитель · РВД', 'Завершена: отказ, дедлайн, готово', 'm1', '06.11', s => { setG(s, [['e5','declined',{dates:NOV, min:510}],['e1','expired',{dates:['2026-11-07'], min:510, stopStage:'sign', stopAt:D('05.11',23)}],['e2','done',{dates:['2026-11-07'], min:510}]]); U.rows['r3432'] = true; return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, все 3 (нет в макетах)', 'm1', '23.10', s => { setG(s, [['e1','done'],['e2','done'],['e5','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Завершена, 1 сотрудник', 'm1', '23.10', s => { setG(s, [['e1','done']]); return 'g3432'; }],
   ['Руководитель · РВД', 'Отменена отделом кадров', 'm1', '23.10', s => { setG(s, [['e1','cancelled',{stopStage:'hr', hrComment:'Сотрудник в эти даты в командировке.'}]]); return 'g3432'; }],
